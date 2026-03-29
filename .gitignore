@@ -6,6 +6,10 @@ cache/
 **/results/figures/
 **/results/stats/
 
+# Node
+node_modules/
+.next/
+
 # Python
 __pycache__/
 *.py[cod]
