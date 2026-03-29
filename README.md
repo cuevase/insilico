@@ -8,14 +8,12 @@ TRIBE v2 predicts fMRI responses across the entire cortex from video, audio, and
 
 ```bash
 # 1. Create environment
-conda create -n insilico python=3.10 -y
-conda activate insilico
+python3 -m venv .venv
+source .venv/bin/activate
 
-# 2. Clone and install TRIBE v2
-git clone https://github.com/facebookresearch/tribev2.git
-cd tribev2
-pip install -e ".[plotting]"
-cd ..
+# 2. Clone TRIBE v2 outside the project (avoids import shadowing)
+git clone https://github.com/facebookresearch/tribev2.git ../tribev2-repo
+pip install -e "../tribev2-repo[plotting]"
 
 # 3. Authenticate with HuggingFace (LLaMA 3.2-3B is gated)
 huggingface-cli login
