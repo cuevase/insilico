@@ -12,16 +12,39 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_CACHE = PROJECT_ROOT / "cache"
 
 
+def _get_device() -> str:
+    """Pick the best available device for feature extraction."""
+    import torch
+
+    if torch.cuda.is_available():
+        return "cuda"
+    if torch.backends.mps.is_available():
+        return "mps"
+    return "cpu"
+
+
 def load_model(cache_folder: Optional[str] = None):
     """Load the pretrained TRIBE v2 model.
 
     Returns the model ready for inference in 'unseen subject' mode.
     Weights are downloaded on first call and cached locally.
+    On non-CUDA machines (e.g. Apple Silicon), feature-extractor devices
+    are automatically overridden from 'cuda' to 'mps' or 'cpu'.
     """
     from tribev2 import TribeModel
 
     cache = cache_folder or str(DEFAULT_CACHE)
     model = TribeModel.from_pretrained("facebook/tribev2", cache_folder=cache)
+
+    device = _get_device()
+    if device != "cuda":
+        for attr in ("text_feature", "audio_feature", "video_feature", "image_feature"):
+            ext = getattr(model.data, attr, None)
+            if ext is not None and getattr(ext, "device", None) == "cuda":
+                ext.device = "cpu"
+
+        # Reduce dataloader workers to avoid OOM on memory-constrained machines
+        model.data.num_workers = 2
     return model
 
 

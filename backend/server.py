@@ -216,21 +216,14 @@ async def predict(req: PredictRequest):
     start_time = time.time()
 
     try:
+        import tempfile
         model = get_model()
-        df = model.get_events_dataframe(text_path=None, text=req.text.strip())
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
+            f.write(req.text.strip())
+            tmp_path = f.name
+        df = model.get_events_dataframe(text_path=tmp_path)
         preds, segments = model.predict(events=df)
-    except AttributeError:
-        try:
-            import tempfile
-            model = get_model()
-            with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
-                f.write(req.text.strip())
-                tmp_path = f.name
-            df = model.get_events_dataframe(text_path=tmp_path)
-            preds, segments = model.predict(events=df)
-            Path(tmp_path).unlink(missing_ok=True)
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
+        Path(tmp_path).unlink(missing_ok=True)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
 

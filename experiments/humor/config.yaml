@@ -1,31 +1,14 @@
 experiment:
-  name: "humor"
-  description: "Humor processing: funny vs neutral video clips"
+  name: "humor_classification"
+  description: "Can predicted brain responses distinguish humorous from neutral text?"
 
 stimuli:
-  modality: "video"
-  design: "event_related"
-  stimulus_duration: 10.0  # seconds per clip
-  isi_min: 12.0
-  isi_max: 16.0
-  n_trials_per_condition: 20
+  path: "stimuli/stimuli.csv"
+  modality: "text"
 
-conditions:
-  - name: "funny"
-    stimuli_dir: "stimuli/funny/"
-  - name: "neutral"
-    stimuli_dir: "stimuli/neutral/"
-
-contrasts:
-  - name: "humor_effect"
-    definition: "funny - neutral"
-  - name: "funny_overall"
-    definition: "funny"
-
-analysis:
-  tr: 1.0
-  hrf_model: "spm"
-  high_pass: 0.01
+classification:
+  n_folds: 5
+  regularization_C: 1.0
 
 rois:
   - name: "TPJ"
@@ -36,6 +19,8 @@ rois:
     glasser: "10v"
   - name: "IFG"
     glasser: "45"
+  - name: "Reward"
+    glasser: "OFC"
 
 output:
   save_predictions: true

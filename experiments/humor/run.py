@@ -1,29 +1,35 @@
 """
-Humor processing experiment.
+Humor classification experiment.
 
-Compares brain responses to funny vs. neutral video clips using TRIBE v2.
-Expects video stimuli in stimuli/funny/ and stimuli/neutral/.
+Can predicted brain responses (via TRIBE v2) distinguish humorous from
+non-humorous text?  This script:
+  1. Loads stimuli (humor + neutral sentences)
+  2. Passes each through TRIBE v2 → predicted fMRI activation
+  3. Collects brain-pattern feature vectors
+  4. Trains a logistic-regression classifier with cross-validation
+  5. Reports accuracy, top discriminative brain regions, and saves figures
 
 Usage:
-    python experiments/humor/run.py
+    python experiments/humor/run.py            # full run
+    python experiments/humor/run.py --n 10     # quick test with 10 stimuli
 """
+import argparse
+import json
 import sys
+import tempfile
+import time
 from pathlib import Path
 
-import yaml
 import numpy as np
 import pandas as pd
+import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from core.model import load_model
-from core.glm import fit_first_level_glm
-from core.contrasts import compute_contrast, compute_simple_contrast
-from core.viz import plot_brain_surface, plot_roi_bar
-
 EXPERIMENT_DIR = Path(__file__).resolve().parent
 RESULTS_DIR = EXPERIMENT_DIR / "results"
+CACHE_DIR = RESULTS_DIR / "embeddings"
 
 
 def load_config() -> dict:
@@ -31,153 +37,277 @@ def load_config() -> dict:
         return yaml.safe_load(f)
 
 
-def prepare_stimuli(model, config: dict):
-    """Build predictions for each stimulus clip, then concatenate
-    into a single predicted time series with a matching events DataFrame.
+def load_stimuli(n: int | None = None) -> pd.DataFrame:
+    """Load the stimuli CSV (id, label, text)."""
+    df = pd.read_csv(EXPERIMENT_DIR / "stimuli" / "stimuli.csv")
+    if n is not None:
+        n_per = n // 2
+        humor = df[df.label == "humor"].head(n_per)
+        neutral = df[df.label == "neutral"].head(n_per)
+        df = pd.concat([humor, neutral]).reset_index(drop=True)
+    print(f"Loaded {len(df)} stimuli: "
+          f"{(df.label == 'humor').sum()} humor, "
+          f"{(df.label == 'neutral').sum()} neutral")
+    return df
 
-    Each clip is predicted independently, then the predictions are
-    concatenated with rest periods (zeros) in between to form a
-    continuous 'run' suitable for GLM analysis.
+
+def get_brain_vector(model, text: str, stim_id: int) -> np.ndarray | None:
+    """Run a single text through TRIBE v2 and return the mean brain vector.
+
+    Caches results to disk so interrupted runs can resume.
     """
-    rng = np.random.default_rng(42)
+    cache_path = CACHE_DIR / f"stim_{stim_id:04d}.npy"
+    if cache_path.exists():
+        return np.load(cache_path)
 
-    conditions = config["conditions"]
-    n_trials = config["stimuli"]["n_trials_per_condition"]
-    stim_dur = config["stimuli"]["stimulus_duration"]
-    isi_min = config["stimuli"]["isi_min"]
-    isi_max = config["stimuli"]["isi_max"]
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
+            f.write(text.strip())
+            tmp_path = f.name
 
-    # Gather all stimulus files
-    trials = []
-    for cond in conditions:
-        stim_dir = EXPERIMENT_DIR / cond["stimuli_dir"]
-        if not stim_dir.exists():
-            print(f"  WARNING: {stim_dir} does not exist yet. "
-                  f"Place your {cond['name']} video clips there.")
-            continue
-        videos = sorted(stim_dir.glob("*.mp4"))
-        if not videos:
-            print(f"  WARNING: No .mp4 files found in {stim_dir}")
-            continue
-        for i in range(n_trials):
-            video = videos[i % len(videos)]
-            trials.append({"condition": cond["name"], "video_path": str(video)})
-
-    if not trials:
-        raise FileNotFoundError(
-            "No stimulus files found. Place .mp4 files in "
-            "stimuli/funny/ and stimuli/neutral/ before running."
-        )
-
-    rng.shuffle(trials)
-
-    # Predict each clip and assemble into a continuous run
-    all_preds = []
-    events = []
-    current_time = 10.0  # initial rest
-
-    n_vertices = None
-    print(f"Processing {len(trials)} trials...")
-
-    for i, trial in enumerate(trials):
-        print(f"  [{i+1}/{len(trials)}] {trial['condition']}: "
-              f"{Path(trial['video_path']).name}")
-
-        df = model.get_events_dataframe(video_path=trial["video_path"])
+        df = model.get_events_dataframe(text_path=tmp_path)
         preds, _ = model.predict(events=df)
+        Path(tmp_path).unlink(missing_ok=True)
 
-        if n_vertices is None:
-            n_vertices = preds.shape[1]
+        mean_vec = preds.mean(axis=0) if preds.ndim == 2 else preds
+        np.save(cache_path, mean_vec)
+        return mean_vec
 
-        # Trim/pad to expected duration
-        expected_trs = int(stim_dur)
-        if preds.shape[0] >= expected_trs:
-            clip_preds = preds[:expected_trs]
+    except Exception as e:
+        print(f"    ERROR on stim {stim_id}: {e}")
+        Path(tmp_path).unlink(missing_ok=True)
+        return None
+
+
+def collect_embeddings(model, stimuli: pd.DataFrame) -> tuple[np.ndarray, np.ndarray, list[int]]:
+    """Run all stimuli through the model and collect brain vectors."""
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+
+    vectors = []
+    labels = []
+    valid_ids = []
+
+    total = len(stimuli)
+    for i, row in stimuli.iterrows():
+        idx = int(i) + 1
+        print(f"  [{idx}/{total}] {row.label}: {row.text[:60]}...")
+        t0 = time.time()
+        vec = get_brain_vector(model, row.text, row.id)
+        elapsed = time.time() - t0
+
+        if vec is not None:
+            vectors.append(vec)
+            labels.append(1 if row.label == "humor" else 0)
+            valid_ids.append(row.id)
+            print(f"           done ({elapsed:.1f}s, {vec.shape[0]} vertices)")
         else:
-            pad = np.zeros((expected_trs - preds.shape[0], n_vertices))
-            clip_preds = np.vstack([preds, pad])
+            print(f"           SKIPPED")
 
-        # Add rest before this clip
-        isi = rng.uniform(isi_min, isi_max)
-        rest_trs = int(isi)
-        rest_preds = np.zeros((rest_trs, n_vertices))
-
-        all_preds.append(rest_preds)
-        all_preds.append(clip_preds)
-
-        onset = current_time + rest_trs
-        events.append({
-            "onset": float(onset),
-            "duration": float(stim_dur),
-            "condition": trial["condition"],
-        })
-        current_time = onset + expected_trs
-
-    # Final rest
-    all_preds.append(np.zeros((10, n_vertices)))
-
-    full_preds = np.vstack(all_preds)
-    events_df = pd.DataFrame(events)
-
-    print(f"Total run: {full_preds.shape[0]} TRs ({full_preds.shape[0]}s)")
-    return full_preds, events_df
+    X = np.vstack(vectors)
+    y = np.array(labels)
+    return X, y, valid_ids
 
 
-def run_analysis(preds, events, config):
-    print("\nFitting GLM...")
-    glm_result = fit_first_level_glm(
-        preds, events,
-        tr=config["analysis"]["tr"],
-        hrf_model=config["analysis"]["hrf_model"],
-        high_pass=config["analysis"]["high_pass"],
+def run_classification(X: np.ndarray, y: np.ndarray, config: dict) -> dict:
+    """Train and evaluate a classifier using stratified cross-validation."""
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.model_selection import StratifiedKFold, cross_val_predict
+    from sklearn.metrics import (
+        accuracy_score, classification_report,
+        confusion_matrix, roc_auc_score,
+    )
+    from sklearn.preprocessing import StandardScaler
+
+    n_folds = config["classification"]["n_folds"]
+    print(f"\nClassification: {X.shape[0]} samples, {X.shape[1]} features, {n_folds}-fold CV")
+
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+
+    clf = LogisticRegression(
+        C=config["classification"]["regularization_C"],
+        max_iter=2000,
+        solver="saga",
+        penalty="l1",
     )
 
-    print("Computing contrasts...")
-    contrast_maps = {}
-    for c in config["contrasts"]:
-        cmap = compute_contrast(glm_result, c["definition"])
-        contrast_maps[c["name"]] = cmap
-        print(f"  {c['name']}: range [{cmap.min():.3f}, {cmap.max():.3f}]")
+    cv = StratifiedKFold(n_splits=n_folds, shuffle=True, random_state=42)
+    y_pred = cross_val_predict(clf, X_scaled, y, cv=cv)
+    y_prob = cross_val_predict(clf, X_scaled, y, cv=cv, method="predict_proba")[:, 1]
 
-    return glm_result, contrast_maps
+    acc = accuracy_score(y, y_pred)
+    auc = roc_auc_score(y, y_prob)
+    cm = confusion_matrix(y, y_pred)
+    report = classification_report(y, y_pred, target_names=["neutral", "humor"])
+
+    print(f"\n{'='*50}")
+    print(f"  Accuracy:  {acc:.1%}")
+    print(f"  ROC AUC:   {auc:.3f}")
+    print(f"  Confusion matrix:")
+    print(f"    {cm}")
+    print(f"\n{report}")
+    print(f"{'='*50}")
+
+    clf.fit(X_scaled, y)
+
+    results = {
+        "accuracy": float(acc),
+        "roc_auc": float(auc),
+        "confusion_matrix": cm.tolist(),
+        "n_samples": int(X.shape[0]),
+        "n_features": int(X.shape[1]),
+        "n_folds": n_folds,
+    }
+    return results, clf, scaler
 
 
-def save_results(preds, contrast_maps, config):
-    pred_dir = RESULTS_DIR / "predictions"
+def analyze_discriminative_regions(clf, n_vertices_per_hemi: int = 10_242) -> np.ndarray:
+    """Extract the classifier's weight map to find discriminative brain regions.
+
+    Positive weights → more humor-predictive.
+    Negative weights → more neutral-predictive.
+    """
+    weights = clf.coef_[0]
+    n_cortical = 2 * n_vertices_per_hemi
+    cortical_weights = weights[:n_cortical]
+    return cortical_weights
+
+
+def save_results(results: dict, cortical_weights: np.ndarray, X: np.ndarray, y: np.ndarray):
+    """Save classification results, figures, and weight maps."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
     fig_dir = RESULTS_DIR / "figures"
-    pred_dir.mkdir(parents=True, exist_ok=True)
     fig_dir.mkdir(parents=True, exist_ok=True)
 
-    np.save(pred_dir / "predictions.npy", preds)
-    for name, cmap in contrast_maps.items():
-        np.save(pred_dir / f"contrast_{name}.npy", cmap)
+    with open(RESULTS_DIR / "classification_results.json", "w") as f:
+        json.dump(results, f, indent=2)
 
-    fmt = config["output"]["figure_format"]
-    for name, cmap in contrast_maps.items():
-        plot_brain_surface(
-            cmap,
-            title=f"Humor: {name}",
-            save_path=str(fig_dir / f"{name}.{fmt}"),
-            threshold=0.5,
-        )
+    np.save(RESULTS_DIR / "classifier_weights.npy", cortical_weights)
+    np.save(RESULTS_DIR / "embeddings_X.npy", X)
+    np.save(RESULTS_DIR / "labels_y.npy", y)
 
-    print(f"\nResults saved to {RESULTS_DIR}")
+    try:
+        from nilearn import datasets, plotting
+
+        fsaverage = datasets.fetch_surf_fsaverage("fsaverage5")
+        n_hemi = 10_242
+        vmax = float(np.percentile(np.abs(cortical_weights), 95))
+
+        for hemi, hemi_name in [("left", "Left"), ("right", "Right")]:
+            for view in ["lateral", "medial"]:
+                fig, ax = plt.subplots(1, 1, figsize=(6, 5), subplot_kw={"projection": "3d"})
+                data = cortical_weights[:n_hemi] if hemi == "left" else cortical_weights[n_hemi:]
+                plotting.plot_surf_stat_map(
+                    fsaverage[f"pial_{hemi}"],
+                    data,
+                    hemi=hemi,
+                    view=view,
+                    cmap="cold_hot",
+                    threshold=vmax * 0.2,
+                    vmax=vmax,
+                    axes=ax,
+                    colorbar=True,
+                    bg_map=fsaverage[f"sulc_{hemi}"],
+                    title=f"Humor vs Neutral — {hemi_name} {view.capitalize()}",
+                )
+                fname = f"weights_{hemi}_{view}.png"
+                fig.savefig(fig_dir / fname, dpi=150, bbox_inches="tight")
+                plt.close(fig)
+                print(f"  Saved {fname}")
+    except Exception as e:
+        print(f"  Warning: could not generate brain figures: {e}")
+
+    try:
+        from sklearn.decomposition import PCA
+        pca = PCA(n_components=2)
+        X_2d = pca.fit_transform(X)
+
+        fig, ax = plt.subplots(figsize=(8, 6))
+        for label, name, color in [(1, "Humor", "#E74C3C"), (0, "Neutral", "#3498DB")]:
+            mask = y == label
+            ax.scatter(X_2d[mask, 0], X_2d[mask, 1], c=color, label=name, alpha=0.7, s=60)
+        ax.set_xlabel(f"PC1 ({pca.explained_variance_ratio_[0]:.1%} var)")
+        ax.set_ylabel(f"PC2 ({pca.explained_variance_ratio_[1]:.1%} var)")
+        ax.set_title("Brain Response Patterns: Humor vs Neutral")
+        ax.legend()
+        fig.savefig(fig_dir / "pca_scatter.png", dpi=150, bbox_inches="tight")
+        plt.close(fig)
+        print("  Saved pca_scatter.png")
+    except Exception as e:
+        print(f"  Warning: could not generate PCA figure: {e}")
+
+    try:
+        from sklearn.metrics import confusion_matrix as cm_fn
+        cm = cm_fn(y, results["_y_pred"]) if "_y_pred" in results else np.array(results["confusion_matrix"])
+        fig, ax = plt.subplots(figsize=(5, 4))
+        im = ax.imshow(cm, cmap="Blues")
+        ax.set_xticks([0, 1])
+        ax.set_yticks([0, 1])
+        ax.set_xticklabels(["Neutral", "Humor"])
+        ax.set_yticklabels(["Neutral", "Humor"])
+        ax.set_xlabel("Predicted")
+        ax.set_ylabel("Actual")
+        ax.set_title(f"Confusion Matrix (Acc: {results['accuracy']:.1%})")
+        for i in range(2):
+            for j in range(2):
+                ax.text(j, i, str(cm[i][j]), ha="center", va="center",
+                        color="white" if cm[i][j] > cm.max() / 2 else "black", fontsize=16)
+        fig.colorbar(im)
+        fig.savefig(fig_dir / "confusion_matrix.png", dpi=150, bbox_inches="tight")
+        plt.close(fig)
+        print("  Saved confusion_matrix.png")
+    except Exception as e:
+        print(f"  Warning: could not generate confusion matrix figure: {e}")
+
+    print(f"\nAll results saved to {RESULTS_DIR}")
 
 
 def main():
-    config = load_config()
-    print("=== Humor Processing Experiment ===\n")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--n", type=int, default=None,
+                        help="Number of stimuli to use (for quick testing)")
+    args = parser.parse_args()
 
-    print("Loading TRIBE v2 model...")
+    config = load_config()
+    print("=" * 60)
+    print("  HUMOR CLASSIFICATION EXPERIMENT")
+    print("  Can brain responses predict if text is funny?")
+    print("=" * 60)
+
+    print("\n1. Loading TRIBE v2 model...")
+    from core.model import load_model
     model = load_model()
 
-    print("\nPreparing stimuli and generating predictions...")
-    preds, events = prepare_stimuli(model, config)
+    print("\n2. Loading stimuli...")
+    stimuli = load_stimuli(args.n)
 
-    glm_result, contrast_maps = run_analysis(preds, events, config)
-    save_results(preds, contrast_maps, config)
+    print("\n3. Generating brain predictions (this will take a while)...")
+    t0 = time.time()
+    X, y, valid_ids = collect_embeddings(model, stimuli)
+    elapsed = time.time() - t0
+    print(f"   Done: {X.shape[0]} embeddings in {elapsed/60:.1f} minutes")
+    print(f"   Shape: {X.shape} (samples x brain vertices)")
 
-    print("\n=== Experiment complete ===")
+    print("\n4. Training classifier...")
+    results, clf, scaler = run_classification(X, y, config)
+
+    print("\n5. Analyzing discriminative brain regions...")
+    cortical_weights = analyze_discriminative_regions(clf)
+    top_pos = np.argsort(cortical_weights)[-10:]
+    top_neg = np.argsort(cortical_weights)[:10]
+    print(f"   Top humor-predictive vertices: {top_pos}")
+    print(f"   Top neutral-predictive vertices: {top_neg}")
+
+    print("\n6. Saving results and figures...")
+    save_results(results, cortical_weights, X, y)
+
+    print("\n" + "=" * 60)
+    print(f"  EXPERIMENT COMPLETE")
+    print(f"  Accuracy: {results['accuracy']:.1%}  |  AUC: {results['roc_auc']:.3f}")
+    print("=" * 60)
 
 
 if __name__ == "__main__":
