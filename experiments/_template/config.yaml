@@ -1,0 +1,43 @@
+# Experiment configuration
+experiment:
+  name: "template"
+  description: "Template experiment — copy and modify"
+
+# Stimulus parameters
+stimuli:
+  modality: "video"  # video, audio, text, or multimodal
+  design: "event_related"  # block, event_related, continuous
+  stimulus_duration: 1.0  # seconds
+  isi: 8.0  # inter-stimulus interval in seconds
+
+# Conditions and contrasts
+conditions:
+  - name: "condition_a"
+    stimuli_dir: "stimuli/condition_a/"
+  - name: "condition_b"
+    stimuli_dir: "stimuli/condition_b/"
+
+contrasts:
+  - name: "a_vs_b"
+    definition: "condition_a - condition_b"
+  - name: "a_vs_rest"
+    definition: "condition_a"
+
+# Analysis parameters
+analysis:
+  tr: 1.0
+  hrf_model: "spm"
+  high_pass: 0.01
+
+# ROIs of interest (Glasser parcellation names)
+rois:
+  - "FFC"
+  - "PH"
+  - "STSv"
+
+# Output settings
+output:
+  save_predictions: true
+  save_figures: true
+  figure_format: "png"
+  figure_dpi: 150

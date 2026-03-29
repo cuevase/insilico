@@ -1,0 +1,42 @@
+# Model weights & cached features
+cache/
+
+# Experiment results (large files)
+**/results/predictions/
+**/results/figures/
+**/results/stats/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+
+# Large stimulus files (track with git-lfs or keep local)
+stimuli/videos/*.mp4
+stimuli/videos/*.avi
+stimuli/videos/*.mov
+stimuli/audio/*.wav
+stimuli/audio/*.mp3
+experiments/*/stimuli/*.mp4
+experiments/*/stimuli/*.wav
+experiments/*/stimuli/*.mp3

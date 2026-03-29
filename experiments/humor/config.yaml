@@ -1,0 +1,44 @@
+experiment:
+  name: "humor"
+  description: "Humor processing: funny vs neutral video clips"
+
+stimuli:
+  modality: "video"
+  design: "event_related"
+  stimulus_duration: 10.0  # seconds per clip
+  isi_min: 12.0
+  isi_max: 16.0
+  n_trials_per_condition: 20
+
+conditions:
+  - name: "funny"
+    stimuli_dir: "stimuli/funny/"
+  - name: "neutral"
+    stimuli_dir: "stimuli/neutral/"
+
+contrasts:
+  - name: "humor_effect"
+    definition: "funny - neutral"
+  - name: "funny_overall"
+    definition: "funny"
+
+analysis:
+  tr: 1.0
+  hrf_model: "spm"
+  high_pass: 0.01
+
+rois:
+  - name: "TPJ"
+    glasser: "PGi"
+  - name: "STS"
+    glasser: "STSv"
+  - name: "mPFC"
+    glasser: "10v"
+  - name: "IFG"
+    glasser: "45"
+
+output:
+  save_predictions: true
+  save_figures: true
+  figure_format: "png"
+  figure_dpi: 150
