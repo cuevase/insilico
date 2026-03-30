@@ -1,0 +1,17 @@
+{
+  "accuracy": 0.78,
+  "roc_auc": 0.8864000000000001,
+  "confusion_matrix": [
+    [
+      39,
+      11
+    ],
+    [
+      11,
+      39
+    ]
+  ],
+  "n_samples": 100,
+  "n_features": 20484,
+  "n_folds": 5
+}
