@@ -1,17 +1,17 @@
 """
-Humor classification experiment.
+Metaphor vs. literal classification experiment.
 
-Can predicted brain responses (via TRIBE v2) distinguish humorous from
-non-humorous text?  This script:
-  1. Loads stimuli (humor + neutral sentences)
+Can predicted brain responses (via TRIBE v2) distinguish metaphorical from
+literal language?  This script:
+  1. Loads stimuli (metaphor + literal sentences)
   2. Passes each through TRIBE v2 → predicted fMRI activation
   3. Collects brain-pattern feature vectors
   4. Trains a logistic-regression classifier with cross-validation
   5. Reports accuracy, top discriminative brain regions, and saves figures
 
 Usage:
-    python experiments/humor/run.py            # full run
-    python experiments/humor/run.py --n 10     # quick test with 10 stimuli
+    python experiments/metaphor/run.py            # full run
+    python experiments/metaphor/run.py --n 10     # quick test with 10 stimuli
 """
 import argparse
 import json
@@ -31,6 +31,9 @@ EXPERIMENT_DIR = Path(__file__).resolve().parent
 RESULTS_DIR = EXPERIMENT_DIR / "results"
 CACHE_DIR = RESULTS_DIR / "embeddings"
 
+POSITIVE_LABEL = "metaphor"
+NEGATIVE_LABEL = "literal"
+
 
 def load_config() -> dict:
     with open(EXPERIMENT_DIR / "config.yaml") as f:
@@ -42,12 +45,12 @@ def load_stimuli(n: int | None = None) -> pd.DataFrame:
     df = pd.read_csv(EXPERIMENT_DIR / "stimuli" / "stimuli.csv")
     if n is not None:
         n_per = n // 2
-        humor = df[df.label == "humor"].head(n_per)
-        neutral = df[df.label == "neutral"].head(n_per)
-        df = pd.concat([humor, neutral]).reset_index(drop=True)
+        pos = df[df.label == POSITIVE_LABEL].head(n_per)
+        neg = df[df.label == NEGATIVE_LABEL].head(n_per)
+        df = pd.concat([pos, neg]).reset_index(drop=True)
     print(f"Loaded {len(df)} stimuli: "
-          f"{(df.label == 'humor').sum()} humor, "
-          f"{(df.label == 'neutral').sum()} neutral")
+          f"{(df.label == POSITIVE_LABEL).sum()} {POSITIVE_LABEL}, "
+          f"{(df.label == NEGATIVE_LABEL).sum()} {NEGATIVE_LABEL}")
     return df
 
 
@@ -97,7 +100,7 @@ def collect_embeddings(model, stimuli: pd.DataFrame) -> tuple[np.ndarray, np.nda
 
         if vec is not None:
             vectors.append(vec)
-            labels.append(1 if row.label == "humor" else 0)
+            labels.append(1 if row.label == POSITIVE_LABEL else 0)
             valid_ids.append(row.id)
             print(f"           done ({elapsed:.1f}s, {vec.shape[0]} vertices)")
         else:
@@ -128,7 +131,7 @@ def run_classification(X: np.ndarray, y: np.ndarray, config: dict) -> dict:
         C=config["classification"]["regularization_C"],
         max_iter=5000,
         solver="saga",
-        l1_ratio=1.0,
+        penalty="l1",
     )
 
     cv = StratifiedKFold(n_splits=n_folds, shuffle=True, random_state=42)
@@ -138,7 +141,7 @@ def run_classification(X: np.ndarray, y: np.ndarray, config: dict) -> dict:
     acc = accuracy_score(y, y_pred)
     auc = roc_auc_score(y, y_prob)
     cm = confusion_matrix(y, y_pred)
-    report = classification_report(y, y_pred, target_names=["neutral", "humor"])
+    report = classification_report(y, y_pred, target_names=[NEGATIVE_LABEL, POSITIVE_LABEL])
 
     print(f"\n{'='*50}")
     print(f"  Accuracy:  {acc:.1%}")
@@ -164,8 +167,8 @@ def run_classification(X: np.ndarray, y: np.ndarray, config: dict) -> dict:
 def analyze_discriminative_regions(clf, n_vertices_per_hemi: int = 10_242) -> np.ndarray:
     """Extract the classifier's weight map to find discriminative brain regions.
 
-    Positive weights → more humor-predictive.
-    Negative weights → more neutral-predictive.
+    Positive weights → more metaphor-predictive.
+    Negative weights → more literal-predictive.
     """
     weights = clf.coef_[0]
     n_cortical = 2 * n_vertices_per_hemi
@@ -211,7 +214,7 @@ def save_results(results: dict, cortical_weights: np.ndarray, X: np.ndarray, y: 
                     axes=ax,
                     colorbar=True,
                     bg_map=fsaverage[f"sulc_{hemi}"],
-                    title=f"Humor vs Neutral — {hemi_name} {view.capitalize()}",
+                    title=f"Metaphor vs Literal — {hemi_name} {view.capitalize()}",
                 )
                 fname = f"weights_{hemi}_{view}.png"
                 fig.savefig(fig_dir / fname, dpi=150, bbox_inches="tight")
@@ -226,12 +229,12 @@ def save_results(results: dict, cortical_weights: np.ndarray, X: np.ndarray, y: 
         X_2d = pca.fit_transform(X)
 
         fig, ax = plt.subplots(figsize=(8, 6))
-        for label, name, color in [(1, "Humor", "#E74C3C"), (0, "Neutral", "#3498DB")]:
+        for label, name, color in [(1, "Metaphor", "#9B59B6"), (0, "Literal", "#2ECC71")]:
             mask = y == label
             ax.scatter(X_2d[mask, 0], X_2d[mask, 1], c=color, label=name, alpha=0.7, s=60)
         ax.set_xlabel(f"PC1 ({pca.explained_variance_ratio_[0]:.1%} var)")
         ax.set_ylabel(f"PC2 ({pca.explained_variance_ratio_[1]:.1%} var)")
-        ax.set_title("Brain Response Patterns: Humor vs Neutral")
+        ax.set_title("Brain Response Patterns: Metaphor vs Literal")
         ax.legend()
         fig.savefig(fig_dir / "pca_scatter.png", dpi=150, bbox_inches="tight")
         plt.close(fig)
@@ -243,11 +246,11 @@ def save_results(results: dict, cortical_weights: np.ndarray, X: np.ndarray, y: 
         from sklearn.metrics import confusion_matrix as cm_fn
         cm = cm_fn(y, results["_y_pred"]) if "_y_pred" in results else np.array(results["confusion_matrix"])
         fig, ax = plt.subplots(figsize=(5, 4))
-        im = ax.imshow(cm, cmap="Blues")
+        im = ax.imshow(cm, cmap="Purples")
         ax.set_xticks([0, 1])
         ax.set_yticks([0, 1])
-        ax.set_xticklabels(["Neutral", "Humor"])
-        ax.set_yticklabels(["Neutral", "Humor"])
+        ax.set_xticklabels(["Literal", "Metaphor"])
+        ax.set_yticklabels(["Literal", "Metaphor"])
         ax.set_xlabel("Predicted")
         ax.set_ylabel("Actual")
         ax.set_title(f"Confusion Matrix (Acc: {results['accuracy']:.1%})")
@@ -273,8 +276,8 @@ def main():
 
     config = load_config()
     print("=" * 60)
-    print("  HUMOR CLASSIFICATION EXPERIMENT")
-    print("  Can brain responses predict if text is funny?")
+    print("  METAPHOR vs LITERAL CLASSIFICATION EXPERIMENT")
+    print("  Can brain responses distinguish figurative from literal language?")
     print("=" * 60)
 
     print("\n1. Loading TRIBE v2 model...")
@@ -298,8 +301,8 @@ def main():
     cortical_weights = analyze_discriminative_regions(clf)
     top_pos = np.argsort(cortical_weights)[-10:]
     top_neg = np.argsort(cortical_weights)[:10]
-    print(f"   Top humor-predictive vertices: {top_pos}")
-    print(f"   Top neutral-predictive vertices: {top_neg}")
+    print(f"   Top metaphor-predictive vertices: {top_pos}")
+    print(f"   Top literal-predictive vertices: {top_neg}")
 
     print("\n6. Saving results and figures...")
     save_results(results, cortical_weights, X, y)

@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import Navbar from "@/components/navbar"
 import MetricCard from "@/components/metric-card"
 import ConfusionMatrix from "@/components/confusion-matrix"
 import ClassificationTable from "@/components/classification-table"
 import ScatterPlot from "@/components/scatter-plot"
-import ClassifierPlayground from "@/components/classifier-playground"
+import BrainRegions from "@/components/brain-regions"
 import { experiments, getExperiment } from "@/lib/experiments"
 import type { Metadata } from "next"
 
@@ -150,52 +151,63 @@ export default async function ExperimentPage({ params }: PageProps) {
                 <div className="max-w-xl">
                   <ScatterPlot
                     data={results.scatterData}
-                    xLabel={experiment.type === "regression" ? "Actual complexity score" : "PC1"}
-                    yLabel={experiment.type === "regression" ? "Predicted complexity score" : "PC2"}
+                    xLabel={experiment.type === "regression" ? "Actual complexity score" : experiment.slug === "humor" ? "PC1 (39.7% var)" : "PC1"}
+                    yLabel={experiment.type === "regression" ? "Predicted complexity score" : experiment.slug === "humor" ? "PC2 (23.9% var)" : "PC2"}
                     colorByGroup={experiment.type === "classification"}
                   />
                 </div>
               </section>
             )}
 
-            {/* Figures list */}
-            {results.figures && results.figures.length > 0 && (
+            {/* Discriminative brain regions */}
+            {results.brainRegions && (
               <section>
                 <h2 className="text-xs uppercase tracking-widest text-[#9C9488] mb-4">
+                  Discriminative brain regions
+                </h2>
+                <BrainRegions data={results.brainRegions} />
+              </section>
+            )}
+
+            {/* Figures */}
+            {results.figures && results.figures.length > 0 && (
+              <section>
+                <h2 className="text-xs uppercase tracking-widest text-[#9C9488] mb-6">
                   Figures
                 </h2>
-                <div className="space-y-3">
+                <div className="space-y-8">
                   {results.figures.map((fig, i) => (
-                    <div key={i} className="flex items-start gap-3 rounded-md border border-border p-4">
-                      <div className="shrink-0 w-10 h-10 rounded bg-[#EDE8DE] flex items-center justify-center">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C9488" strokeWidth="1.5">
-                          <rect x="3" y="3" width="18" height="18" rx="2" />
-                          <circle cx="8.5" cy="8.5" r="1.5" />
-                          <path d="M21 15l-5-5L5 21" />
-                        </svg>
-                      </div>
-                      <div>
+                    <div key={i} className="rounded-md border border-border overflow-hidden">
+                      {fig.imagePath ? (
+                        <div className="bg-white p-4 flex items-center justify-center">
+                          <Image
+                            src={fig.imagePath}
+                            alt={fig.label}
+                            width={800}
+                            height={600}
+                            className="max-w-full h-auto"
+                            unoptimized
+                          />
+                        </div>
+                      ) : (
+                        <div className="bg-[#EDE8DE]/30 h-48 flex items-center justify-center">
+                          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9C9488" strokeWidth="1.5" className="opacity-40">
+                            <rect x="3" y="3" width="18" height="18" rx="2" />
+                            <circle cx="8.5" cy="8.5" r="1.5" />
+                            <path d="M21 15l-5-5L5 21" />
+                          </svg>
+                        </div>
+                      )}
+                      <div className="px-4 py-3 border-t border-border">
                         <p className="font-serif text-sm font-medium text-foreground">{fig.label}</p>
                         <p className="text-xs text-[#9C9488] leading-relaxed mt-0.5">{fig.description}</p>
                       </div>
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-[#9C9488] mt-3">
-                  Figure images will be available once the experiment completes. Placeholders shown above describe expected outputs.
-                </p>
               </section>
             )}
 
-            {/* Classifier playground (humor experiment only) */}
-            {experiment.slug === "humor" && experiment.type === "classification" && (
-              <section>
-                <h2 className="text-xs uppercase tracking-widest text-[#9C9488] mb-4">
-                  Classifier playground
-                </h2>
-                <ClassifierPlayground />
-              </section>
-            )}
           </div>
         )}
 

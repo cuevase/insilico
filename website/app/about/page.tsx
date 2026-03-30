@@ -42,6 +42,15 @@ export default function AboutPage() {
             </p>
           </div>
 
+          <div>
+            <h2 className="font-serif text-lg font-medium text-foreground mb-3">Who runs this?</h2>
+            <p>
+              This project is built and maintained by <a href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b" target="_blank" rel="noopener noreferrer" className="text-foreground underline underline-offset-4 hover:text-[#C4704B] transition-colors">Emiliano Cuevas</a>. The experiments, the website,
+              and the underlying infrastructure are all run by him as a research prototype exploring
+              what computational brain encoding models can tell us about language processing.
+            </p>
+          </div>
+
           <div className="border-t border-border pt-8 space-y-3 text-sm text-[#9C9488]">
             <p>
               <a
@@ -55,7 +64,7 @@ export default function AboutPage() {
             </p>
             <p>
               <a
-                href="https://github.com"
+                href="https://github.com/cuevase/insilico"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[#6B6459] underline underline-offset-4 hover:text-foreground transition-colors"
@@ -64,7 +73,7 @@ export default function AboutPage() {
               </a>
             </p>
             <p>
-              Built with{' '}
+              Built by <a href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b" target="_blank" rel="noopener noreferrer" className="text-[#6B6459] underline underline-offset-4 hover:text-foreground transition-colors">Emiliano Cuevas</a> with{' '}
               <Link href="/" className="text-[#6B6459] underline underline-offset-4 hover:text-foreground transition-colors">
                 insilico
               </Link>{' '}

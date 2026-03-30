@@ -1,0 +1,31 @@
+experiment:
+  name: "physics_classification"
+  description: "Can predicted brain responses distinguish real from reversed physics videos?"
+
+stimuli:
+  path: "stimuli/stimuli.csv"
+  modality: "video"
+
+classification:
+  n_folds: 5
+  regularization_C: 1.0
+
+rois:
+  - name: "IPS"
+    glasser: "IP1"
+  - name: "MT+"
+    glasser: "MT"
+  - name: "LOC"
+    glasser: "LO1"
+  - name: "DLPFC"
+    glasser: "46"
+  - name: "V1"
+    glasser: "V1"
+  - name: "STS"
+    glasser: "STSv"
+
+output:
+  save_predictions: true
+  save_figures: true
+  figure_format: "png"
+  figure_dpi: 150

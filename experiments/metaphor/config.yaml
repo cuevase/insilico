@@ -1,0 +1,31 @@
+experiment:
+  name: "metaphor_classification"
+  description: "Can predicted brain responses distinguish metaphorical from literal language?"
+
+stimuli:
+  path: "stimuli/stimuli.csv"
+  modality: "text"
+
+classification:
+  n_folds: 5
+  regularization_C: 1.0
+
+rois:
+  - name: "IFG"
+    glasser: "45"
+  - name: "AG"
+    glasser: "PGs"
+  - name: "STS"
+    glasser: "STSv"
+  - name: "TPJ"
+    glasser: "PGi"
+  - name: "ATL"
+    glasser: "TE1a"
+  - name: "DLPFC"
+    glasser: "46"
+
+output:
+  save_predictions: true
+  save_figures: true
+  figure_format: "png"
+  figure_dpi: 150

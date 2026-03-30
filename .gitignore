@@ -1,10 +1,12 @@
 # Model weights & cached features
 cache/
 
-# Experiment results (large files)
+# Experiment results (large binary files)
+**/results/embeddings/
 **/results/predictions/
 **/results/figures/
 **/results/stats/
+**/results/*.npy
 
 # Node
 node_modules/
@@ -35,12 +37,16 @@ Thumbs.db
 # Environment variables
 .env
 
-# Large stimulus files (track with git-lfs or keep local)
-stimuli/videos/*.mp4
-stimuli/videos/*.avi
-stimuli/videos/*.mov
-stimuli/audio/*.wav
-stimuli/audio/*.mp3
-experiments/*/stimuli/*.mp4
-experiments/*/stimuli/*.wav
-experiments/*/stimuli/*.mp3
+# Large stimulus / data files
+*.mp4
+*.avi
+*.mov
+*.wav
+*.mp3
+experiments/*/physics-iq-data/
+
+# Nilearn data
+nilearn_data/
+
+# Keep website public assets (override results/figures exclusion)
+!website/public/experiments/**

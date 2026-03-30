@@ -1,117 +1,122 @@
-'use client'
+import Link from "next/link"
+import Navbar from "@/components/navbar"
+import ExperimentCard from "@/components/experiment-card"
+import { experiments } from "@/lib/experiments"
 
-import { useState, useRef } from 'react'
-import Navbar from '@/components/navbar'
-import TextInput from '@/components/text-input'
-import PredictButton from '@/components/predict-button'
-import LoadingBar from '@/components/loading-bar'
-import ResultsView from '@/components/results-view'
-
-interface PredictionResult {
-  brain_images: {
-    left_lateral: string
-    right_lateral: string
-    left_medial: string
-    right_medial: string
-  }
-  roi_values: Array<{ name: string; label: string; value: number }>
-  processing_time_seconds: number
-  n_timepoints: number
-  n_vertices: number
-}
+const completed = experiments.filter((e) => e.status === "completed")
+const planned = experiments.filter((e) => e.status === "planned" || e.status === "running")
 
 export default function HomePage() {
-  const [text, setText] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState<PredictionResult | null>(null)
-  const [lastQuery, setLastQuery] = useState('')
-  const [error, setError] = useState<string | null>(null)
-  const resultsRef = useRef<HTMLDivElement>(null)
-
-  async function handlePredict() {
-    if (!text.trim() || loading) return
-    setLoading(true)
-    setError(null)
-    setLastQuery(text.trim())
-
-    try {
-      const res = await fetch('/api/predict', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: text.trim() }),
-      })
-
-      if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.error ?? 'Prediction failed.')
-      }
-
-      const data: PredictionResult = await res.json()
-      setResult(data)
-
-      // Scroll to results
-      setTimeout(() => {
-        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }, 100)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong.')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  function handleKeyDown(e: React.KeyboardEvent) {
-    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-      handlePredict()
-    }
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
 
       <main className="mx-auto max-w-3xl px-6">
         {/* Hero */}
-        <div className="pt-24 pb-14 text-center">
-          <h1 className="font-serif text-5xl font-medium text-foreground leading-tight tracking-tight text-balance mb-5 md:text-6xl">
-            See what the brain hears.
+        <div className="pt-24 pb-16">
+          <h1 className="font-serif text-5xl font-medium text-foreground leading-tight tracking-tight text-balance mb-6 md:text-6xl">
+            insilico
           </h1>
-          <p className="text-lg text-[#6B6459] leading-relaxed max-w-md mx-auto">
-            Type anything. We&apos;ll show you which brain regions respond.
+          <p className="text-lg text-[#6B6459] leading-relaxed max-w-2xl mb-4">
+            A collection of in-silico neuroscience experiments exploring what computational
+            brain encoding models can tell us about how the brain processes language, humor,
+            physics, and more.
+          </p>
+          <p className="text-base text-[#6B6459] leading-relaxed max-w-2xl">
+            Built by{" "}
+            <a
+              href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground font-medium underline underline-offset-4 hover:text-[#C4704B] transition-colors"
+            >
+              Emiliano Cuevas
+            </a>{" "}
+            using{" "}
+            <a
+              href="https://arxiv.org/abs/2401.13765"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground underline underline-offset-4 hover:text-[#C4704B] transition-colors"
+            >
+              TRIBE v2
+            </a>
+            , a multimodal brain encoding model from Meta Research.
           </p>
         </div>
 
-        {/* Input area */}
-        <div className="mx-auto max-w-2xl" onKeyDown={handleKeyDown}>
-          <TextInput
-            value={text}
-            onChange={setText}
-            disabled={loading}
-          />
-
-          <LoadingBar visible={loading} />
-
-          <div className="mt-4 flex items-center justify-between">
-            <p className="text-xs text-[#9C9488]">
-              {loading ? 'Running prediction...' : text.trim() ? 'Press ⌘↵ or click Predict' : ''}
+        {/* What is this */}
+        <section className="pb-14">
+          <h2 className="text-xs uppercase tracking-widest text-[#9C9488] mb-5">
+            How it works
+          </h2>
+          <div className="space-y-4 text-sm text-[#6B6459] leading-relaxed max-w-2xl">
+            <p>
+              TRIBE v2 predicts the fMRI response of the human cortex to arbitrary stimuli —
+              text, audio, and video — by mapping neural network representations onto 20,484
+              cortical vertices. It was trained on large-scale neuroimaging data and can
+              generate whole-brain activation patterns for any input without needing a real
+              brain scan.
             </p>
-            <PredictButton
-              loading={loading}
-              disabled={!text.trim()}
-              onClick={handlePredict}
-            />
+            <p>
+              Each experiment takes a set of stimuli (sentences, videos, etc.), passes them
+              through the model to generate predicted brain responses, then applies machine
+              learning classifiers or statistical analyses to test a specific neuroscience
+              hypothesis — all in silico.
+            </p>
           </div>
+        </section>
 
-          {error && (
-            <p className="mt-3 text-sm text-red-700 animate-fade-in">{error}</p>
-          )}
-        </div>
+        {/* Completed experiments */}
+        {completed.length > 0 && (
+          <section className="pb-12">
+            <h2 className="text-xs uppercase tracking-widest text-[#9C9488] mb-5">
+              Completed experiments
+            </h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {completed.map((exp) => (
+                <ExperimentCard key={exp.slug} experiment={exp} />
+              ))}
+            </div>
+          </section>
+        )}
 
-        {/* Results */}
-        <div ref={resultsRef} className="pb-24">
-          {result && !loading && (
-            <ResultsView result={result} query={lastQuery} />
-          )}
+        {/* Upcoming experiments */}
+        {planned.length > 0 && (
+          <section className="pb-12">
+            <h2 className="text-xs uppercase tracking-widest text-[#9C9488] mb-5">
+              Upcoming experiments
+            </h2>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {planned.map((exp) => (
+                <ExperimentCard key={exp.slug} experiment={exp} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Footer */}
+        <div className="border-t border-border pt-8 pb-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <p className="text-xs text-[#9C9488] leading-relaxed max-w-sm">
+            All experiments are designed and run by <a href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b" target="_blank" rel="noopener noreferrer" className="text-[#6B6459] hover:text-[#C4704B] transition-colors underline underline-offset-4">Emiliano Cuevas</a>.
+            Not for clinical use.
+          </p>
+          <div className="flex items-center gap-5">
+            <Link
+              href="/experiments"
+              className="text-sm text-[#6B6459] hover:text-[#C4704B] transition-colors"
+            >
+              All experiments
+            </Link>
+            <a
+              href="https://github.com/cuevase/insilico"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-[#6B6459] hover:text-[#C4704B] transition-colors"
+            >
+              GitHub
+            </a>
+          </div>
         </div>
       </main>
     </div>

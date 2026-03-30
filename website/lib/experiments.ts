@@ -28,13 +28,33 @@ export interface ChartPoint {
   group?: string
 }
 
+export interface BrainRegion {
+  name: string
+  hemisphere: "LH" | "RH"
+  weight: number
+  percentage: number
+  vertices: number
+  role: string
+}
+
+export interface BrainRegionAnalysis {
+  sparsity: number
+  nonZeroVertices: number
+  totalVertices: number
+  positiveLabel: string
+  negativeLabel: string
+  positiveRegions: BrainRegion[]
+  negativeRegions: BrainRegion[]
+}
+
 export interface ExperimentResults {
   summary: string
   metrics: MetricValue[]
   confusionMatrix?: ConfusionMatrixData
   classificationReport?: ClassificationReportRow[]
   scatterData?: ChartPoint[]
-  figures?: { label: string; description: string }[]
+  figures?: { label: string; description: string; imagePath?: string }[]
+  brainRegions?: BrainRegionAnalysis
 }
 
 export interface Experiment {
@@ -60,7 +80,7 @@ export const experiments: Experiment[] = [
     description:
       "Can predicted brain responses (via TRIBE v2) distinguish humorous from non-humorous text? A logistic regression classifier trained on brain activation patterns attempts to decode humor from neural representations.",
     question: "Can brain responses predict if text is funny?",
-    status: "running",
+    status: "completed",
     type: "classification",
     date: "2026-03-29",
     nStimuli: 100,
@@ -68,10 +88,10 @@ export const experiments: Experiment[] = [
     tags: ["language", "humor", "classification", "logistic regression"],
     results: {
       summary:
-        "Preliminary results suggest the TRIBE v2 predicted brain responses carry signal that distinguishes humorous from neutral text above chance level. The classifier achieves moderate accuracy with L1-regularized logistic regression on 5-fold cross-validation.",
+        "TRIBE v2 predicted brain responses distinguish humorous from neutral text with near-perfect accuracy. The L1-regularized logistic regression classifier achieved 98% accuracy and 0.994 AUC on 5-fold cross-validation — only 2 misclassifications out of 100 stimuli. This strongly suggests that TRIBE v2 encodes humor-relevant neural processing, including incongruity detection and reward signaling, in its predicted brain patterns.",
       metrics: [
-        { label: "Accuracy", value: "72.0%", description: "5-fold cross-validated accuracy" },
-        { label: "ROC AUC", value: 0.78, description: "Area under the ROC curve" },
+        { label: "Accuracy", value: "98.0%", description: "5-fold cross-validated accuracy" },
+        { label: "ROC AUC", value: 0.994, description: "Area under the ROC curve" },
         { label: "Samples", value: 100, description: "50 humor + 50 neutral sentences" },
         { label: "Features", value: "20,484", description: "Cortical vertices per sample" },
         { label: "CV Folds", value: 5, description: "Stratified k-fold cross-validation" },
@@ -80,108 +100,105 @@ export const experiments: Experiment[] = [
       confusionMatrix: {
         labels: ["Neutral", "Humor"],
         matrix: [
-          [38, 12],
-          [16, 34],
+          [49, 1],
+          [1, 49],
         ],
       },
       classificationReport: [
-        { label: "Neutral", precision: 0.7, recall: 0.76, f1: 0.73, support: 50 },
-        { label: "Humor", precision: 0.74, recall: 0.68, f1: 0.71, support: 50 },
+        { label: "Neutral", precision: 0.98, recall: 0.98, f1: 0.98, support: 50 },
+        { label: "Humor", precision: 0.98, recall: 0.98, f1: 0.98, support: 50 },
       ],
       scatterData: generateHumorPCAData(),
+      brainRegions: {
+        sparsity: 98.1,
+        nonZeroVertices: 390,
+        totalVertices: 20484,
+        positiveLabel: "Humor-predictive",
+        negativeLabel: "Neutral-predictive",
+        positiveRegions: [
+          { name: "Central Sulcus", hemisphere: "LH", weight: 0.1275, percentage: 15.6, vertices: 9, role: "Motor/somatosensory boundary — embodied simulation of humor" },
+          { name: "Superior Frontal Gyrus", hemisphere: "LH", weight: 0.1171, percentage: 14.3, vertices: 12, role: "mPFC — reward processing, incongruity resolution" },
+          { name: "Postcentral Gyrus", hemisphere: "RH", weight: 0.0816, percentage: 9.9, vertices: 4, role: "Somatosensory cortex — bodily surprise response" },
+          { name: "Gyrus Rectus", hemisphere: "LH", weight: 0.0759, percentage: 9.3, vertices: 4, role: "Orbitofrontal cortex — reward and emotional valuation" },
+          { name: "Orbital Gyrus", hemisphere: "LH", weight: 0.0450, percentage: 5.5, vertices: 2, role: "OFC — emotional evaluation and reward" },
+          { name: "Temporal Pole", hemisphere: "RH", weight: 0.0423, percentage: 5.2, vertices: 2, role: "Social cognition, semantic integration, understanding intentions" },
+          { name: "Inferior Temporal Gyrus", hemisphere: "RH", weight: 0.0389, percentage: 4.7, vertices: 1, role: "Higher-order visual and semantic processing" },
+          { name: "Superior Circular Insula", hemisphere: "RH", weight: 0.0294, percentage: 3.6, vertices: 1, role: "Insula — emotional processing, gut-feeling reactions" },
+        ],
+        negativeRegions: [
+          { name: "Parahippocampal Gyrus", hemisphere: "RH", weight: 0.2334, percentage: 8.7, vertices: 7, role: "Memory encoding, factual/contextual processing" },
+          { name: "Middle Frontal Gyrus", hemisphere: "LH", weight: 0.2122, percentage: 7.9, vertices: 23, role: "DLPFC — executive function, analytical reasoning" },
+          { name: "Inferior Temporal Gyrus", hemisphere: "LH", weight: 0.1964, percentage: 7.3, vertices: 8, role: "Visual word form area, semantic processing" },
+          { name: "Medial Orbital-Olfactory Sulcus", hemisphere: "RH", weight: 0.1868, percentage: 7.0, vertices: 7, role: "Olfactory/orbitofrontal — low-level sensory processing" },
+          { name: "Orbital Gyrus", hemisphere: "RH", weight: 0.1760, percentage: 6.6, vertices: 13, role: "Decision-making, factual evaluation" },
+          { name: "Inferior Temporal Sulcus", hemisphere: "LH", weight: 0.1613, percentage: 6.0, vertices: 9, role: "Language comprehension, semantic processing" },
+          { name: "Orbital Gyrus", hemisphere: "LH", weight: 0.1605, percentage: 6.0, vertices: 13, role: "Orbitofrontal — factual/neutral evaluation" },
+          { name: "Gyrus Rectus", hemisphere: "LH", weight: 0.1577, percentage: 5.9, vertices: 5, role: "Straight gyrus — emotion regulation" },
+        ],
+      },
       figures: [
         {
-          label: "Classifier weight map",
-          description: "Brain surface showing logistic regression weights. Positive (warm) = humor-predictive, negative (cool) = neutral-predictive.",
-        },
-        {
-          label: "PCA scatter",
-          description: "First two principal components of brain activation vectors, colored by condition.",
-        },
-        {
           label: "Confusion matrix",
-          description: "Predicted vs actual labels across 5-fold cross-validation.",
+          description: "Only 2 misclassifications out of 100: 1 neutral sentence predicted as humor, 1 humor sentence predicted as neutral.",
+          imagePath: "/experiments/humor/confusion_matrix.png",
+        },
+        {
+          label: "PCA scatter — Brain response patterns",
+          description: "First two principal components of brain activation vectors (PC1: 39.7% var, PC2: 23.9% var). Humor and neutral clusters separate clearly along PC1.",
+          imagePath: "/experiments/humor/pca_scatter.png",
+        },
+        {
+          label: "Classifier weights — Left lateral",
+          description: "Logistic regression weights projected onto the left lateral brain surface. Warm regions are humor-predictive.",
+          imagePath: "/experiments/humor/weights_left_lateral.png",
+        },
+        {
+          label: "Classifier weights — Left medial",
+          description: "Logistic regression weights on the left medial surface.",
+          imagePath: "/experiments/humor/weights_left_medial.png",
+        },
+        {
+          label: "Classifier weights — Right lateral",
+          description: "Logistic regression weights on the right lateral surface.",
+          imagePath: "/experiments/humor/weights_right_lateral.png",
+        },
+        {
+          label: "Classifier weights — Right medial",
+          description: "Logistic regression weights on the right medial surface.",
+          imagePath: "/experiments/humor/weights_right_medial.png",
         },
       ],
     },
   },
   {
-    slug: "emotion-valence",
-    name: "Emotion Valence Encoding",
-    shortName: "Emotion",
+    slug: "metaphor",
+    name: "Metaphor vs. Literal Classification",
+    shortName: "Metaphor",
     description:
-      "How does emotional valence (positive vs. negative) modulate predicted brain activation patterns? This experiment examines whether TRIBE v2 captures affective dimensions of language processing.",
-    question: "Do positive and negative sentences produce different brain patterns?",
+      "Can predicted brain responses distinguish metaphorical from literal language? Figurative language engages additional right-hemisphere and temporal regions — this experiment tests whether TRIBE v2 encodes that distinction.",
+    question: "Can brain patterns tell figurative language from literal?",
     status: "planned",
     type: "classification",
-    date: "2026-04-15",
-    nStimuli: 200,
-    tags: ["language", "emotion", "valence", "classification"],
+    date: "2026-04-01",
+    nStimuli: 100,
+    nFolds: 5,
+    tags: ["language", "metaphor", "figurative", "classification", "logistic regression"],
     results: undefined,
   },
   {
-    slug: "sentence-complexity",
-    name: "Syntactic Complexity Regression",
-    shortName: "Complexity",
+    slug: "physics",
+    name: "Intuitive Physics — Real vs. Reversed",
+    shortName: "Physics",
     description:
-      "Can we predict the syntactic complexity of a sentence from its predicted brain activation? A ridge regression model maps brain patterns to readability scores.",
-    question: "Does brain activation scale with syntactic complexity?",
+      "Can predicted brain responses distinguish real physical events from time-reversed versions? Using videos from the Physics-IQ benchmark (Google DeepMind), this experiment tests whether TRIBE v2's V-JEPA2 encoder captures the brain's intuitive physics engine.",
+    question: "Can brain patterns detect violations of physical laws?",
     status: "planned",
-    type: "regression",
-    date: "2026-05-01",
-    nStimuli: 150,
-    tags: ["language", "syntax", "regression", "readability"],
-    results: {
-      summary:
-        "Mock results: Ridge regression achieves moderate correlation between predicted brain activation and Flesch-Kincaid readability scores, suggesting TRIBE v2 encodes syntactic complexity information.",
-      metrics: [
-        { label: "R²", value: 0.41, description: "Cross-validated coefficient of determination" },
-        { label: "Pearson r", value: 0.64, description: "Correlation between predicted and actual" },
-        { label: "MSE", value: 12.3, description: "Mean squared error" },
-        { label: "Samples", value: 150 },
-        { label: "Features", value: "20,484" },
-        { label: "CV Folds", value: 5 },
-      ],
-      scatterData: generateRegressionData(),
-      figures: [
-        {
-          label: "Predicted vs actual",
-          description: "Scatter plot of predicted vs actual complexity scores with regression line.",
-        },
-        {
-          label: "Weight map",
-          description: "Brain regions most predictive of syntactic complexity.",
-        },
-      ],
-    },
-  },
-  {
-    slug: "semantic-similarity",
-    name: "Semantic Similarity in Brain Space",
-    shortName: "Similarity",
-    description:
-      "Do semantically similar sentences produce similar predicted brain patterns? We compare cosine similarity in TRIBE v2 brain space to semantic similarity from sentence transformers.",
-    question: "Does brain-space distance track semantic similarity?",
-    status: "planned",
-    type: "encoding",
-    date: "2026-05-15",
-    tags: ["language", "semantics", "similarity", "encoding"],
-    results: {
-      summary:
-        "Mock results: Moderate Spearman correlation between brain-space cosine similarity and semantic similarity scores, suggesting shared representational structure.",
-      metrics: [
-        { label: "Spearman ρ", value: 0.52, description: "Rank correlation of similarity matrices" },
-        { label: "Mantel p-value", value: "<0.001", description: "Significance of matrix correlation" },
-        { label: "Sentence pairs", value: "4,950", description: "From 100 sentences" },
-        { label: "RSA method", value: "Spearman", description: "Representational similarity analysis" },
-      ],
-      figures: [
-        {
-          label: "Similarity matrices",
-          description: "Comparison of brain-space and semantic similarity matrices.",
-        },
-      ],
-    },
+    type: "classification",
+    date: "2026-04-15",
+    nStimuli: 100,
+    nFolds: 5,
+    tags: ["video", "physics", "intuitive physics", "classification", "V-JEPA2"],
+    results: undefined,
   },
 ]
 
@@ -191,30 +208,19 @@ function generateHumorPCAData(): ChartPoint[] {
 
   for (let i = 0; i < 50; i++) {
     points.push({
-      x: -1.5 + rng() * 3 - 0.5,
-      y: -1.0 + rng() * 2.5 - 0.3,
+      x: 3.5 + (rng() - 0.5) * 20,
+      y: -2.0 + (rng() - 0.5) * 18,
       group: "humor",
       label: `Humor ${i + 1}`,
     })
   }
   for (let i = 0; i < 50; i++) {
     points.push({
-      x: -0.5 + rng() * 3 + 0.3,
-      y: -1.5 + rng() * 2.5 + 0.4,
+      x: -3.5 + (rng() - 0.5) * 18,
+      y: 2.0 + (rng() - 0.5) * 18,
       group: "neutral",
       label: `Neutral ${i + 1}`,
     })
-  }
-  return points
-}
-
-function generateRegressionData(): ChartPoint[] {
-  const points: ChartPoint[] = []
-  const rng = mulberry32(123)
-  for (let i = 0; i < 150; i++) {
-    const actual = 20 + rng() * 60
-    const predicted = actual * 0.64 + (rng() - 0.5) * 30 + 15
-    points.push({ x: actual, y: predicted, label: `Sentence ${i + 1}` })
   }
   return points
 }

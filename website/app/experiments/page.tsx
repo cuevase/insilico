@@ -21,7 +21,7 @@ export default function ExperimentsPage() {
           </h1>
           <p className="text-lg text-[#6B6459] leading-relaxed max-w-2xl">
             A collection of in-silico neuroscience experiments. Each experiment uses TRIBE v2 to predict brain
-            responses and tests a specific hypothesis about how the brain processes language.
+            responses and tests a specific hypothesis about how the brain processes language, physics, humor, and more.
           </p>
         </div>
 
@@ -51,11 +51,12 @@ export default function ExperimentsPage() {
           </section>
         )}
 
-        <div className="mt-16 border-t border-border pt-8">
+        <div className="mt-16 border-t border-border pt-8 space-y-3">
           <p className="text-sm text-[#9C9488] leading-relaxed max-w-xl">
-            Experiments follow a shared template: load stimuli, generate brain predictions via TRIBE v2, then
-            apply statistical or machine learning analyses. Results shown here exclude raw stimuli and heavy
-            data — only summary metrics, figures, and interpretations are displayed.
+            All experiments are designed and run by <a href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b" target="_blank" rel="noopener noreferrer" className="text-[#6B6459] hover:text-[#C4704B] transition-colors underline underline-offset-4">Emiliano Cuevas</a>. They follow a shared template: load
+            stimuli, generate brain predictions via TRIBE v2, then apply statistical or machine learning
+            analyses. Results shown here exclude raw stimuli and heavy data — only summary metrics, figures,
+            and interpretations are displayed.
           </p>
         </div>
       </main>

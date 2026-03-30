@@ -1,25 +1,19 @@
 import type { Metadata } from 'next'
-import { Inter, Newsreader } from 'next/font/google'
+import { Courier_Prime } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const inter = Inter({
+const courierPrime = Courier_Prime({
   subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-})
-
-const newsreader = Newsreader({
-  subsets: ['latin'],
-  variable: '--font-newsreader',
-  display: 'swap',
+  weight: ['400', '700'],
   style: ['normal', 'italic'],
+  variable: '--font-courier-prime',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'insilico — Brain Encoding Visualizer',
-  description: 'Type anything. See which brain regions respond. Powered by TRIBE v2, a multimodal brain encoding model.',
-  generator: 'v0.app',
+  title: 'insilico — In-Silico Neuroscience Experiments',
+  description: 'A collection of in-silico neuroscience experiments using TRIBE v2, a multimodal brain encoding model from Meta Research. Built by Emiliano Cuevas.',
 }
 
 export default function RootLayout({
@@ -28,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${newsreader.variable}`}>
+    <html lang="en" className={courierPrime.variable}>
       <body className="font-sans antialiased bg-background text-foreground">
         {children}
         <Analytics />
