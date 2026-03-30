@@ -151,7 +151,7 @@ def run_classification(X: np.ndarray, y: np.ndarray, groups: list[str],
             C=config["classification"]["regularization_C"],
             max_iter=10000,
             solver="saga",
-            penalty="l1",
+            l1_ratio=1.0,
         )),
     ])
 
