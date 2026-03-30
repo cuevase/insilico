@@ -128,9 +128,9 @@ def run_classification(X: np.ndarray, y: np.ndarray, config: dict) -> dict:
 
     clf = LogisticRegression(
         C=config["classification"]["regularization_C"],
-        max_iter=5000,
+        max_iter=10000,
         solver="saga",
-        penalty="l1",
+        l1_ratio=1.0,
     )
 
     cv = StratifiedKFold(n_splits=n_folds, shuffle=True, random_state=42)
