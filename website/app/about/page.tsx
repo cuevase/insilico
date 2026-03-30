@@ -15,10 +15,10 @@ export default function AboutPage() {
             <h2 className="font-serif text-lg font-medium text-foreground mb-3">What is TRIBE v2?</h2>
             <p>
               TRIBE v2 is a multimodal brain encoding model developed by Meta Research. It predicts
-              the fMRI response of the human visual and language cortex to arbitrary text or image
-              inputs by learning from large-scale neuroimaging data. This interface uses the
-              &ldquo;unseen subject&rdquo; mode, which returns group-average predictions rather than
-              individual brain responses.
+              the fMRI response of the human cortex to arbitrary text, audio, and video inputs
+              by learning from over 1,000 hours of neuroimaging data across 720 subjects. This
+              project uses the &ldquo;unseen subject&rdquo; mode, which returns group-average
+              predictions rather than individual brain responses.
             </p>
           </div>
 
@@ -54,7 +54,7 @@ export default function AboutPage() {
           <div className="border-t border-border pt-8 space-y-3 text-sm text-[#9C9488]">
             <p>
               <a
-                href="https://arxiv.org/abs/2401.13765"
+                href="https://ai.meta.com/research/publications/a-foundation-model-of-vision-audition-and-language-for-in-silico-neuroscience/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[#6B6459] underline underline-offset-4 hover:text-foreground transition-colors"

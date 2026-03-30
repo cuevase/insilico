@@ -56,21 +56,29 @@ insilico/
 ├── backend/                # FastAPI server (TRIBE v2 inference)
 │   └── server.py
 ├── core/                   # Shared utilities (model loading, GLM, visualization)
-├── website/                # Next.js frontend
-├── cache/                  # Model weights (gitignored)
+├── website/                # Next.js frontend (experiments site)
+├── cache/                  # Model weights & features (gitignored)
 ├── stimuli/                # Shared stimulus bank
 ├── experiments/            # Individual experiments (each self-contained)
 │   ├── _template/          # Copy to start a new experiment
-│   └── humor/              # Humor processing experiment
+│   ├── humor/              # Humor vs. neutral text classification
+│   ├── physics/            # Real vs. reversed video (intuitive physics)
+│   └── metaphor/           # Metaphor comprehension (planned)
 ├── notebooks/              # Project-level exploration notebooks
-└── TRIBE_v2_dev_readme.md  # Model reference documentation
+├── LICENSE                 # MIT (project code); TRIBE v2 is CC-BY-NC-4.0
+└── TRIBE_v2_dev_readme.md  # TRIBE v2 model reference documentation
 ```
 
 ## Running Experiments (CLI)
 
 ```bash
 source .venv/bin/activate
-python experiments/humor/run.py
+
+# Humor experiment (text — runs locally, uses cached embeddings)
+python experiments/humor/run.py --holdout --cached-only
+
+# Physics experiment (video — requires GPU for encoding)
+python experiments/physics/run.py --holdout
 ```
 
 ## Starting a New Experiment
@@ -79,3 +87,7 @@ python experiments/humor/run.py
 cp -r experiments/_template experiments/my_new_experiment
 # Edit config.yaml and run.py
 ```
+
+## License
+
+This project's code is released under the [MIT License](LICENSE). TRIBE v2 model weights and outputs are licensed under [CC-BY-NC-4.0](https://creativecommons.org/licenses/by-nc/4.0/) by Meta Research.

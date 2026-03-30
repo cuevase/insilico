@@ -34,7 +34,7 @@ export default function HomePage() {
             </a>{" "}
             using{" "}
             <a
-              href="https://arxiv.org/abs/2401.13765"
+              href="https://ai.meta.com/research/publications/a-foundation-model-of-vision-audition-and-language-for-in-silico-neuroscience/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-foreground underline underline-offset-4 hover:text-[#C4704B] transition-colors"
