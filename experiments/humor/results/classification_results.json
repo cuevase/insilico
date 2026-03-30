@@ -1,17 +1,31 @@
 {
-  "accuracy": 0.98,
-  "roc_auc": 0.9944,
-  "confusion_matrix": [
+  "cv_accuracy": 0.925,
+  "cv_roc_auc": 0.9693750000000001,
+  "cv_confusion_matrix": [
     [
-      49,
-      1
+      35,
+      5
     ],
     [
       1,
-      49
+      39
     ]
   ],
-  "n_samples": 100,
+  "n_train_samples": 80,
   "n_features": 20484,
-  "n_folds": 5
+  "n_folds": 5,
+  "cv_method": "StratifiedKFold (Pipeline with StandardScaler)",
+  "holdout_accuracy": 1.0,
+  "holdout_roc_auc": 1.0,
+  "holdout_confusion_matrix": [
+    [
+      10,
+      0
+    ],
+    [
+      0,
+      10
+    ]
+  ],
+  "n_holdout_samples": 20
 }

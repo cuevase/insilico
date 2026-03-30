@@ -88,25 +88,27 @@ export const experiments: Experiment[] = [
     tags: ["language", "humor", "classification", "logistic regression"],
     results: {
       summary:
-        "TRIBE v2 predicted brain responses distinguish humorous from neutral text with near-perfect accuracy. The L1-regularized logistic regression classifier achieved 98% accuracy and 0.994 AUC on 5-fold cross-validation — only 2 misclassifications out of 100 stimuli. This strongly suggests that TRIBE v2 encodes humor-relevant neural processing, including incongruity detection and reward signaling, in its predicted brain patterns.",
+        "TRIBE v2 predicted brain responses distinguish humorous from neutral text with 100% accuracy on a held-out test set (20 unseen stimuli, AUC 1.000). The classifier was trained on 80 stimuli using a Pipeline with StratifiedKFold cross-validation (92.5% CV accuracy, 0.969 AUC), then evaluated on 20 completely held-out stimuli — 10 jokes and 10 neutral facts it never trained on. Every single holdout stimulus was classified correctly. This strongly suggests that TRIBE v2 encodes humor-relevant neural processing, including incongruity detection and reward signaling, in its predicted brain patterns — and that this signal generalizes robustly to unseen text.",
       metrics: [
-        { label: "Accuracy", value: "98.0%", description: "5-fold cross-validated accuracy" },
-        { label: "ROC AUC", value: 0.994, description: "Area under the ROC curve" },
-        { label: "Samples", value: 100, description: "50 humor + 50 neutral sentences" },
+        { label: "Holdout Acc", value: "100%", description: "Accuracy on 20 held-out stimuli (10+10)" },
+        { label: "Holdout AUC", value: 1.0, description: "ROC AUC on holdout set — perfect" },
+        { label: "CV Accuracy", value: "92.5%", description: "5-fold StratifiedKFold on 80 training stimuli" },
+        { label: "CV AUC", value: 0.969, description: "ROC AUC on Pipeline CV" },
+        { label: "Train", value: 80, description: "40 humor + 40 neutral for training" },
+        { label: "Holdout", value: 20, description: "10 humor + 10 neutral held out" },
         { label: "Features", value: "20,484", description: "Cortical vertices per sample" },
-        { label: "CV Folds", value: 5, description: "Stratified k-fold cross-validation" },
         { label: "Regularization", value: "L1 (C=1.0)", description: "SAGA solver, lasso penalty" },
       ],
       confusionMatrix: {
         labels: ["Neutral", "Humor"],
         matrix: [
-          [49, 1],
-          [1, 49],
+          [35, 5],
+          [1, 39],
         ],
       },
       classificationReport: [
-        { label: "Neutral", precision: 0.98, recall: 0.98, f1: 0.98, support: 50 },
-        { label: "Humor", precision: 0.98, recall: 0.98, f1: 0.98, support: 50 },
+        { label: "Neutral", precision: 1.0, recall: 1.0, f1: 1.0, support: 10 },
+        { label: "Humor", precision: 1.0, recall: 1.0, f1: 1.0, support: 10 },
       ],
       scatterData: generateHumorPCAData(),
       brainRegions: {
@@ -138,13 +140,18 @@ export const experiments: Experiment[] = [
       },
       figures: [
         {
-          label: "Confusion matrix",
-          description: "Only 2 misclassifications out of 100: 1 neutral sentence predicted as humor, 1 humor sentence predicted as neutral.",
+          label: "Holdout confusion matrix — Unseen stimuli",
+          description: "Perfect classification on 20 held-out stimuli (10 humor + 10 neutral). The classifier never saw these during training — 100% accuracy with zero errors.",
+          imagePath: "/experiments/humor/holdout_confusion_matrix.png",
+        },
+        {
+          label: "CV confusion matrix — Training stimuli (StratifiedKFold)",
+          description: "5-fold StratifiedKFold cross-validation on 80 training stimuli with Pipeline (scaler inside CV). 92.5% accuracy — 6 misclassifications out of 80.",
           imagePath: "/experiments/humor/confusion_matrix.png",
         },
         {
           label: "PCA scatter — Brain response patterns",
-          description: "First two principal components of brain activation vectors (PC1: 39.7% var, PC2: 23.9% var). Humor and neutral clusters separate clearly along PC1.",
+          description: "First two principal components of brain activation vectors. Humor and neutral clusters separate clearly, consistent with the strong classification performance.",
           imagePath: "/experiments/humor/pca_scatter.png",
         },
         {
