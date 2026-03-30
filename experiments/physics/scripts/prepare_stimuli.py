@@ -1,14 +1,18 @@
 """
 Prepare stimuli for the physics experiment.
 
-Takes downloaded Physics-IQ benchmark videos, selects 50 center-perspective
+Takes downloaded Physics-IQ benchmark videos, selects center-perspective
 take-1 clips, copies them into stimuli/real/, reverses each with ffmpeg
 (stripping audio) into stimuli/reversed/, and builds stimuli.csv.
 
+With --holdout-n, also prepares a separate holdout test set from scenes
+that were NOT used for training (completely unseen videos).
+
 Usage:
     python experiments/physics/scripts/prepare_stimuli.py
-    python experiments/physics/scripts/prepare_stimuli.py --n 20   # fewer for testing
-    python experiments/physics/scripts/prepare_stimuli.py --data-dir /path/to/physics-iq-data
+    python experiments/physics/scripts/prepare_stimuli.py --n 20
+    python experiments/physics/scripts/prepare_stimuli.py --holdout-n 20
+    python experiments/physics/scripts/prepare_stimuli.py --holdout-only --holdout-n 20
 """
 import argparse
 import csv
@@ -24,6 +28,8 @@ DEFAULT_DATA_DIR = EXPERIMENT_DIR / "physics-iq-data" / "split-videos" / "testin
 STIMULI_DIR = EXPERIMENT_DIR / "stimuli"
 REAL_DIR = STIMULI_DIR / "real"
 REVERSED_DIR = STIMULI_DIR / "reversed"
+HOLDOUT_REAL_DIR = STIMULI_DIR / "holdout_real"
+HOLDOUT_REVERSED_DIR = STIMULI_DIR / "holdout_reversed"
 
 
 def find_videos(data_dir: Path) -> list[Path]:
@@ -128,9 +134,81 @@ def strip_audio(src: Path, dst: Path) -> bool:
         return True
 
 
+def get_scene_id(video_path: Path) -> str:
+    return video_path.stem.split("_")[0]
+
+
+def prepare_set(
+    videos: list[Path],
+    real_dir: Path,
+    reversed_dir: Path,
+    csv_path: Path,
+    descriptions_path: Path | None,
+    start_id: int = 1,
+    set_name: str = "train",
+) -> list[dict]:
+    """Prepare real + reversed videos and write a CSV for a given set."""
+    real_dir.mkdir(parents=True, exist_ok=True)
+    reversed_dir.mkdir(parents=True, exist_ok=True)
+
+    rows = []
+    stim_id = start_id
+
+    # Determine relative prefix for CSV paths
+    real_prefix = real_dir.name
+    reversed_prefix = reversed_dir.name
+
+    print(f"\n  Processing {set_name} real videos (stripping audio)...")
+    for i, src in enumerate(videos):
+        dst = real_dir / src.name
+        print(f"    [{i+1}/{len(videos)}] {src.name}")
+        strip_audio(src, dst)
+
+        category = extract_category(src, descriptions_path)
+        rows.append({
+            "id": stim_id,
+            "label": "real",
+            "video_path": f"{real_prefix}/{src.name}",
+            "scene_id": get_scene_id(src),
+            "category": category,
+        })
+        stim_id += 1
+
+    print(f"\n  Reversing {set_name} videos...")
+    for i, src in enumerate(videos):
+        reversed_name = src.stem + "_reversed.mp4"
+        dst = reversed_dir / reversed_name
+        print(f"    [{i+1}/{len(videos)}] {src.name} -> {reversed_name}")
+        ok = reverse_video(src, dst)
+
+        if ok:
+            category = extract_category(src, descriptions_path)
+            rows.append({
+                "id": stim_id,
+                "label": "reversed",
+                "video_path": f"{reversed_prefix}/{reversed_name}",
+                "scene_id": get_scene_id(src),
+                "category": category,
+            })
+            stim_id += 1
+        else:
+            print(f"      SKIPPED (ffmpeg failed)")
+
+    with open(csv_path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["id", "label", "video_path", "scene_id", "category"])
+        writer.writeheader()
+        writer.writerows(rows)
+
+    return rows
+
+
 def main():
     parser = argparse.ArgumentParser(description="Prepare physics experiment stimuli")
-    parser.add_argument("--n", type=int, default=50, help="Number of videos per condition")
+    parser.add_argument("--n", type=int, default=50, help="Number of training scenes")
+    parser.add_argument("--holdout-n", type=int, default=0,
+                        help="Number of holdout test scenes (0 = skip holdout)")
+    parser.add_argument("--holdout-only", action="store_true",
+                        help="Only prepare holdout set (skip training set)")
     parser.add_argument("--data-dir", type=str, default=None,
                         help="Path to Physics-IQ test videos (30FPS folder)")
     parser.add_argument("--seed", type=int, default=42, help="Random seed for selection")
@@ -142,71 +220,60 @@ def main():
     print("=" * 60)
     print("  PHYSICS EXPERIMENT — STIMULUS PREPARATION")
     print("=" * 60)
-    print(f"\nData dir:  {data_dir}")
-    print(f"Target:    {STIMULI_DIR}")
-    print(f"N per cond: {args.n}")
+    print(f"\nData dir:     {data_dir}")
+    print(f"Target:       {STIMULI_DIR}")
+    print(f"Train scenes: {args.n}")
+    print(f"Holdout scenes: {args.holdout_n}")
     print()
 
     videos = find_videos(data_dir)
-    if len(videos) < args.n:
-        print(f"WARNING: Only {len(videos)} videos available, using all of them.")
-        args.n = len(videos)
 
+    # Use seed=42 to select training scenes (same as original run)
     random.seed(args.seed)
-    selected = sorted(random.sample(videos, args.n), key=lambda p: p.stem)
-    print(f"Selected {len(selected)} videos")
+    train_n = min(args.n, len(videos))
+    train_selected = sorted(random.sample(videos, train_n), key=lambda p: p.stem)
+    train_scene_ids = {get_scene_id(v) for v in train_selected}
 
-    REAL_DIR.mkdir(parents=True, exist_ok=True)
-    REVERSED_DIR.mkdir(parents=True, exist_ok=True)
+    if not args.holdout_only:
+        print(f"\n--- TRAINING SET ({len(train_selected)} scenes) ---")
+        train_rows = prepare_set(
+            train_selected, REAL_DIR, REVERSED_DIR,
+            STIMULI_DIR / "stimuli.csv", descriptions_path,
+            start_id=1, set_name="training",
+        )
+        n_real = sum(1 for r in train_rows if r["label"] == "real")
+        n_rev = sum(1 for r in train_rows if r["label"] == "reversed")
+        print(f"\n  Training set: {len(train_rows)} stimuli ({n_real} real + {n_rev} reversed)")
+    else:
+        print(f"  Skipping training set (--holdout-only). Using {len(train_scene_ids)} known scene IDs.")
 
-    rows = []
-    stim_id = 1
+    if args.holdout_n > 0:
+        remaining = [v for v in videos if get_scene_id(v) not in train_scene_ids]
+        print(f"\n--- HOLDOUT SET ---")
+        print(f"  Available unseen scenes: {len(remaining)}")
 
-    print("\nProcessing real videos (stripping audio)...")
-    for i, src in enumerate(selected):
-        dst = REAL_DIR / src.name
-        print(f"  [{i+1}/{len(selected)}] {src.name}")
-        strip_audio(src, dst)
+        if len(remaining) < args.holdout_n:
+            print(f"  WARNING: Only {len(remaining)} unseen scenes available.")
+            args.holdout_n = len(remaining)
 
-        category = extract_category(src, descriptions_path)
-        rows.append({
-            "id": stim_id,
-            "label": "real",
-            "video_path": f"real/{src.name}",
-            "category": category,
-        })
-        stim_id += 1
+        random.seed(args.seed + 1000)
+        holdout_selected = sorted(random.sample(remaining, args.holdout_n), key=lambda p: p.stem)
 
-    print("\nReversing videos (this may take a few minutes)...")
-    for i, src in enumerate(selected):
-        reversed_name = src.stem + "_reversed.mp4"
-        dst = REVERSED_DIR / reversed_name
-        print(f"  [{i+1}/{len(selected)}] {src.name} -> {reversed_name}")
-        ok = reverse_video(src, dst)
+        overlap = train_scene_ids & {get_scene_id(v) for v in holdout_selected}
+        assert len(overlap) == 0, f"LEAK: {len(overlap)} scenes overlap between train and holdout!"
+        print(f"  Verified: 0 scene overlap with training set")
 
-        if ok:
-            category = extract_category(src, descriptions_path)
-            rows.append({
-                "id": stim_id,
-                "label": "reversed",
-                "video_path": f"reversed/{reversed_name}",
-                "category": category,
-            })
-            stim_id += 1
-        else:
-            print(f"    SKIPPED (ffmpeg failed)")
+        holdout_rows = prepare_set(
+            holdout_selected, HOLDOUT_REAL_DIR, HOLDOUT_REVERSED_DIR,
+            STIMULI_DIR / "holdout_stimuli.csv", descriptions_path,
+            start_id=5001, set_name="holdout",
+        )
+        n_real = sum(1 for r in holdout_rows if r["label"] == "real")
+        n_rev = sum(1 for r in holdout_rows if r["label"] == "reversed")
+        print(f"\n  Holdout set: {len(holdout_rows)} stimuli ({n_real} real + {n_rev} reversed)")
 
-    csv_path = STIMULI_DIR / "stimuli.csv"
-    with open(csv_path, "w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=["id", "label", "video_path", "category"])
-        writer.writeheader()
-        writer.writerows(rows)
-
-    n_real = sum(1 for r in rows if r["label"] == "real")
-    n_reversed = sum(1 for r in rows if r["label"] == "reversed")
     print(f"\n{'=' * 60}")
-    print(f"  DONE: {len(rows)} stimuli ({n_real} real + {n_reversed} reversed)")
-    print(f"  CSV:  {csv_path}")
+    print(f"  DONE")
     print(f"{'=' * 60}")
 
 

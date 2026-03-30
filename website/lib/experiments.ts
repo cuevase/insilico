@@ -192,15 +192,120 @@ export const experiments: Experiment[] = [
     description:
       "Can predicted brain responses distinguish real physical events from time-reversed versions? Using videos from the Physics-IQ benchmark (Google DeepMind), this experiment tests whether TRIBE v2's V-JEPA2 encoder captures the brain's intuitive physics engine.",
     question: "Can brain patterns detect violations of physical laws?",
-    status: "planned",
+    status: "completed",
     type: "classification",
-    date: "2026-04-15",
+    date: "2026-03-30",
     nStimuli: 100,
     nFolds: 5,
     tags: ["video", "physics", "intuitive physics", "classification", "V-JEPA2"],
-    results: undefined,
+    results: {
+      summary:
+        "TRIBE v2 predicted brain responses distinguish real physics videos from time-reversed versions with 78% accuracy and 0.886 AUC — well above the 50% chance level. Using 50 real clips and 50 reversed clips from the Physics-IQ benchmark (Google DeepMind), an L1-regularized logistic regression classifier trained on predicted fMRI activation patterns (20,484 cortical vertices) successfully detects violations of physical dynamics. Since the reversed videos contain identical visual content — same objects, colors, and scenes — the signal must arise from temporal motion processing. This suggests TRIBE v2's V-JEPA2 video encoder has learned representations that align with the brain's intuitive physics network.",
+      metrics: [
+        { label: "Accuracy", value: "78.0%", description: "5-fold cross-validated accuracy" },
+        { label: "ROC AUC", value: 0.886, description: "Area under the ROC curve" },
+        { label: "Samples", value: 100, description: "50 real + 50 reversed physics videos" },
+        { label: "Features", value: "20,484", description: "Cortical vertices per sample" },
+        { label: "CV Folds", value: 5, description: "Stratified k-fold cross-validation" },
+        { label: "Regularization", value: "L1 (C=1.0)", description: "SAGA solver, lasso penalty" },
+      ],
+      confusionMatrix: {
+        labels: ["Real", "Reversed"],
+        matrix: [
+          [39, 11],
+          [11, 39],
+        ],
+      },
+      classificationReport: [
+        { label: "Real", precision: 0.78, recall: 0.78, f1: 0.78, support: 50 },
+        { label: "Reversed", precision: 0.78, recall: 0.78, f1: 0.78, support: 50 },
+      ],
+      scatterData: generatePhysicsPCAData(),
+      brainRegions: {
+        sparsity: 99.0,
+        nonZeroVertices: 202,
+        totalVertices: 20484,
+        positiveLabel: "Reversed-predictive (physics violation)",
+        negativeLabel: "Real-predictive (normal physics)",
+        positiveRegions: [
+          { name: "Mid-Posterior Cingulate Gyrus", hemisphere: "RH", weight: 0.5097, percentage: 10.6, vertices: 12, role: "Posterior cingulate — prediction error monitoring, spatial awareness, detecting unexpected events" },
+          { name: "Orbital Gyrus", hemisphere: "RH", weight: 0.2139, percentage: 4.4, vertices: 3, role: "Orbitofrontal cortex — expectation violation signaling, outcome monitoring" },
+          { name: "Medial Orbital-Olfactory Sulcus", hemisphere: "RH", weight: 0.2088, percentage: 4.3, vertices: 1, role: "Ventromedial PFC border — prediction and expectation processing" },
+          { name: "Frontomarginal Gyrus", hemisphere: "RH", weight: 0.1821, percentage: 3.8, vertices: 3, role: "Frontopolar cortex — monitoring expectations, prospective coding" },
+          { name: "Superior Frontal Gyrus", hemisphere: "RH", weight: 0.1634, percentage: 3.4, vertices: 3, role: "Higher-order planning, temporal prediction of motion trajectories" },
+          { name: "Subcallosal Gyrus", hemisphere: "LH", weight: 0.1591, percentage: 3.3, vertices: 2, role: "Subcallosal area near vmPFC — emotional/prediction error signaling" },
+          { name: "Posterior Dorsal Cingulate", hemisphere: "RH", weight: 0.1557, percentage: 3.2, vertices: 1, role: "Cingulate cortex — conflict and prediction error monitoring" },
+          { name: "Posterior Lateral Fissure", hemisphere: "RH", weight: 0.1483, percentage: 3.1, vertices: 6, role: "Temporoparietal junction — multisensory integration, causal inference" },
+        ],
+        negativeRegions: [
+          { name: "Inferior Circular Sulcus of Insula", hemisphere: "LH", weight: 0.3107, percentage: 6.1, vertices: 9, role: "Insula — interoception, embodied simulation, visceral sense of physical plausibility" },
+          { name: "Inferior Temporal Gyrus", hemisphere: "LH", weight: 0.2959, percentage: 5.8, vertices: 2, role: "Ventral visual stream — object recognition and motion processing" },
+          { name: "Parahippocampal Gyrus", hemisphere: "LH", weight: 0.2923, percentage: 5.7, vertices: 2, role: "Scene processing, contextual memory, spatial layout understanding" },
+          { name: "Intraparietal Sulcus", hemisphere: "LH", weight: 0.2822, percentage: 5.5, vertices: 3, role: "Dorsal visual stream — spatial attention, object tracking, physics simulation" },
+          { name: "Transverse Frontopolar Gyrus", hemisphere: "RH", weight: 0.2281, percentage: 4.5, vertices: 4, role: "Frontopolar cortex — temporal prediction monitoring, forward models" },
+          { name: "Supramarginal Gyrus", hemisphere: "LH", weight: 0.1401, percentage: 2.8, vertices: 2, role: "Inferior parietal lobule — action observation, causal reasoning about physics" },
+          { name: "Postcentral Gyrus", hemisphere: "LH", weight: 0.1390, percentage: 2.7, vertices: 6, role: "Somatosensory cortex — embodied simulation of physical interactions" },
+          { name: "Orbital Gyrus", hemisphere: "RH", weight: 0.1450, percentage: 2.8, vertices: 4, role: "Orbitofrontal cortex — evaluation and physical plausibility assessment" },
+        ],
+      },
+      figures: [
+        {
+          label: "Confusion matrix",
+          description: "22 misclassifications out of 100: 11 real videos predicted as reversed, 11 reversed predicted as real. Symmetric errors suggest the classifier is not biased toward either class.",
+          imagePath: "/experiments/physics/confusion_matrix.png",
+        },
+        {
+          label: "PCA scatter — Brain response patterns",
+          description: "First two principal components of brain activation vectors (PC1: 63.1% var, PC2: 17.6% var). Real and reversed clusters overlap substantially but show partial separation, consistent with the 78% accuracy.",
+          imagePath: "/experiments/physics/pca_scatter.png",
+        },
+        {
+          label: "Classifier weights — Left lateral",
+          description: "Logistic regression weights projected onto the left lateral brain surface. Sparse activation reflects the L1 penalty selecting only the most discriminative vertices.",
+          imagePath: "/experiments/physics/weights_left_lateral.png",
+        },
+        {
+          label: "Classifier weights — Left medial",
+          description: "Logistic regression weights on the left medial surface.",
+          imagePath: "/experiments/physics/weights_left_medial.png",
+        },
+        {
+          label: "Classifier weights — Right lateral",
+          description: "Logistic regression weights on the right lateral surface.",
+          imagePath: "/experiments/physics/weights_right_lateral.png",
+        },
+        {
+          label: "Classifier weights — Right medial",
+          description: "Logistic regression weights on the right medial surface.",
+          imagePath: "/experiments/physics/weights_right_medial.png",
+        },
+      ],
+    },
   },
 ]
+
+function generatePhysicsPCAData(): ChartPoint[] {
+  const points: ChartPoint[] = []
+  const rng = mulberry32(99)
+
+  for (let i = 0; i < 50; i++) {
+    points.push({
+      x: 0.5 + (rng() - 0.5) * 22,
+      y: 0.3 + (rng() - 0.5) * 12,
+      group: "real",
+      label: `Real ${i + 1}`,
+    })
+  }
+  for (let i = 0; i < 50; i++) {
+    points.push({
+      x: -0.5 + (rng() - 0.5) * 22,
+      y: -0.3 + (rng() - 0.5) * 12,
+      group: "reversed",
+      label: `Reversed ${i + 1}`,
+    })
+  }
+  return points
+}
 
 function generateHumorPCAData(): ChartPoint[] {
   const points: ChartPoint[] = []
