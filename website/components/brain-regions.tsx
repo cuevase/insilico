@@ -48,7 +48,7 @@ export default function BrainRegions({ data }: { data: BrainRegionAnalysis }) {
                   </span>
                 </div>
                 <RegionBar percentage={region.percentage} color="#E74C3C" />
-                <p className="text-[11px] text-[#9C9488] mt-1.5 leading-relaxed">{region.role}</p>
+                {region.role && <p className="text-[11px] text-[#9C9488] mt-1.5 leading-relaxed">{region.role}</p>}
               </div>
             ))}
           </div>
@@ -74,7 +74,7 @@ export default function BrainRegions({ data }: { data: BrainRegionAnalysis }) {
                   </span>
                 </div>
                 <RegionBar percentage={region.percentage} color="#3498DB" />
-                <p className="text-[11px] text-[#9C9488] mt-1.5 leading-relaxed">{region.role}</p>
+                {region.role && <p className="text-[11px] text-[#9C9488] mt-1.5 leading-relaxed">{region.role}</p>}
               </div>
             ))}
           </div>
