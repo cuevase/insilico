@@ -122,9 +122,9 @@ predictions about the brain's physics engine.
 
 - [x] Experiment structure created
 - [x] Download and preparation scripts ready
-- [ ] Videos downloaded from Physics-IQ
-- [ ] Stimuli prepared (50 real + 50 reversed)
-- [ ] Predictions generated (requires GPU)
-- [ ] Classifier trained
-- [ ] Results analyzed
-- [ ] Write-up drafted
+- [x] Videos downloaded from Physics-IQ
+- [x] Stimuli prepared (50 real + 50 reversed)
+- [x] Predictions generated (requires GPU)
+- [x] Classifier trained
+- [x] Results analyzed
+- [x] Write-up drafted
