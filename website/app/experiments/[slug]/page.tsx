@@ -8,6 +8,7 @@ import ClassificationTable from "@/components/classification-table"
 import ScatterPlot from "@/components/scatter-plot"
 import BrainRegions from "@/components/brain-regions"
 import { experiments, getExperiment } from "@/lib/experiments"
+import { discussions } from "@/lib/discussions"
 import type { Metadata } from "next"
 
 interface PageProps {
@@ -166,6 +167,18 @@ export default async function ExperimentPage({ params }: PageProps) {
                   Discriminative brain regions
                 </h2>
                 <BrainRegions data={results.brainRegions} />
+                {discussions[slug] && (
+                  <p className="text-sm text-[#6B6459] mt-6 leading-relaxed">
+                    Interested in what these regions mean?{" "}
+                    <Link
+                      href={`/experiments/${slug}/discussion`}
+                      className="text-foreground underline underline-offset-4 decoration-[#C4704B]/40 hover:decoration-[#C4704B] hover:text-[#C4704B] transition-colors"
+                    >
+                      Read the full discussion
+                    </Link>{" "}
+                    — a region-by-region analysis comparing these findings to published neuroscience literature.
+                  </p>
+                )}
               </section>
             )}
 
