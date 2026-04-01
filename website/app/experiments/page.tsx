@@ -1,9 +1,10 @@
 import Navbar from "@/components/navbar"
 import ExperimentCard from "@/components/experiment-card"
 import { experiments } from "@/lib/experiments"
+import { SITE_NAME } from "@/lib/site"
 
 export const metadata = {
-  title: "Experiments — insilico",
+  title: `Experiments — ${SITE_NAME}`,
   description: "In-silico neuroscience experiments using TRIBE v2 brain encoding predictions.",
 }
 

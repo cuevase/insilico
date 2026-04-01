@@ -9,6 +9,7 @@ import ScatterPlot from "@/components/scatter-plot"
 import BrainRegions from "@/components/brain-regions"
 import { experiments, getExperiment } from "@/lib/experiments"
 import { discussions } from "@/lib/discussions"
+import { SITE_NAME } from "@/lib/site"
 import type { Metadata } from "next"
 
 interface PageProps {
@@ -22,9 +23,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
   const experiment = getExperiment(slug)
-  if (!experiment) return { title: "Not Found — insilico" }
+  if (!experiment) return { title: `Not Found — ${SITE_NAME}` }
   return {
-    title: `${experiment.name} — insilico`,
+    title: `${experiment.name} — ${SITE_NAME}`,
     description: experiment.description,
   }
 }

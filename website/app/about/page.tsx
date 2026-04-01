@@ -1,5 +1,6 @@
 import Navbar from '@/components/navbar'
 import Link from 'next/link'
+import { SITE_NAME } from '@/lib/site'
 
 export default function AboutPage() {
   return (
@@ -7,7 +8,7 @@ export default function AboutPage() {
       <Navbar />
       <main className="mx-auto max-w-2xl px-6 py-24">
         <h1 className="font-serif text-4xl font-medium text-foreground mb-10 text-balance">
-          About insilico
+          About {SITE_NAME}
         </h1>
 
         <div className="space-y-8 text-base text-[#6B6459] leading-relaxed">
@@ -75,7 +76,7 @@ export default function AboutPage() {
             <p>
               Built by <a href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b" target="_blank" rel="noopener noreferrer" className="text-[#6B6459] underline underline-offset-4 hover:text-foreground transition-colors">Emiliano Cuevas</a> with{' '}
               <Link href="/" className="text-[#6B6459] underline underline-offset-4 hover:text-foreground transition-colors">
-                insilico
+                {SITE_NAME}
               </Link>{' '}
               — a research prototype. Not for clinical use.
             </p>

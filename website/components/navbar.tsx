@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { SITE_NAME } from '@/lib/site'
 
 export default function Navbar() {
   return (
@@ -8,7 +9,7 @@ export default function Navbar() {
           href="/"
           className="font-serif text-lg font-medium text-foreground tracking-tight hover:opacity-80 transition-opacity"
         >
-          insilico
+          {SITE_NAME}
         </Link>
         <nav className="flex items-center gap-7">
           <Link

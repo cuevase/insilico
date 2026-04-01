@@ -3,6 +3,7 @@ import Link from "next/link"
 import Navbar from "@/components/navbar"
 import { experiments } from "@/lib/experiments"
 import { discussions, getDiscussion } from "@/lib/discussions"
+import { SITE_NAME } from "@/lib/site"
 import type { Metadata } from "next"
 
 interface PageProps {
@@ -18,9 +19,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
   const discussion = getDiscussion(slug)
-  if (!discussion) return { title: "Not Found — insilico" }
+  if (!discussion) return { title: `Not Found — ${SITE_NAME}` }
   return {
-    title: `${discussion.title} — insilico`,
+    title: `${discussion.title} — ${SITE_NAME}`,
     description: `Neuroscience literature analysis of brain regions activated in the ${slug} experiment.`,
   }
 }

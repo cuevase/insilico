@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Courier_Prime } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { SITE_NAME } from '@/lib/site'
 import './globals.css'
 
 const courierPrime = Courier_Prime({
@@ -12,7 +13,7 @@ const courierPrime = Courier_Prime({
 })
 
 export const metadata: Metadata = {
-  title: 'insilico — In-Silico Neuroscience Experiments',
+  title: `${SITE_NAME} — In-Silico Neuroscience Experiments`,
   description: 'A collection of in-silico neuroscience experiments using TRIBE v2, a multimodal brain encoding model from Meta Research. Built by Emiliano Cuevas.',
 }
 

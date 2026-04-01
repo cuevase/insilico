@@ -1,5 +1,6 @@
 import Link from "next/link"
 import Navbar from "@/components/navbar"
+import { SITE_NAME } from "@/lib/site"
 import ExperimentCard from "@/components/experiment-card"
 import { experiments } from "@/lib/experiments"
 
@@ -15,7 +16,7 @@ export default function HomePage() {
         {/* Hero */}
         <div className="pt-24 pb-16">
           <h1 className="font-serif text-5xl font-medium text-foreground leading-tight tracking-tight text-balance mb-6 md:text-6xl">
-            insilico
+            {SITE_NAME}
           </h1>
           <p className="text-lg text-[#6B6459] leading-relaxed max-w-2xl mb-4">
             A collection of in-silico neuroscience experiments exploring what computational
