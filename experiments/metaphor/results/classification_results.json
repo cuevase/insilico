@@ -1,0 +1,31 @@
+{
+  "cv_accuracy": 0.7875,
+  "cv_roc_auc": 0.900625,
+  "cv_confusion_matrix": [
+    [
+      34,
+      6
+    ],
+    [
+      11,
+      29
+    ]
+  ],
+  "n_train_samples": 80,
+  "n_features": 20484,
+  "n_folds": 5,
+  "cv_method": "StratifiedKFold (Pipeline with StandardScaler)",
+  "holdout_accuracy": 0.95,
+  "holdout_roc_auc": 1.0,
+  "holdout_confusion_matrix": [
+    [
+      9,
+      1
+    ],
+    [
+      0,
+      10
+    ]
+  ],
+  "n_holdout_samples": 20
+}

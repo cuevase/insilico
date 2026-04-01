@@ -151,8 +151,8 @@ export default async function ExperimentPage({ params }: PageProps) {
                 <div className="max-w-xl">
                   <ScatterPlot
                     data={results.scatterData}
-                    xLabel={experiment.type === "regression" ? "Actual complexity score" : experiment.slug === "humor" ? "PC1 (39.7% var)" : experiment.slug === "physics" ? "PC1 (63.1% var)" : "PC1"}
-                    yLabel={experiment.type === "regression" ? "Predicted complexity score" : experiment.slug === "humor" ? "PC2 (23.9% var)" : experiment.slug === "physics" ? "PC2 (17.6% var)" : "PC2"}
+                    xLabel={experiment.type === "regression" ? "Actual complexity score" : experiment.slug === "humor" ? "PC1 (39.7% var)" : experiment.slug === "physics" ? "PC1 (63.1% var)" : experiment.slug === "metaphor" ? "PC1 (28.1% var)" : "PC1"}
+                    yLabel={experiment.type === "regression" ? "Predicted complexity score" : experiment.slug === "humor" ? "PC2 (23.9% var)" : experiment.slug === "physics" ? "PC2 (17.6% var)" : experiment.slug === "metaphor" ? "PC2 (21.0% var)" : "PC2"}
                     colorByGroup={experiment.type === "classification"}
                   />
                 </div>

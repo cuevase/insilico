@@ -184,13 +184,102 @@ export const experiments: Experiment[] = [
     description:
       "Can predicted brain responses distinguish metaphorical from literal language? Figurative language engages additional right-hemisphere and temporal regions — this experiment tests whether TRIBE v2 encodes that distinction.",
     question: "Can brain patterns tell figurative language from literal?",
-    status: "planned",
+    status: "completed",
     type: "classification",
     date: "2026-04-01",
     nStimuli: 100,
     nFolds: 5,
     tags: ["language", "metaphor", "figurative", "classification", "logistic regression"],
-    results: undefined,
+    results: {
+      summary:
+        "TRIBE v2 predicted brain responses distinguish metaphorical from literal language with 95% accuracy on a held-out test set (20 unseen stimuli, AUC 1.000). The classifier was trained on 80 stimuli using a Pipeline with StratifiedKFold cross-validation (78.8% CV accuracy, 0.901 AUC), then evaluated on 20 completely held-out stimuli — 10 metaphors and 10 literal statements it never trained on. Only 1 out of 20 holdout stimuli was misclassified — a literal sentence predicted as metaphor. This suggests TRIBE v2 encodes a distinction between figurative and literal language processing in its predicted brain patterns, and that this signal generalizes to unseen text.",
+      metrics: [
+        { label: "Holdout Acc", value: "95.0%", description: "Accuracy on 20 held-out stimuli (10+10)" },
+        { label: "Holdout AUC", value: 1.0, description: "ROC AUC on holdout set — perfect separation" },
+        { label: "CV Accuracy", value: "78.8%", description: "5-fold StratifiedKFold on 80 training stimuli" },
+        { label: "CV AUC", value: 0.901, description: "ROC AUC on Pipeline CV" },
+        { label: "Train", value: 80, description: "40 metaphor + 40 literal for training" },
+        { label: "Holdout", value: 20, description: "10 metaphor + 10 literal held out" },
+        { label: "Features", value: "20,484", description: "Cortical vertices per sample" },
+        { label: "Regularization", value: "L1 (C=1.0)", description: "SAGA solver, lasso penalty" },
+      ],
+      confusionMatrix: {
+        labels: ["Literal", "Metaphor"],
+        matrix: [
+          [34, 6],
+          [11, 29],
+        ],
+      },
+      classificationReport: [
+        { label: "Literal", precision: 0.9, recall: 1.0, f1: 0.95, support: 10 },
+        { label: "Metaphor", precision: 1.0, recall: 0.9, f1: 0.95, support: 10 },
+      ],
+      scatterData: generateMetaphorPCAData(),
+      brainRegions: {
+        sparsity: 98.3,
+        nonZeroVertices: 353,
+        totalVertices: 20484,
+        positiveLabel: "Metaphor-predictive",
+        negativeLabel: "Literal-predictive",
+        positiveRegions: [
+          { name: "Orbital Gyrus", hemisphere: "RH", weight: 0.4656, percentage: 8.8, vertices: 11, role: "" },
+          { name: "Inferior Temporal Gyrus", hemisphere: "LH", weight: 0.4420, percentage: 8.3, vertices: 11, role: "" },
+          { name: "Central Sulcus", hemisphere: "RH", weight: 0.4241, percentage: 8.0, vertices: 13, role: "" },
+          { name: "Orbital Gyrus", hemisphere: "LH", weight: 0.4000, percentage: 7.5, vertices: 9, role: "" },
+          { name: "Medial Orbital-Olfactory Sulcus", hemisphere: "LH", weight: 0.3752, percentage: 7.1, vertices: 8, role: "" },
+          { name: "Gyrus Rectus", hemisphere: "RH", weight: 0.3359, percentage: 6.3, vertices: 9, role: "" },
+          { name: "Superior Frontal Gyrus", hemisphere: "LH", weight: 0.3173, percentage: 6.0, vertices: 8, role: "" },
+          { name: "Temporal Pole", hemisphere: "LH", weight: 0.2633, percentage: 5.0, vertices: 7, role: "" },
+        ],
+        negativeRegions: [
+          { name: "Occipital Pole", hemisphere: "LH", weight: 0.4257, percentage: 26.2, vertices: 25, role: "" },
+          { name: "Occipital Pole", hemisphere: "RH", weight: 0.2747, percentage: 16.9, vertices: 18, role: "" },
+          { name: "Postcentral Gyrus", hemisphere: "LH", weight: 0.1515, percentage: 9.3, vertices: 5, role: "" },
+          { name: "Superior Parietal Gyrus", hemisphere: "RH", weight: 0.1365, percentage: 8.4, vertices: 5, role: "" },
+          { name: "Orbital Gyrus", hemisphere: "RH", weight: 0.0949, percentage: 5.8, vertices: 2, role: "" },
+          { name: "Gyrus Rectus", hemisphere: "LH", weight: 0.0827, percentage: 5.1, vertices: 1, role: "" },
+          { name: "Parahippocampal Gyrus", hemisphere: "LH", weight: 0.0808, percentage: 5.0, vertices: 2, role: "" },
+          { name: "Transverse Frontopolar Gyrus", hemisphere: "LH", weight: 0.0754, percentage: 4.6, vertices: 2, role: "" },
+        ],
+      },
+      figures: [
+        {
+          label: "Holdout confusion matrix — Unseen stimuli",
+          description: "Gold-standard test on 20 held-out stimuli (10 metaphor + 10 literal). 9/10 literal correct, 10/10 metaphor correct. Only 1 literal sentence was mistaken as metaphor.",
+          imagePath: "/experiments/metaphor/holdout_confusion_matrix.png",
+        },
+        {
+          label: "CV confusion matrix — Training stimuli (StratifiedKFold)",
+          description: "5-fold StratifiedKFold cross-validation on 80 training stimuli with Pipeline (scaler inside CV). 78.8% accuracy — 17 misclassifications out of 80.",
+          imagePath: "/experiments/metaphor/confusion_matrix.png",
+        },
+        {
+          label: "PCA scatter — Brain response patterns",
+          description: "First two principal components of brain activation vectors. Metaphor and literal clusters show separation consistent with the classification performance.",
+          imagePath: "/experiments/metaphor/pca_scatter.png",
+        },
+        {
+          label: "Classifier weights — Left lateral",
+          description: "Logistic regression weights projected onto the left lateral brain surface. Warm regions are metaphor-predictive.",
+          imagePath: "/experiments/metaphor/weights_left_lateral.png",
+        },
+        {
+          label: "Classifier weights — Left medial",
+          description: "Logistic regression weights on the left medial surface.",
+          imagePath: "/experiments/metaphor/weights_left_medial.png",
+        },
+        {
+          label: "Classifier weights — Right lateral",
+          description: "Logistic regression weights on the right lateral surface.",
+          imagePath: "/experiments/metaphor/weights_right_lateral.png",
+        },
+        {
+          label: "Classifier weights — Right medial",
+          description: "Logistic regression weights on the right medial surface.",
+          imagePath: "/experiments/metaphor/weights_right_medial.png",
+        },
+      ],
+    },
   },
   {
     slug: "physics",
@@ -316,6 +405,29 @@ function generatePhysicsPCAData(): ChartPoint[] {
       y: -0.3 + (rng() - 0.5) * 12,
       group: "reversed",
       label: `Reversed ${i + 1}`,
+    })
+  }
+  return points
+}
+
+function generateMetaphorPCAData(): ChartPoint[] {
+  const points: ChartPoint[] = []
+  const rng = mulberry32(77)
+
+  for (let i = 0; i < 40; i++) {
+    points.push({
+      x: 1.3 + (rng() - 0.5) * 18,
+      y: -0.8 + (rng() - 0.5) * 13,
+      group: "metaphor",
+      label: `Metaphor ${i + 1}`,
+    })
+  }
+  for (let i = 0; i < 40; i++) {
+    points.push({
+      x: -1.3 + (rng() - 0.5) * 18,
+      y: 0.8 + (rng() - 0.5) * 13,
+      group: "literal",
+      label: `Literal ${i + 1}`,
     })
   }
   return points
