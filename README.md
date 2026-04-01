@@ -2,90 +2,37 @@
 
 In-silico neuroscience experiments using [TRIBE v2](https://github.com/facebookresearch/tribev2) — Meta's multimodal brain encoding model.
 
-Type text, see which brain regions respond. No scanner required.
+**What this repo is for:** This is a **public record** of how analyses and figures were produced: code, configs, stimuli, and experiment layouts are here so anyone can **inspect the reasoning and pipeline**, not so the project reads as a polished, supported “clone and reproduce” kit. I host a small site separately; what you see on GitHub is mainly **methodology and provenance**.
 
-## Setup
+Type text, see which brain regions respond — conceptually, via TRIBE v2. No scanner required for the encoding side of the story.
 
-```bash
-# 1. Create environment
-python3 -m venv .venv
-source .venv/bin/activate
+## What you can see here
 
-# 2. Clone TRIBE v2 outside the project (avoids import shadowing)
-git clone https://github.com/facebookresearch/tribev2.git ../tribev2-repo
-pip install -e "../tribev2-repo[plotting]"
+- **`experiments/`** — Per-study folders: `run.py`, configs, stimuli, and (where committed) outputs or paths to how results were derived.
+- **`core/`** — Shared helpers (model loading, GLM, visualization) used across experiments.
+- **`backend/`** & **`website/`** — Code for the interactive stack I run locally; present for transparency, not documented here as a product to install.
+- **`notebooks/`** — Ad hoc exploration.
+- **`TRIBE_v2_dev_readme.md`** — Notes on the TRIBE v2 model for context.
 
-# 3. Authenticate with HuggingFace (LLaMA 3.2-3B is gated)
-huggingface-cli login
+If something is missing (e.g. large weights, caches), it is usually **gitignored** or **gated** (e.g. Hugging Face for LLaMA); the point is to show **how** things were wired, not to guarantee a one-command rerun on every machine.
 
-# 4. Install Python dependencies
-pip install -r requirements.txt
-pip install -r backend/requirements.txt
-
-# 5. Install website dependencies
-cd website && pnpm install && cd ..
-
-# 6. Validate setup
-python -c "from tribev2 import TribeModel; print('tribev2 OK')"
-```
-
-## Running the App
-
-You need two terminals:
-
-**Terminal 1 — Backend (Python/FastAPI):**
-```bash
-source .venv/bin/activate
-uvicorn backend.server:app --port 8000
-```
-
-**Terminal 2 — Frontend (Next.js):**
-```bash
-cd website
-pnpm dev
-```
-
-Then open [http://localhost:3000](http://localhost:3000).
-
-The first prediction will be slow (~30-60s) as the model downloads weights and loads feature extractors. Subsequent predictions are faster (~10-20s).
-
-## Project Structure
+## Project structure (overview)
 
 ```
 insilico/
 ├── backend/                # FastAPI server (TRIBE v2 inference)
-│   └── server.py
 ├── core/                   # Shared utilities (model loading, GLM, visualization)
-├── website/                # Next.js frontend (experiments site)
+├── website/                # Next.js frontend (personal deployment)
 ├── cache/                  # Model weights & features (gitignored)
 ├── stimuli/                # Shared stimulus bank
-├── experiments/            # Individual experiments (each self-contained)
-│   ├── _template/          # Copy to start a new experiment
-│   ├── humor/              # Humor vs. neutral text classification
-│   ├── physics/            # Real vs. reversed video (intuitive physics)
-│   └── metaphor/           # Metaphor comprehension (planned)
-├── notebooks/              # Project-level exploration notebooks
+├── experiments/            # Individual experiments (code + stimuli + derivation trail)
+│   ├── _template/          # Structural reference for how experiments are organized
+│   ├── humor/
+│   ├── physics/
+│   └── metaphor/
+├── notebooks/
 ├── LICENSE                 # MIT (project code); TRIBE v2 is CC-BY-NC-4.0
-└── TRIBE_v2_dev_readme.md  # TRIBE v2 model reference documentation
-```
-
-## Running Experiments (CLI)
-
-```bash
-source .venv/bin/activate
-
-# Humor experiment (text — runs locally, uses cached embeddings)
-python experiments/humor/run.py --holdout --cached-only
-
-# Physics experiment (video — requires GPU for encoding)
-python experiments/physics/run.py --holdout
-```
-
-## Starting a New Experiment
-
-```bash
-cp -r experiments/_template experiments/my_new_experiment
-# Edit config.yaml and run.py
+└── TRIBE_v2_dev_readme.md
 ```
 
 ## License

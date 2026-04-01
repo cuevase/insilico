@@ -17,7 +17,7 @@ This document analyzes the brain regions identified as discriminative by the L1-
 |--------|-----------|-------------|-------------------|
 | Superior Frontal Gyrus | Bilateral | 8.4% | **Strong** |
 | Superior Temporal Sulcus | Bilateral | 7.2% | **Strong** |
-| Central Sulcus | LH | 3.2% | Moderate |
+| g | LH | 3.2% | Moderate |
 | Precentral Gyrus | LH | 3.0% | Moderate |
 | Superior Parietal Gyrus | Bilateral | 4.6% | **Strong** |
 | Postcentral Gyrus | LH | 2.5% | Moderate |
@@ -26,7 +26,7 @@ This document analyzes the brain regions identified as discriminative by the L1-
 
 #### Analysis
 
-**Superior Frontal Gyrus (bilateral, 8.4%)** — This is the strongest humor-predictive region, and it aligns directly with published fMRI studies. The superior frontal gyrus contains part of the medial prefrontal cortex (mPFC), which is one of the most consistently activated regions in humor processing studies. Chan et al. (2013) showed that the bilateral superior frontal gyri activate during incongruity-resolution humor. The mPFC is specifically implicated in the "elaboration" stage of humor — experiencing amusement after the joke is understood (Bekinschtein et al., 2011). It is also a core component of the reward system, consistent with the pleasurable feeling of "getting" a joke.
+**Superior Frontal Gyrus (bilateral, 8.4%)** — This is the strongest humor-predictive region, and it aligns directly with published fMRI studies. The superior frontal gyrus contains part of the medial prefrontal cortex (mPFC), which is one of the most consistently activated regions in humor processing studies. Chan et al. (2013) showed that the left superior frontal gyrus activates during humor comprehension, while the ventromedial prefrontal cortex activates during the "elaboration" stage — experiencing amusement after the joke is understood. Bekinschtein et al. (2011) further showed that jokes activate reward circuits (amygdala, ventral striatum) whose activity correlates with subjective funniness ratings, plus bilateral TPJ. The mPFC's involvement likely reflects both cognitive processing of incongruity and reward signaling.
 
 **Verdict: Makes strong neuroscientific sense.** The mPFC/SFG is one of the most replicated humor regions in the literature.
 
@@ -34,7 +34,7 @@ This document analyzes the brain regions identified as discriminative by the L1-
 
 **Verdict: Makes strong neuroscientific sense.** Humor requires social cognition and pragmatic inference, both core STS functions.
 
-**Superior Parietal Gyrus (bilateral, 4.6%) + Precuneus (RH, 2.0%)** — The precuneus is implicated in perspective-taking and self-referential processing (Cavanna & Trimble, 2006). Studies have found that precuneus volume correlates with self-enhancing humor style, specifically through its role in cognitive empathy and "mind-reading" humor (Nakamura et al., 2018). The superior parietal lobule supports attentional reorienting, which is relevant for the surprise/incongruity detection phase of humor. The dual-path model of humor processing (Cheng et al., 2017) specifically implicates the precuneus in the resolution of resolvable incongruity.
+**Superior Parietal Gyrus (bilateral, 4.6%) + Precuneus (RH, 2.0%)** — The precuneus is implicated in perspective-taking and self-referential processing (Cavanna & Trimble, 2006). Nakamura et al. (2018) found that precuneus volume correlates with self-enhancing humor style, though notably only in individuals with high cognitive empathy — suggesting the link is mediated by social cognition rather than humor per se. The superior parietal lobule supports attentional reorienting, which is relevant for the surprise/incongruity detection phase of humor. The dual-path model of humor processing (Cheng et al., 2017) specifically implicates the precuneus in the resolution of resolvable incongruity.
 
 **Verdict: Makes strong neuroscientific sense.** Perspective-taking and attentional reorienting are core to humor processing.
 
@@ -67,7 +67,7 @@ This document analyzes the brain regions identified as discriminative by the L1-
 
 **Verdict: Makes strong neuroscientific sense.** The angular gyrus is a canonical semantic processing region.
 
-**Occipital Pole (bilateral, 4.0%)** — Early visual cortex. Research shows that visual cortex activates during concrete language processing through mental imagery (Huth et al., 2016). Neutral sentences in our stimuli tend to describe concrete, factual scenarios ("Water boils at 100 degrees"), which may evoke more vivid visual imagery than humor stimuli, which rely on abstract incongruity.
+**Occipital Pole (bilateral, 4.0%)** — Early visual cortex. Research shows that concrete language activates visual and perceptual brain areas more strongly than abstract language (Binder et al., 2005). Neutral sentences in our stimuli tend to describe concrete, factual scenarios ("Water boils at 100 degrees"), which may evoke more vivid visual imagery than humor stimuli, which rely on abstract incongruity.
 
 **Verdict: Moderately supported.** Visual imagery for concrete factual content is a plausible explanation.
 
@@ -90,11 +90,11 @@ This document analyzes the brain regions identified as discriminative by the L1-
 
 | Region | Hemisphere | Weight Share | Literature Support |
 |--------|-----------|-------------|-------------------|
-| Orbital Gyrus | RH + LH | 16.3% | **Strong** |
+| Orbital Gyrus | RH + LH | 16.3% | Moderate |
 | Inferior Temporal Gyrus | LH | 8.3% | **Strong** |
 | Central Sulcus | Bilateral | 15.0% | Weak |
 | Medial Orbital-Olfactory Sulcus | LH | 7.1% | Moderate |
-| Gyrus Rectus | Bilateral | 10.6% | **Strong** |
+| Gyrus Rectus | Bilateral | 10.6% | Moderate |
 | Superior Frontal Gyrus | LH | 6.0% | **Strong** |
 | Temporal Pole | LH | 5.0% | **Strong** |
 | Postcentral Gyrus | LH | 4.9% | Weak |
@@ -102,21 +102,21 @@ This document analyzes the brain regions identified as discriminative by the L1-
 
 #### Analysis
 
-**Orbital Gyrus + Gyrus Rectus (bilateral, ~26.9%)** — The orbitofrontal cortex (OFC), which includes both the orbital gyrus and gyrus rectus, is the dominant metaphor-predictive region. This is a striking finding. The OFC is involved in evaluating novel and ambiguous meanings (Kringelbach, 2005). Critically, Lacey et al. (2012) demonstrated that olfactory-related metaphors ("she had a sweet smell of success") activate the OFC even in purely metaphorical contexts, showing that the OFC doesn't just process literal sensory input — it also engages during figurative, cross-domain semantic mapping. The OFC also supports emotional valuation and reward prediction, which may reflect the richer emotional and evaluative content in metaphorical language compared to literal.
+**Orbital Gyrus + Gyrus Rectus (bilateral, ~26.9%)** — The orbitofrontal cortex (OFC), which includes both the orbital gyrus and gyrus rectus, is the dominant metaphor-predictive region in our classifier. However, this is **not a well-established finding** in the figurative language literature. Meta-analyses of metaphor processing (Rapp et al., 2012) identify left temporal, bilateral inferior frontal, and medial frontal regions — not the OFC — as the canonical metaphor network. The OFC is primarily known for reward evaluation, outcome prediction, and flexible value computation (Kringelbach, 2005). Our interpretation is that metaphorical language may carry richer emotional and evaluative content than literal language, engaging the OFC's evaluation machinery. This is plausible but speculative.
 
-**Verdict: Makes strong neuroscientific sense.** The OFC is implicated in novel meaning construction and cross-modal semantic mapping.
+**Verdict: Our interpretation, not strongly established.** The OFC is not identified as a core metaphor region in meta-analyses. Its activation here may reflect emotional/evaluative processing differences between metaphorical and literal text.
 
 **Left Inferior Temporal Gyrus (LH, 8.3%)** — The left ITG is part of the ventral language stream and supports semantic processing. Meta-analyses of figurative language processing (Rapp et al., 2012) identify the left temporal lobe as a key region for metaphor comprehension. The ITG specifically supports the retrieval and integration of distant semantic associations, which is exactly what metaphor comprehension requires — mapping meaning from one conceptual domain to another.
 
 **Verdict: Makes strong neuroscientific sense.** Left temporal regions are consistently activated in metaphor studies.
 
-**Left Superior Frontal Gyrus (LH, 6.0%)** — The SFG/mPFC is implicated in processing novel metaphors specifically. Ferstl et al. (2013) showed that the medial prefrontal cortex activates more for novel/unfamiliar metaphors than conventional ones, mediating attention and cognitive control for integrating unusual semantic associations. Since our stimuli include creative metaphors ("His anger was a volcano about to erupt"), this activation is expected.
+**Left Superior Frontal Gyrus (LH, 6.0%)** — The SFG/mPFC is implicated in processing novel metaphors. Subramaniam et al. (2013) showed that novel unfamiliar metaphors elicit significant activation in the medial prefrontal cortex, posterior cingulate cortex, and right inferior parietal lobe, with the mPFC mediating attention and cognitive control for integrating unusual semantic associations. Since our stimuli include creative metaphors ("His anger was a volcano about to erupt"), this activation is expected.
 
 **Verdict: Makes strong neuroscientific sense.** mPFC activation for novel metaphors is well-documented.
 
-**Left Temporal Pole (LH, 5.0%)** — The temporal pole is a "semantic hub" that integrates conceptual features across modalities (Patterson et al., 2007). Research shows it plays a critical role in figurative language by binding abstract conceptual features and supporting the rapid access to semantic associations needed for metaphor comprehension (Pobric et al., 2023). Damage to the temporal pole impairs metaphor comprehension specifically.
+**Left Temporal Pole (LH, 5.0%)** — The temporal pole is a "semantic hub" that integrates conceptual features across modalities (Patterson et al., 2007). TMS studies by Pobric et al. (2007) confirmed that disrupting the temporal pole impairs semantic processing broadly. Patients with semantic dementia (which causes temporal pole atrophy) lose conceptual knowledge across all modalities. While the temporal pole is well-established for general semantic integration, its specific role in metaphor (as opposed to semantics broadly) is our interpretation — metaphor requires binding distant conceptual domains, which is the type of cross-domain integration the temporal pole supports.
 
-**Verdict: Makes strong neuroscientific sense.** The temporal pole is one of the best-established regions for figurative language processing.
+**Verdict: Strongly supported for semantic integration broadly.** The specific link to metaphor (rather than general semantics) is our interpretation, but well-reasoned.
 
 **Central Sulcus + Postcentral + Paracentral (bilateral, ~24.4%)** — Motor and somatosensory regions. Similar to the humor experiment, these are less expected for metaphor processing. One explanation is embodied cognition — many metaphors reference bodily experience ("grasping an idea," "heavy heart"), which may activate sensorimotor simulations. There is published evidence for this: Desai et al. (2011) showed that action-related metaphors ("grasping the concept") activate motor regions, though less strongly than literal action sentences. However, the large weight share (24.4%) seems disproportionate and may also reflect TRIBE v2's text-to-speech pipeline producing different articulatory patterns for metaphorical vs. literal content.
 
@@ -153,9 +153,9 @@ This document analyzes the brain regions identified as discriminative by the L1-
 
 The most impressive result is the bilateral occipital pole dominance for literal language (43.1% of literal-predictive weight). This directly reflects the well-established finding that concrete/literal language engages visual cortex through mental imagery, while abstract/figurative language does not. The classifier essentially "discovered" this without being told anything about visual imagery.
 
-The metaphor-predictive regions align well with the figurative language processing network: the temporal pole (semantic hub for conceptual integration), the inferior temporal gyrus (distant semantic association retrieval), the superior frontal gyrus (novel meaning construction), and the orbitofrontal cortex (cross-domain semantic mapping and novel meaning evaluation).
+The metaphor-predictive regions partially align with the figurative language processing network: the temporal pole (semantic hub for conceptual integration), the inferior temporal gyrus (distant semantic association retrieval), and the superior frontal gyrus (novel meaning construction) are well-established. The large OFC involvement (~26.9% of metaphor weight) is not predicted by meta-analyses of figurative language and may reflect emotional/evaluative processing differences rather than metaphor comprehension per se.
 
-The main caveat is the motor/somatosensory involvement (~24% of metaphor weight), which has partial support from embodied metaphor theory but may also reflect artifacts of the text-to-speech pipeline.
+The main caveats are: (1) the motor/somatosensory involvement (~24% of metaphor weight), which has partial support from embodied metaphor theory but may also reflect artifacts of the text-to-speech pipeline, and (2) the OFC dominance, which lacks direct meta-analytic support for figurative language.
 
 ---
 
@@ -181,11 +181,11 @@ The main caveat is the motor/somatosensory involvement (~24% of metaphor weight)
 
 #### Analysis
 
-**Mid-Posterior Cingulate Gyrus (RH, 15.5%) + Posterior Dorsal Cingulate (RH, 4.7%) + Marginal Cingulate Sulcus (RH, 3.5%) = ~23.7% total cingulate** — This is the dominant real-physics-predictive region, and it is a striking finding. The anterior and mid-cingulate cortex (ACC/MCC) functions as a **forward model** that predicts future states (Alexander & Brown, 2019). It represents predicted action-state transitions and computes temporal prediction errors — the discrepancy between when an event was expected to occur and when it actually occurred (Wiech et al., 2013). For real physics videos, the cingulate can successfully build a forward model of the physical dynamics: a ball falls, accelerates under gravity, bounces. The cingulate would be engaged in maintaining and verifying these causal predictions. In reversed videos, the forward model breaks down — objects spontaneously launch upward, fluids reassemble — which is why the cingulate activates *more* for real physics where the predictions are coherent and sustained.
+**Mid-Posterior Cingulate Gyrus (RH, 15.5%) + Posterior Dorsal Cingulate (RH, 4.7%) + Marginal Cingulate Sulcus (RH, 3.5%) = ~23.7% total cingulate** — This is the dominant real-physics-predictive region, and it is a striking finding. The anterior and mid-cingulate cortex (ACC/MCC) functions as a **forward model** that predicts future states (Alexander & Brown, 2019). Limongi et al. (2013) showed that temporal prediction errors — the discrepancy between when an event was expected to occur and when it actually occurred — modulate coupling between the cingulate and insula. For real physics videos, the cingulate can successfully build a forward model of the physical dynamics: a ball falls, accelerates under gravity, bounces. The cingulate would be engaged in maintaining and verifying these causal predictions. In reversed videos, the forward model breaks down — objects spontaneously launch upward, fluids reassemble — which is why the cingulate activates *more* for real physics where the predictions are coherent and sustained.
 
 **Verdict: Makes strong neuroscientific sense.** The cingulate cortex as a forward model for causal event prediction is well-documented. It should be more engaged when physical events follow predictable causal dynamics.
 
-**Superior Frontal Gyrus (RH, 5.0%)** — Part of the mPFC, involved in predictive coding and maintaining internal models. Fischer et al. (2016) showed that the medial prefrontal cortex, along with the physics engine network (IPS, premotor), activates during intuitive physical reasoning. The mPFC likely supports the high-level prediction and model-updating that occurs when watching coherent physical scenes.
+**Superior Frontal Gyrus (RH, 5.0%)** — Part of the mPFC, involved in predictive coding and maintaining internal models. Fischer et al. (2016) identified a network including premotor cortex and supplementary motor area that activates during intuitive physical reasoning. The mPFC likely supports the high-level prediction and model-updating that occurs when watching coherent physical scenes.
 
 **Verdict: Makes strong neuroscientific sense.** mPFC is involved in predictive processing and internal model maintenance.
 
@@ -216,19 +216,19 @@ The main caveat is the motor/somatosensory involvement (~24% of metaphor weight)
 
 #### Analysis
 
-**Intraparietal Sulcus (LH, 8.2%)** — This is perhaps the most important finding. The IPS is the core region of the brain's "physics engine" — a network of regions selectively engaged during intuitive physical reasoning (Fischer et al., 2016; Schwettmann et al., 2019). The IPS supports mental simulation of physical dynamics, encoding latent physical variables like mass, trajectory, and collision outcomes. Here, the IPS predicts *reversed* physics. This is counterintuitive at first, but has a compelling explanation: when watching reversed videos, the brain's physics engine detects violations — objects moving in physically impossible ways — and activates *more intensely* as it tries to reconcile the visual input with its internal physical model. This is consistent with prediction error theory: the IPS fires more when physical expectations are violated.
+**Intraparietal Sulcus (LH, 8.2%)** — This is perhaps the most important finding. Schwettmann et al. (2019) showed that dorsal fronto-parietal cortex — including the IPS — encodes invariant representations of physical variables like mass, generalizing across scenarios, materials, and motion patterns. Fischer et al. (2016) identified a broader "physics engine" network (primarily premotor cortex and supplementary motor area) that activates during intuitive physical reasoning; the IPS is part of this extended network. Here, the IPS predicts *reversed* physics. This is counterintuitive at first, but has a compelling explanation: when watching reversed videos, the brain's physics engine detects violations — objects moving in physically impossible ways — and activates *more intensely* as it tries to reconcile the visual input with its internal physical model. This is consistent with prediction error theory: the IPS fires more when physical expectations are violated.
 
 **Verdict: Makes strong neuroscientific sense.** The IPS (the brain's "physics engine") activating for reversed physics is consistent with prediction error — it fires harder when physics is wrong.
 
-**Insula — Inferior Circular Insula (LH, 9.1%) + Short Insular Gyri (LH, 3.3%) + Central Insula (LH, 3.2%) = ~15.6% total insula** — The insula is the brain's primary **salience and prediction error** hub. The anterior insula processes sensory-specific prediction errors (Bossaerts, 2010) and signals deviations from expectations via bursts of beta oscillations (Bröhl et al., 2022). Temporal prediction errors — when events occur at unexpected times — specifically modulate cingulate-insular coupling (Wiech et al., 2013). Reversed physics videos represent massive violations of temporal and physical expectations. Objects move at the wrong times, in the wrong directions, with impossible causal sequences. The insula would fire strongly to signal these ubiquitous prediction errors.
+**Insula — Inferior Circular Insula (LH, 9.1%) + Short Insular Gyri (LH, 3.3%) + Central Insula (LH, 3.2%) = ~15.6% total insula** — The insula is the brain's primary **salience and prediction error** hub. The anterior insula encodes risk prediction errors (Bossaerts, 2010) and signals deviations from expectations via bursts of beta oscillations (Haufler et al., 2022). Temporal prediction errors — when events occur at unexpected times — specifically modulate cingulate-insular coupling (Limongi et al., 2013). Reversed physics videos represent massive violations of temporal and physical expectations. Objects move at the wrong times, in the wrong directions, with impossible causal sequences. The insula would fire strongly to signal these ubiquitous prediction errors.
 
 **Verdict: Makes strong neuroscientific sense.** The insula as a prediction-error detector explains its strong reversed-physics activation perfectly.
 
-**Parahippocampal Gyrus (LH, 8.5%)** — The parahippocampal gyrus supports scene construction, contextual processing, and spatial layout encoding (Epstein & Kanwisher, 1998). It is also involved in detecting contextual violations — when something doesn't fit the expected scene context. Reversed physics videos show objects in impossible spatial configurations (e.g., liquid flying upward, objects launching off surfaces), which would activate the parahippocampal gyrus's violation-detection mechanisms.
+**Parahippocampal Gyrus (LH, 8.5%)** — The parahippocampal gyrus encodes spatial layout and contextual associations (Epstein & Kanwisher, 1998). Research shows it is primarily engaged when processing scenes and spatial context — it responds strongly to congruent, meaningful scene contexts. Our interpretation is that reversed physics videos disrupt normal contextual processing: objects appear in impossible spatial configurations (e.g., liquid flying upward, objects launching off surfaces), which would alter the parahippocampal response compared to normal physics. However, calling it a "violation detector" would be an overstatement — its established function is encoding contextual associations, not detecting violations per se.
 
-**Verdict: Makes strong neuroscientific sense.** Spatial/contextual violation detection is a core parahippocampal function.
+**Verdict: The parahippocampal gyrus's role in contextual encoding is well-established.** That it responds differently to reversed physics is our interpretation — plausible but not directly tested in the literature.
 
-**Supramarginal Gyrus (LH, 4.1%)** — Part of the temporoparietal junction (TPJ), the supramarginal gyrus is involved in temporal order judgments. Studies show that the TPJ activates when participants make judgments about the temporal order of events (Davis et al., 2009; Takahashi et al., 2013). Reversed videos inherently violate temporal order — events happen backward — which would specifically engage this temporal-order processing region.
+**Supramarginal Gyrus (LH, 4.1%)** — Part of the temporoparietal junction (TPJ), the supramarginal gyrus is involved in temporal order judgments. Davis, Christie & Rorden (2009) showed that the TPJ activates specifically when participants make judgments about the temporal order of events. Reversed videos inherently violate temporal order — events happen backward — which would specifically engage this temporal-order processing region.
 
 **Verdict: Makes strong neuroscientific sense.** The supramarginal gyrus processes temporal order, which is violated in reversed videos.
 
@@ -244,7 +244,7 @@ The results reveal a clear **prediction vs. prediction-error dissociation**:
 
 - **Real physics activates the forward model** — the cingulate cortex (which predicts future states), temporal motion areas (which process coherent motion), and the mPFC (which maintains internal models). These regions are engaged because real physics allows the brain to successfully predict what happens next.
 
-- **Reversed physics activates the error detectors** — the insula (salience/prediction error), the intraparietal sulcus (the "physics engine" detecting violations), the parahippocampal gyrus (contextual violation detection), and the supramarginal gyrus (temporal order violation). These regions fire because reversed physics systematically violates the brain's physical expectations.
+- **Reversed physics activates regions associated with error detection** — the insula (salience/prediction error), the intraparietal sulcus (physical variable encoding, responding to violations), the parahippocampal gyrus (contextual encoding disrupted by impossible spatial configurations), and the supramarginal gyrus (temporal order processing). These regions fire because reversed physics systematically violates the brain's physical expectations.
 
 This is arguably the most neuroscientifically elegant result of all three experiments. The classifier didn't just find random discriminative regions — it found the exact dissociation between prediction and prediction-error systems that would be expected from a brain watching plausible vs. implausible physical events.
 
@@ -271,7 +271,7 @@ This is arguably the most neuroscientifically elegant result of all three experi
 | Cingulate Cortex | — | — | Real-pred (23.7%) | Forward models / causal prediction unique to physics |
 | Intraparietal Sulcus | — | — | Reversed-pred (8.2%) | The brain's "physics engine" — fires on physical violations |
 | Insula | — | — | Reversed-pred (15.6%) | Prediction error / salience — fires on expectation violations |
-| Parahippocampal Gyrus | — | Literal-pred (5.0%) | Reversed-pred (8.5%) | Contextual processing / violation detection |
+| Parahippocampal Gyrus | — | Literal-pred (5.0%) | Reversed-pred (8.5%) | Contextual / spatial encoding |
 
 ### Key Insights
 
@@ -311,7 +311,7 @@ This is arguably the most neuroscientifically elegant result of all three experi
 
 - The **humor** experiment's activation of mPFC, STS, TPJ, and precuneus maps precisely onto the known humor processing network (Chan et al., 2013; Cheng et al., 2017).
 - The **metaphor** experiment's activation of temporal pole, inferior temporal gyrus, and OFC for metaphor — and occipital pole for literal language — aligns with decades of figurative language research (Rapp et al., 2012; Patterson et al., 2007).
-- The **physics** experiment's cingulate/mPFC activation for real physics and insula/IPS activation for reversed physics directly mirrors the prediction-vs-error framework from causal cognition research (Fischer et al., 2016; Alexander & Brown, 2019).
+- The **physics** experiment's cingulate/mPFC activation for real physics and insula/IPS activation for reversed physics directly mirrors the prediction-vs-error framework from causal cognition research (Schwettmann et al., 2019; Alexander & Brown, 2019).
 
 The fact that a simple logistic regression classifier, trained on TRIBE v2's predicted brain responses, independently recovers these well-established neuroscientific patterns provides strong evidence that:
 
@@ -327,21 +327,29 @@ The fact that a simple logistic regression classifier, trained on TRIBE v2's pre
 
 ## References
 
+- Alexander, W. H., & Brown, J. W. (2019). The role of the anterior cingulate cortex in prediction error and signaling surprise. *Topics in Cognitive Science*, 11(1), 106-120.
 - Bekinschtein, T. A., et al. (2011). Why clowns taste funny: The relationship between humor and semantic ambiguity. *Journal of Neuroscience*, 31(26), 9665-9671.
+- Binder, J. R., et al. (2005). Distinct brain systems for processing concrete and abstract concepts. *Journal of Cognitive Neuroscience*, 17(6), 905-917.
 - Binder, J. R., et al. (2009). Where is the semantic system? A critical review and meta-analysis of 120 functional neuroimaging studies. *Cerebral Cortex*, 19(12), 2767-2796.
+- Bossaerts, P. (2010). Risk and risk prediction error signals in anterior insula. *Brain Structure and Function*, 214, 645-653.
 - Cavanna, A. E., & Trimble, M. R. (2006). The precuneus: A review of its functional anatomy and behavioural correlates. *Brain*, 129(3), 564-583.
 - Chan, Y. C., et al. (2013). Segregating the comprehension and elaboration processing of verbal jokes. *NeuroImage*, 61(4), 899-906.
 - Cheng, C. M., et al. (2017). To resolve or not to resolve: The dual-path model of incongruity resolution and absurd verbal humor. *Frontiers in Psychology*, 8, 498.
+- Curtis, C. E., & D'Esposito, M. (2003). Persistent activity in the prefrontal cortex during working memory. *Trends in Cognitive Sciences*, 7(9), 415-423.
+- Davis, B., Christie, J., & Rorden, C. (2009). Temporal order judgments activate temporal parietal junction. *Journal of Neuroscience*, 29(10), 3182-3188.
 - Deen, B., et al. (2015). Functional organization of social perception and cognition in the superior temporal sulcus. *Cerebral Cortex*, 25(11), 4596-4609.
 - Desai, R. H., et al. (2011). The neural career of sensory-motor metaphors. *Journal of Cognitive Neuroscience*, 23(9), 2376-2386.
 - Epstein, R., & Kanwisher, N. (1998). A cortical representation of the local visual environment. *Nature*, 392(6676), 598-601.
+- Fischer, J., et al. (2016). Functional neuroanatomy of intuitive physical inference. *PNAS*, 113(34), E5072-E5081.
+- Haufler, A. J., et al. (2022). Human anterior insula signals salience and deviations from expectations via bursts of beta oscillations. *Journal of Neurophysiology*, 128(1), 160-176.
 - Hertrich, I., et al. (2021). The role of the dorsolateral prefrontal cortex for speech and language processing. *Frontiers in Human Neuroscience*, 15, 645209.
-- Lacey, S., et al. (2012). Metaphorically feeling: Comprehending textural metaphors activates somatosensory cortex. *Brain and Language*, 120(3), 416-421.
+- Kringelbach, M. L. (2005). The human orbitofrontal cortex: Linking reward to hedonic experience. *Nature Reviews Neuroscience*, 6(9), 691-702.
+- Limongi, R., et al. (2013). Temporal prediction errors modulate cingulate-insular coupling. *NeuroImage*, 71, 147-157.
 - Nakamura, T., et al. (2018). The relationship between self-enhancing humor and precuneus volume. *Scientific Reports*, 8, 5540.
 - Patterson, K., et al. (2007). Where do you know what you know? The representation of semantic knowledge in the human brain. *Nature Reviews Neuroscience*, 8(12), 976-987.
+- Pobric, G., et al. (2007). Conceptual knowledge is underpinned by the temporal pole bilaterally: Convergent evidence from rTMS. *Cerebral Cortex*, 17(10), 2461-2468.
 - Popham, S. F., et al. (2021). Visual and linguistic semantic representations are aligned at the border of human visual cortex. *Nature Neuroscience*, 24, 1628-1636.
 - Rapp, A. M., et al. (2012). Neural correlates of metaphor processing. *Neuropsychologia*, 50(11), 2348-2360.
 - Schwettmann, S., et al. (2019). Invariant representations of mass in the human brain. *eLife*, 8, e46619.
 - Seghier, M. L. (2013). The angular gyrus: Multiple functions and multiple subdivisions. *The Neuroscientist*, 19(1), 43-61.
-- Takahashi, T., et al. (2013). Temporal order judgments activate temporal parietal junction. *Journal of Neuroscience*, 33(34), 13758-13765.
-- Wiech, K., et al. (2013). Temporal prediction errors modulate cingulate-insular coupling. *NeuroImage*, 76, 59-68.
+- Subramaniam, K., et al. (2013). Positively valenced stimuli facilitate creative novel metaphoric processes. *Frontiers in Psychology*, 4, 211.
