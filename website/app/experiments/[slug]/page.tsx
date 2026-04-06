@@ -31,9 +31,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 const statusConfig: Record<string, { label: string; color: string; bg: string }> = {
-  completed: { label: "Completed", color: "text-emerald-700", bg: "bg-emerald-50" },
-  running: { label: "Running", color: "text-amber-700", bg: "bg-amber-50" },
-  planned: { label: "Planned", color: "text-[#9C9488]", bg: "bg-[#EDE8DE]" },
+  completed: { label: "Completed", color: "text-emerald-300", bg: "bg-emerald-950/40" },
+  running: { label: "Running", color: "text-amber-300", bg: "bg-amber-950/40" },
+  planned: { label: "Planned", color: "text-muted-foreground", bg: "bg-white/10" },
 }
 
 const typeLabels: Record<string, string> = {
@@ -56,7 +56,7 @@ export default async function ExperimentPage({ params }: PageProps) {
       <main className="mx-auto max-w-4xl px-6 py-12">
         <Link
           href="/experiments"
-          className="inline-flex items-center gap-1.5 text-sm text-[#9C9488] hover:text-[#6B6459] transition-colors mb-8"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="opacity-60">
             <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -70,20 +70,20 @@ export default async function ExperimentPage({ params }: PageProps) {
             <span className={`inline-flex items-center rounded px-2 py-0.5 text-xs font-medium ${status.color} ${status.bg}`}>
               {status.label}
             </span>
-            <span className="text-xs text-[#9C9488] border border-border rounded px-2 py-0.5">
+            <span className="text-xs text-muted-foreground border border-border rounded px-2 py-0.5">
               {typeLabels[experiment.type]}
             </span>
-            <span className="text-xs text-[#9C9488] tabular-nums">{experiment.date}</span>
+            <span className="text-xs text-muted-foreground tabular-nums">{experiment.date}</span>
           </div>
           <h1 className="font-serif text-3xl font-medium text-foreground mb-3 md:text-4xl">
             {experiment.name}
           </h1>
-          <p className="text-base text-[#6B6459] leading-relaxed max-w-2xl">
+          <p className="text-base text-foreground/85 leading-relaxed max-w-2xl">
             {experiment.description}
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
             {experiment.tags.map((tag) => (
-              <span key={tag} className="text-xs text-[#9C9488] border border-border/60 rounded-full px-2.5 py-0.5">
+              <span key={tag} className="text-xs text-muted-foreground border border-border/60 rounded-full px-2.5 py-0.5">
                 {tag}
               </span>
             ))}
@@ -92,9 +92,9 @@ export default async function ExperimentPage({ params }: PageProps) {
 
         {/* No results yet */}
         {!results && (
-          <div className="border border-border rounded-md p-12 text-center">
-            <p className="font-serif text-lg text-[#6B6459] mb-2">No results yet</p>
-            <p className="text-sm text-[#9C9488]">
+          <div className="border border-border rounded-md bg-card/50 p-12 text-center">
+            <p className="font-serif text-lg text-foreground/85 mb-2">No results yet</p>
+            <p className="text-sm text-muted-foreground">
               This experiment is {experiment.status === "planned" ? "planned" : "currently running"}.
               Results will appear here once available.
             </p>
@@ -106,13 +106,13 @@ export default async function ExperimentPage({ params }: PageProps) {
           <div className="space-y-12">
             {/* Summary */}
             <section>
-              <h2 className="text-xs uppercase tracking-widest text-[#9C9488] mb-4">Summary</h2>
-              <p className="text-sm text-[#6B6459] leading-relaxed max-w-2xl">{results.summary}</p>
+              <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-4">Summary</h2>
+              <p className="text-sm text-foreground/85 leading-relaxed max-w-2xl">{results.summary}</p>
             </section>
 
             {/* Key metrics */}
             <section>
-              <h2 className="text-xs uppercase tracking-widest text-[#9C9488] mb-4">Key metrics</h2>
+              <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-4">Key metrics</h2>
               <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
                 {results.metrics.map((m) => (
                   <MetricCard key={m.label} metric={m} />
@@ -123,7 +123,7 @@ export default async function ExperimentPage({ params }: PageProps) {
             {/* Confusion matrix */}
             {results.confusionMatrix && (
               <section>
-                <h2 className="text-xs uppercase tracking-widest text-[#9C9488] mb-4">
+                <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
                   Confusion matrix
                 </h2>
                 <ConfusionMatrix data={results.confusionMatrix} />
@@ -133,7 +133,7 @@ export default async function ExperimentPage({ params }: PageProps) {
             {/* Classification report */}
             {results.classificationReport && (
               <section>
-                <h2 className="text-xs uppercase tracking-widest text-[#9C9488] mb-4">
+                <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
                   Classification report
                 </h2>
                 <div className="max-w-lg">
@@ -145,7 +145,7 @@ export default async function ExperimentPage({ params }: PageProps) {
             {/* Scatter plot */}
             {results.scatterData && results.scatterData.length > 0 && (
               <section>
-                <h2 className="text-xs uppercase tracking-widest text-[#9C9488] mb-4">
+                <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
                   {experiment.type === "regression"
                     ? "Predicted vs actual"
                     : "PCA projection"}
@@ -164,16 +164,16 @@ export default async function ExperimentPage({ params }: PageProps) {
             {/* Discriminative brain regions */}
             {results.brainRegions && (
               <section>
-                <h2 className="text-xs uppercase tracking-widest text-[#9C9488] mb-4">
+                <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
                   Discriminative brain regions
                 </h2>
                 <BrainRegions data={results.brainRegions} />
                 {discussions[slug] && (
-                  <p className="text-sm text-[#6B6459] mt-6 leading-relaxed">
+                  <p className="text-sm text-foreground/85 mt-6 leading-relaxed">
                     Interested in what these regions mean?{" "}
                     <Link
                       href={`/experiments/${slug}/discussion`}
-                      className="text-foreground underline underline-offset-4 decoration-[#C4704B]/40 hover:decoration-[#C4704B] hover:text-[#C4704B] transition-colors"
+                      className="text-foreground underline underline-offset-4 decoration-accent/40 hover:decoration-accent hover:text-accent transition-colors"
                     >
                       Read the full discussion
                     </Link>{" "}
@@ -186,7 +186,7 @@ export default async function ExperimentPage({ params }: PageProps) {
             {/* Figures */}
             {results.figures && results.figures.length > 0 && (
               <section>
-                <h2 className="text-xs uppercase tracking-widest text-[#9C9488] mb-6">
+                <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-6">
                   Figures
                 </h2>
                 <div className="space-y-8">
@@ -204,8 +204,8 @@ export default async function ExperimentPage({ params }: PageProps) {
                           />
                         </div>
                       ) : (
-                        <div className="bg-[#EDE8DE]/30 h-48 flex items-center justify-center">
-                          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9C9488" strokeWidth="1.5" className="opacity-40">
+                        <div className="bg-card/60 h-48 flex items-center justify-center">
+                          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="opacity-40 text-muted-foreground">
                             <rect x="3" y="3" width="18" height="18" rx="2" />
                             <circle cx="8.5" cy="8.5" r="1.5" />
                             <path d="M21 15l-5-5L5 21" />
@@ -214,7 +214,7 @@ export default async function ExperimentPage({ params }: PageProps) {
                       )}
                       <div className="px-4 py-3 border-t border-border">
                         <p className="font-serif text-sm font-medium text-foreground">{fig.label}</p>
-                        <p className="text-xs text-[#9C9488] leading-relaxed mt-0.5">{fig.description}</p>
+                        <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">{fig.description}</p>
                       </div>
                     </div>
                   ))}
@@ -227,12 +227,12 @@ export default async function ExperimentPage({ params }: PageProps) {
 
         {/* Footer */}
         <div className="mt-16 border-t border-border pt-8 flex items-center justify-between">
-          <p className="text-xs text-[#9C9488]">
+          <p className="text-xs text-muted-foreground">
             Experiment data excludes raw stimuli and large prediction arrays.
           </p>
           <Link
             href="/experiments"
-            className="text-sm text-[#6B6459] hover:text-[#C4704B] transition-colors"
+            className="text-sm text-foreground/85 hover:text-accent transition-colors"
           >
             Back to experiments
           </Link>

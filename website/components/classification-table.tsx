@@ -11,19 +11,19 @@ export default function ClassificationTable({ rows }: { rows: ClassificationRepo
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-border">
-            <th className="text-left py-2 pr-4 text-xs uppercase tracking-wider text-[#9C9488] font-medium">
+            <th className="text-left py-2 pr-4 text-xs uppercase tracking-wider text-muted-foreground font-medium">
               Class
             </th>
-            <th className="text-right py-2 px-4 text-xs uppercase tracking-wider text-[#9C9488] font-medium">
+            <th className="text-right py-2 px-4 text-xs uppercase tracking-wider text-muted-foreground font-medium">
               Precision
             </th>
-            <th className="text-right py-2 px-4 text-xs uppercase tracking-wider text-[#9C9488] font-medium">
+            <th className="text-right py-2 px-4 text-xs uppercase tracking-wider text-muted-foreground font-medium">
               Recall
             </th>
-            <th className="text-right py-2 px-4 text-xs uppercase tracking-wider text-[#9C9488] font-medium">
+            <th className="text-right py-2 px-4 text-xs uppercase tracking-wider text-muted-foreground font-medium">
               F1
             </th>
-            <th className="text-right py-2 pl-4 text-xs uppercase tracking-wider text-[#9C9488] font-medium">
+            <th className="text-right py-2 pl-4 text-xs uppercase tracking-wider text-muted-foreground font-medium">
               Support
             </th>
           </tr>
@@ -32,14 +32,14 @@ export default function ClassificationTable({ rows }: { rows: ClassificationRepo
           {rows.map((row) => (
             <tr key={row.label} className="border-b border-border/50">
               <td className="py-2.5 pr-4 font-serif font-medium text-foreground">{row.label}</td>
-              <td className="py-2.5 px-4 text-right tabular-nums text-[#6B6459]">{row.precision.toFixed(2)}</td>
-              <td className="py-2.5 px-4 text-right tabular-nums text-[#6B6459]">{row.recall.toFixed(2)}</td>
-              <td className="py-2.5 px-4 text-right tabular-nums text-[#6B6459]">{row.f1.toFixed(2)}</td>
-              <td className="py-2.5 pl-4 text-right tabular-nums text-[#9C9488]">{row.support}</td>
+              <td className="py-2.5 px-4 text-right tabular-nums text-foreground/85">{row.precision.toFixed(2)}</td>
+              <td className="py-2.5 px-4 text-right tabular-nums text-foreground/85">{row.recall.toFixed(2)}</td>
+              <td className="py-2.5 px-4 text-right tabular-nums text-foreground/85">{row.f1.toFixed(2)}</td>
+              <td className="py-2.5 pl-4 text-right tabular-nums text-muted-foreground">{row.support}</td>
             </tr>
           ))}
           <tr className="border-t border-border">
-            <td className="py-2.5 pr-4 text-xs uppercase tracking-wider text-[#9C9488] font-medium">
+            <td className="py-2.5 pr-4 text-xs uppercase tracking-wider text-muted-foreground font-medium">
               Macro avg
             </td>
             <td className="py-2.5 px-4 text-right tabular-nums font-medium text-foreground">
@@ -51,7 +51,7 @@ export default function ClassificationTable({ rows }: { rows: ClassificationRepo
             <td className="py-2.5 px-4 text-right tabular-nums font-medium text-foreground">
               {avgF1.toFixed(2)}
             </td>
-            <td className="py-2.5 pl-4 text-right tabular-nums text-[#9C9488]">{totalSupport}</td>
+            <td className="py-2.5 pl-4 text-right tabular-nums text-muted-foreground">{totalSupport}</td>
           </tr>
         </tbody>
       </table>

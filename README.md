@@ -4,8 +4,6 @@ In-silico neuroscience experiments using [TRIBE v2](https://github.com/facebookr
 
 **What this repo is for:** This is a **public record** of how analyses and figures were produced: code, configs, stimuli, and experiment layouts are here so anyone can **inspect the reasoning and pipeline**, not so the project reads as a polished, supported “clone and reproduce” kit. I host a small site separately; what you see on GitHub is mainly **methodology and provenance**.
 
-Type text, see which brain regions respond — conceptually, via TRIBE v2. No scanner required for the encoding side of the story.
-
 ## What you can see here
 
 - **`experiments/`** — Per-study folders: `run.py`, configs, stimuli, and (where committed) outputs or paths to how results were derived.

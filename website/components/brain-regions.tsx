@@ -2,7 +2,7 @@ import type { BrainRegionAnalysis } from "@/lib/experiments"
 
 function RegionBar({ percentage, color }: { percentage: number; color: string }) {
   return (
-    <div className="h-1.5 w-full rounded-full bg-[#EDE8DE] overflow-hidden">
+    <div className="h-1.5 w-full rounded-full bg-white/15 overflow-hidden">
       <div
         className="h-full rounded-full transition-all duration-500"
         style={{ width: `${Math.min(percentage * 5, 100)}%`, backgroundColor: color }}
@@ -16,13 +16,13 @@ export default function BrainRegions({ data }: { data: BrainRegionAnalysis }) {
     <div className="space-y-8">
       <div className="flex flex-wrap gap-4 text-sm">
         <div className="rounded border border-border px-3 py-2">
-          <span className="text-[#9C9488] text-xs">Sparsity</span>
+          <span className="text-muted-foreground text-xs">Sparsity</span>
           <p className="font-semibold tabular-nums text-foreground">{data.sparsity}%</p>
         </div>
         <div className="rounded border border-border px-3 py-2">
-          <span className="text-[#9C9488] text-xs">Active vertices</span>
+          <span className="text-muted-foreground text-xs">Active vertices</span>
           <p className="font-semibold tabular-nums text-foreground">
-            {data.nonZeroVertices} <span className="text-[#9C9488] font-normal">/ {data.totalVertices.toLocaleString()}</span>
+            {data.nonZeroVertices} <span className="text-muted-foreground font-normal">/ {data.totalVertices.toLocaleString()}</span>
           </p>
         </div>
       </div>
@@ -32,7 +32,7 @@ export default function BrainRegions({ data }: { data: BrainRegionAnalysis }) {
         <div>
           <div className="flex items-center gap-2 mb-4">
             <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#E74C3C]" />
-            <h3 className="text-xs uppercase tracking-widest text-[#9C9488]">
+            <h3 className="text-xs uppercase tracking-widest text-muted-foreground">
               {data.positiveLabel}
             </h3>
           </div>
@@ -48,7 +48,7 @@ export default function BrainRegions({ data }: { data: BrainRegionAnalysis }) {
                   </span>
                 </div>
                 <RegionBar percentage={region.percentage} color="#E74C3C" />
-                {region.role && <p className="text-[11px] text-[#9C9488] mt-1.5 leading-relaxed">{region.role}</p>}
+                {region.role && <p className="text-[11px] text-muted-foreground mt-1.5 leading-relaxed">{region.role}</p>}
               </div>
             ))}
           </div>
@@ -58,7 +58,7 @@ export default function BrainRegions({ data }: { data: BrainRegionAnalysis }) {
         <div>
           <div className="flex items-center gap-2 mb-4">
             <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#3498DB]" />
-            <h3 className="text-xs uppercase tracking-widest text-[#9C9488]">
+            <h3 className="text-xs uppercase tracking-widest text-muted-foreground">
               {data.negativeLabel}
             </h3>
           </div>
@@ -74,14 +74,14 @@ export default function BrainRegions({ data }: { data: BrainRegionAnalysis }) {
                   </span>
                 </div>
                 <RegionBar percentage={region.percentage} color="#3498DB" />
-                {region.role && <p className="text-[11px] text-[#9C9488] mt-1.5 leading-relaxed">{region.role}</p>}
+                {region.role && <p className="text-[11px] text-muted-foreground mt-1.5 leading-relaxed">{region.role}</p>}
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <p className="text-[11px] text-[#9C9488] leading-relaxed">
+      <p className="text-[11px] text-muted-foreground leading-relaxed">
         Regions identified via L1-regularized logistic regression weights mapped onto the Destrieux cortical atlas (fsaverage5).
         Percentages reflect each region&apos;s share of total cortical weight for its category (excluding medial wall vertices).
       </p>

@@ -14,24 +14,22 @@ export default function Navbar() {
         <nav className="flex items-center gap-7">
           <Link
             href="/experiments"
-            className="text-sm text-[#6B6459] hover:text-foreground transition-colors"
+            className="text-sm text-foreground/80 hover:text-foreground transition-colors"
           >
             Experiments
           </Link>
           <Link
             href="/about"
-            className="text-sm text-[#6B6459] hover:text-foreground transition-colors"
+            className="text-sm text-foreground/80 hover:text-foreground transition-colors"
           >
             About
           </Link>
-          <a
-            href="https://github.com/cuevase/insilico"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-[#6B6459] hover:text-foreground transition-colors"
+          <Link
+            href="/contact"
+            className="text-sm text-foreground/80 hover:text-foreground transition-colors"
           >
-            GitHub
-          </a>
+            Contact
+          </Link>
         </nav>
       </div>
     </header>

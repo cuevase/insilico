@@ -16,7 +16,7 @@ const GROUP_COLORS: Record<string, string> = {
   neutral: "#3498DB",
 }
 
-const DEFAULT_COLOR = "#C4704B"
+const DEFAULT_COLOR = "#ffc8be"
 
 export default function ScatterPlot({
   data,
@@ -57,10 +57,10 @@ export default function ScatterPlot({
       <div className="relative border border-border rounded-md bg-background overflow-hidden" style={{ height }}>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full">
           {[0, 25, 50, 75, 100].map((v) => (
-            <line key={`h-${v}`} x1="0" x2="100" y1={v} y2={v} stroke="#EDE8DE" strokeWidth="0.3" />
+            <line key={`h-${v}`} x1="0" x2="100" y1={v} y2={v} stroke="rgba(255,255,255,0.18)" strokeWidth="0.3" />
           ))}
           {[0, 25, 50, 75, 100].map((v) => (
-            <line key={`v-${v}`} x1={v} x2={v} y1="0" y2="100" stroke="#EDE8DE" strokeWidth="0.3" />
+            <line key={`v-${v}`} x1={v} x2={v} y1="0" y2="100" stroke="rgba(255,255,255,0.18)" strokeWidth="0.3" />
           ))}
         </svg>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full">
@@ -79,19 +79,19 @@ export default function ScatterPlot({
           ))}
         </svg>
 
-        <div className="absolute bottom-1.5 left-0 right-0 flex justify-between px-3 text-[10px] text-[#9C9488] tabular-nums">
+        <div className="absolute bottom-1.5 left-0 right-0 flex justify-between px-3 text-[10px] text-muted-foreground tabular-nums">
           <span>{xRange.min.toFixed(1)}</span>
           <span>{((xRange.min + xRange.max) / 2).toFixed(1)}</span>
           <span>{xRange.max.toFixed(1)}</span>
         </div>
-        <div className="absolute top-0 bottom-0 left-1.5 flex flex-col justify-between py-3 text-[10px] text-[#9C9488] tabular-nums">
+        <div className="absolute top-0 bottom-0 left-1.5 flex flex-col justify-between py-3 text-[10px] text-muted-foreground tabular-nums">
           <span>{yRange.max.toFixed(1)}</span>
           <span>{yRange.min.toFixed(1)}</span>
         </div>
       </div>
 
       <div className="flex items-center justify-between mt-2">
-        <p className="text-xs text-[#9C9488]">{xLabel}</p>
+        <p className="text-xs text-muted-foreground">{xLabel}</p>
         {groups.length > 0 && (
           <div className="flex items-center gap-3">
             {groups.map((g) => (
@@ -100,13 +100,13 @@ export default function ScatterPlot({
                   className="inline-block h-2 w-2 rounded-full"
                   style={{ backgroundColor: GROUP_COLORS[g] ?? DEFAULT_COLOR }}
                 />
-                <span className="text-xs text-[#9C9488] capitalize">{g}</span>
+                <span className="text-xs text-muted-foreground capitalize">{g}</span>
               </div>
             ))}
           </div>
         )}
       </div>
-      <p className="text-xs text-[#9C9488] -rotate-0 mt-0">{yLabel}</p>
+      <p className="text-xs text-muted-foreground -rotate-0 mt-0">{yLabel}</p>
     </div>
   )
 }
