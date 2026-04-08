@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Navbar from "@/components/navbar"
-import { SITE_NAME } from "@/lib/site"
+import { SITE_NAME, TRIBE_V2_PUBLICATION_URL } from "@/lib/site"
 import ExperimentCard from "@/components/experiment-card"
 import { experiments } from "@/lib/experiments"
 
@@ -35,7 +35,7 @@ export default function HomePage() {
             </a>{" "}
             using{" "}
             <a
-              href="https://ai.meta.com/research/publications/a-foundation-model-of-vision-audition-and-language-for-in-silico-neuroscience/"
+              href={TRIBE_V2_PUBLICATION_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="text-foreground underline underline-offset-4 hover:text-accent transition-colors"

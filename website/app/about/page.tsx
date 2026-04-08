@@ -1,6 +1,5 @@
 import Navbar from '@/components/navbar'
-import Link from 'next/link'
-import { SITE_NAME } from '@/lib/site'
+import { SITE_NAME, TRIBE_V2_PUBLICATION_URL } from '@/lib/site'
 
 export default function AboutPage() {
   return (
@@ -25,7 +24,7 @@ export default function AboutPage() {
             <p>
               The engine behind every experiment is{" "}
               <a
-                href="https://arxiv.org/abs/2401.13765"
+                href={TRIBE_V2_PUBLICATION_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-foreground underline underline-offset-4 hover:text-accent transition-colors"
@@ -63,7 +62,7 @@ export default function AboutPage() {
           <div className="border-t border-border pt-8 space-y-3 text-sm text-muted-foreground">
             <p>
               <a
-                href="https://arxiv.org/abs/2401.13765"
+                href={TRIBE_V2_PUBLICATION_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-foreground/85 underline underline-offset-4 hover:text-foreground transition-colors"
