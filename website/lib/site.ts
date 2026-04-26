@@ -1,5 +1,5 @@
 /** Lab name shown in the UI, nav, and page titles. */
-export const SITE_NAME = "Emiliano's Insilico Lab"
+export const SITE_NAME = "Emiliano's Lab"
 
 /** Public contact email (mailto). */
 export const CONTACT_EMAIL = "cuevase@stanford.edu"

@@ -43,7 +43,10 @@ export default function ExperimentCard({ experiment }: { experiment: Experiment 
           <span className="text-xs text-muted-foreground border border-border rounded px-2 py-0.5">
             {typeLabels[experiment.type]}
           </span>
-          {experiment.nStimuli && (
+          {experiment.nEpochs && (
+            <span className="text-xs text-muted-foreground">{experiment.nEpochs} epochs</span>
+          )}
+          {experiment.nStimuli && !experiment.nEpochs && (
             <span className="text-xs text-muted-foreground">{experiment.nStimuli} stimuli</span>
           )}
         </div>

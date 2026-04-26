@@ -12,17 +12,27 @@ export default function AboutPage() {
 
         <div className="space-y-8 text-base text-foreground/85 leading-relaxed">
           <p className="text-lg leading-relaxed">
-            This project is a collection of in-silico neuroscience experiments built by{" "}
-            <a href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b" target="_blank" rel="noopener noreferrer" className="text-foreground underline underline-offset-4 hover:text-accent transition-colors">Emiliano Cuevas</a>.
-            The idea is simple: instead of putting people in an MRI scanner, we use a computational
-            model to predict what the brain would do — then run experiments on those predictions
-            to see what we can learn.
+            {SITE_NAME} is a home for neuroscience experiments built by{' '}
+            <a
+              href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground underline underline-offset-4 hover:text-accent transition-colors"
+            >
+              Emiliano Cuevas
+            </a>
+            . Work here spans computational approaches (predicting or encoding brain responses)
+            and empirical methods (for example EEG and other recordings). The goal is the same in
+            every study: pose a clear question, use appropriate data, and interpret results
+            carefully.
           </p>
 
           <div>
-            <h2 className="font-serif text-lg font-medium text-foreground mb-3">The model: TRIBE v2</h2>
+            <h2 className="font-serif text-lg font-medium text-foreground mb-3">
+              Computational & in-silico studies
+            </h2>
             <p>
-              The engine behind every experiment is{" "}
+              Several experiments use{' '}
               <a
                 href={TRIBE_V2_PUBLICATION_URL}
                 target="_blank"
@@ -30,32 +40,49 @@ export default function AboutPage() {
                 className="text-foreground underline underline-offset-4 hover:text-accent transition-colors"
               >
                 TRIBE v2
-              </a>, a multimodal brain encoding model developed by Meta Research.
-              It was trained on over 1,000 hours of neuroimaging data across 720 subjects and can
-              predict the fMRI response of the human cortex to arbitrary text, audio, and video inputs.
-              This project uses the &ldquo;unseen subject&rdquo; mode, which returns group-average
-              predictions rather than individual brain responses.
+              </a>
+              , a multimodal brain encoding model from Meta Research. It was trained on over
+              1,000 hours of neuroimaging data across 720 subjects and can predict the fMRI
+              response of the human cortex to text, audio, and video inputs. Those projects use
+              the &ldquo;unseen subject&rdquo; mode, which returns group-average predictions rather
+              than individual brain responses — useful for asking what a model says about
+              condition differences without collecting new fMRI.
             </p>
           </div>
 
           <div>
-            <h2 className="font-serif text-lg font-medium text-foreground mb-3">What does &ldquo;in silico&rdquo; mean?</h2>
+            <h2 className="font-serif text-lg font-medium text-foreground mb-3">
+              Empirical recordings
+            </h2>
             <p>
-              In silico is Latin for &ldquo;in silicon&rdquo; — experiments performed on a computer,
-              as opposed to in vitro (in glass) or in vivo (in living organisms). Here, it means
-              predicting brain activity computationally rather than measuring it in a scanner.
+              Other experiments use data measured directly from participants — such as EEG —
+              with standard acquisition, preprocessing, and analysis pipelines. Those write-ups
+              focus on design, signal processing, and inference for that modality.
             </p>
           </div>
 
           <div>
-            <h2 className="font-serif text-lg font-medium text-foreground mb-3">How the experiments work</h2>
+            <h2 className="font-serif text-lg font-medium text-foreground mb-3">
+              What does &ldquo;in silico&rdquo; mean?
+            </h2>
             <p>
-              Each experiment follows the same pattern: feed carefully chosen stimuli (text or video)
-              into TRIBE v2 to generate predicted brain activation maps — 20,484 cortical vertices per
-              sample. Then train a classifier on those maps to see whether the brain representations
-              alone can distinguish between conditions (e.g., humor vs. neutral, metaphor vs. literal,
-              real physics vs. reversed). If the classifier succeeds, it tells us something about how
-              the brain encodes those distinctions — and which regions matter most.
+              In silico is Latin for &ldquo;in silicon&rdquo; — experiments performed on a
+              computer, as opposed to in vitro (in glass) or in vivo (in living organisms). Here,
+              it usually means predicting or simulating brain activity computationally rather than
+              measuring it in a scanner, though the lab also includes in vivo recording work.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="font-serif text-lg font-medium text-foreground mb-3">
+              How the experiments are organized
+            </h2>
+            <p>
+              In-silico studies often follow a fixed pattern: feed stimuli into an encoding model
+              to obtain predicted cortical maps (for TRIBE v2, 20,484 vertices per sample), then
+              train a classifier or run statistics to test whether representations differ across
+              conditions. Empirical studies follow whatever pipeline fits the hypothesis and the
+              recording setup. Each experiment page documents its own methods and limitations.
             </p>
           </div>
 
@@ -72,8 +99,15 @@ export default function AboutPage() {
             </p>
             <p>
               Built by{' '}
-              <a href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b" target="_blank" rel="noopener noreferrer" className="text-foreground/85 underline underline-offset-4 hover:text-foreground transition-colors">Emiliano Cuevas</a>
-              {' '}— a research prototype, not for clinical use.
+              <a
+                href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-foreground/85 underline underline-offset-4 hover:text-foreground transition-colors"
+              >
+                Emiliano Cuevas
+              </a>{' '}
+              — a research prototype, not for clinical use.
             </p>
           </div>
         </div>

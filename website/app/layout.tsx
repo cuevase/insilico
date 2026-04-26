@@ -13,8 +13,9 @@ const courierPrime = Courier_Prime({
 })
 
 export const metadata: Metadata = {
-  title: `${SITE_NAME} — In-Silico Neuroscience Experiments`,
-  description: 'A collection of in-silico neuroscience experiments using TRIBE v2, a multimodal brain encoding model from Meta Research. Built by Emiliano Cuevas.',
+  title: `${SITE_NAME} — Neuroscience Experiments`,
+  description:
+    'Neuroscience experiments spanning computational brain encoding, in-silico modeling, and empirical methods such as EEG. Built by Emiliano Cuevas.',
 }
 
 export default function RootLayout({

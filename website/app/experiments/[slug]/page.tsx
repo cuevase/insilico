@@ -7,7 +7,7 @@ import ConfusionMatrix from "@/components/confusion-matrix"
 import ClassificationTable from "@/components/classification-table"
 import ScatterPlot from "@/components/scatter-plot"
 import BrainRegions from "@/components/brain-regions"
-import { experiments, getExperiment } from "@/lib/experiments"
+import { experiments, getExperiment, type ExperimentVideo } from "@/lib/experiments"
 import { discussions } from "@/lib/discussions"
 import { SITE_NAME } from "@/lib/site"
 import type { Metadata } from "next"
@@ -40,6 +40,43 @@ const typeLabels: Record<string, string> = {
   classification: "Classification",
   regression: "Regression",
   encoding: "Encoding",
+}
+
+function youtubeEmbedId(url: string): string | null {
+  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/)
+  return m?.[1] ?? null
+}
+
+function ExperimentVideoBlock({ video }: { video: ExperimentVideo }) {
+  const ytId = youtubeEmbedId(video.src)
+  return (
+    <figure className="space-y-3">
+      <div className="rounded-md border border-border overflow-hidden bg-black aspect-video max-h-[70vh]">
+        {ytId ? (
+          <iframe
+            title={video.caption ?? "Experiment video"}
+            src={`https://www.youtube-nocookie.com/embed/${ytId}`}
+            className="w-full h-full min-h-[220px]"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        ) : (
+          <video
+            controls
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-contain max-h-[70vh]"
+            src={video.src}
+          >
+            Your browser does not support embedded video.
+          </video>
+        )}
+      </div>
+      {video.caption && (
+        <figcaption className="text-xs text-muted-foreground leading-relaxed">{video.caption}</figcaption>
+      )}
+    </figure>
+  )
 }
 
 export default async function ExperimentPage({ params }: PageProps) {
@@ -88,6 +125,28 @@ export default async function ExperimentPage({ params }: PageProps) {
               </span>
             ))}
           </div>
+
+          {(experiment.repositoryUrl || experiment.video) && (
+            <div className="mt-10 space-y-8 max-w-3xl">
+              <h2 className="text-xs uppercase tracking-widest text-muted-foreground">Code &amp; media</h2>
+              {experiment.repositoryUrl && (
+                <p className="text-sm text-foreground/85">
+                  <a
+                    href={experiment.repositoryUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-foreground font-medium underline underline-offset-4 hover:text-accent transition-colors"
+                  >
+                    {experiment.repositoryUrl.includes("github.com") ? "View on GitHub" : "Open repository"}
+                    <span aria-hidden className="text-muted-foreground">
+                      ↗
+                    </span>
+                  </a>
+                </p>
+              )}
+              {experiment.video && <ExperimentVideoBlock video={experiment.video} />}
+            </div>
+          )}
         </div>
 
         {/* No results yet */}

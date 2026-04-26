@@ -57,6 +57,12 @@ export interface ExperimentResults {
   brainRegions?: BrainRegionAnalysis
 }
 
+export interface ExperimentVideo {
+  /** Public path (e.g. /experiments/neuromotion/demo.mp4) or full URL to an MP4/WebM file. */
+  src: string
+  caption?: string
+}
+
 export interface Experiment {
   slug: string
   name: string
@@ -68,6 +74,11 @@ export interface Experiment {
   date: string
   nStimuli?: number
   nFolds?: number
+  /** For EEG / trial-based studies (shown on cards instead of nStimuli when set). */
+  nEpochs?: number
+  /** Source code or project page (e.g. GitHub). */
+  repositoryUrl?: string
+  video?: ExperimentVideo
   results?: ExperimentResults
   tags: string[]
 }
@@ -382,6 +393,69 @@ export const experiments: Experiment[] = [
           description: "Logistic regression weights on the right medial surface.",
           imagePath: "/experiments/physics/weights_right_medial.png",
         },
+      ],
+    },
+  },
+  {
+    slug: "neuromotion",
+    name: "Neuromotion — motor imagery EEG (OpenBCI Cyton)",
+    shortName: "Neuromotion",
+    description:
+      "Open-source motor-imagery EEG stack for the OpenBCI Cyton (8 channels at 250 Hz, optional Cyton+Daisy at 16 ch / 125 Hz): BrainFlow acquisition, Graz-style recording with pygame, multi-session FIF pooling, pyRiemann training (tangent space + LR, MDM, CSP+LDA), and real-time classification with an inference UI. See the repository for CLI, SDK, montage, and signal-quality notes.",
+    question: "Can imagined hand and foot movements be decoded from consumer-grade EEG?",
+    status: "completed",
+    type: "classification",
+    date: "2026-04-18",
+    nEpochs: 290,
+    tags: ["EEG", "BCI", "motor imagery", "OpenBCI", "pyRiemann", "BrainFlow"],
+    repositoryUrl: "https://github.com/cuevase/neuromotion",
+    video: {
+      src: "/experiments/neuromotion/IMG_2165.MOV",
+      caption: "Live inference: motor-imagery three-class predictions.  Here I was purely thinking about contracting my right hand, left hand or pressing my feet. I stated beforehand what I was going to think about to let the viewer know. Left and right work pretty well, it struggled to work with UP.",
+    },
+    results: {
+      summary:
+        "On real recordings for subject emi (three sessions, 290 epochs), stratified 5-fold cross-validation gave 44.5% ± 5.7% accuracy for three-class left / right / up motor imagery with a tangent-space + logistic regression pipeline (chance 33%). Binary left vs right with MDM reached 64.7% ± 6.7% (chance 50%) and is described in the project as usable for applications today. The weaker “up” (feet) class is expected on montages that do not emphasize medial sensorimotor coverage; the README discusses swapping cues, montage, and hygiene factors that dominate performance.",
+      metrics: [
+        {
+          label: "3-class acc (CV)",
+          value: "44.5% ± 5.7%",
+          description: "Tangent space + LR; chance 33%",
+        },
+        {
+          label: "Binary L/R acc (CV)",
+          value: "64.7% ± 6.7%",
+          description: "MDM; chance 50%",
+        },
+        { label: "Epochs", value: 290, description: "Subject emi, 3 pooled sessions" },
+        { label: "Sampling", value: "250 Hz", description: "Cyton 8-channel default" },
+        { label: "Classes (3-cl.)", value: "3", description: "Left / right / up (feet imagery)" },
+        { label: "Code & data", value: "GitHub", description: "Acquisition through real-time inference" },
+      ],
+    },
+  },
+  {
+    slug: "p300-speller",
+    name: "P300 speller — OpenBCI Cyton",
+    shortName: "P300 speller",
+    description:
+      "P300 brain–computer interface with BrainFlow (EEG), PySide6 desktop UI, and a 6×6 row–column speller: connect the Cyton, run cued calibration in fullscreen, train a classifier from one or more saved sessions, then use online spelling with a loaded model. Session data, events, and trained weights follow a documented layout under data/<user>/.",
+    question: "Can a row–column P300 speller run end-to-end on OpenBCI hardware with a clear calibration-to-spelling workflow?",
+    status: "completed",
+    type: "classification",
+    date: "2026-04-25",
+    tags: ["EEG", "BCI", "P300", "OpenBCI", "BrainFlow", "PySide6", "scikit-learn"],
+    repositoryUrl: "https://github.com/cuevase/p300-speller",
+    results: {
+      summary:
+        "This project packages a full P300 pipeline in one app: BrainFlow streams from an OpenBCI Cyton (8 channels by default, optional Cyton+Daisy for 16), the subject copies cued characters on a 6×6 grid while data and events are written to timestamped session folders, training aggregates selected sessions into a joblib classifier plus a JSON metrics snapshot, and the online speller loads that model for letter-by-letter output with accumulated text. Optional audio cues announce target changes during calibration. Electrode routing is documented for 8-channel setups; connections-cyton.txt and config hooks cover non-default wiring.",
+      metrics: [
+        { label: "Paradigm", value: "6×6 RC", description: "Row–column speller" },
+        { label: "Stack", value: "BrainFlow + PySide6", description: "Acquisition and GUI" },
+        { label: "Workflow", value: "Cal → train → spell", description: "Calibration, session train, online use" },
+        { label: "Hardware", value: "Cyton", description: "8 ch; Daisy optional for 16 ch" },
+        { label: "Artifacts", value: "NPZ + joblib", description: "Per-session raw/events; saved model" },
+        { label: "Code", value: "GitHub", description: "pip install -e .; entry p300-speller" },
       ],
     },
   },

@@ -19,9 +19,8 @@ export default function HomePage() {
             {SITE_NAME}
           </h1>
           <p className="text-lg text-foreground/85 leading-relaxed max-w-2xl mb-4">
-            A collection of in-silico neuroscience experiments exploring what computational
-            brain encoding models can tell us about how the brain processes language, humor,
-            physics, and more.
+            A home for neuroscience experiments on language, cognition, and perception: using
+            both computational models and measured brain activity.
           </p>
           <p className="text-base text-foreground/85 leading-relaxed max-w-2xl">
             Built by{" "}
@@ -32,8 +31,8 @@ export default function HomePage() {
               className="text-foreground font-medium underline underline-offset-4 hover:text-accent transition-colors"
             >
               Emiliano Cuevas
-            </a>{" "}
-            using{" "}
+            </a>
+            . Some studies are in silico: they use{" "}
             <a
               href={TRIBE_V2_PUBLICATION_URL}
               target="_blank"
@@ -41,8 +40,9 @@ export default function HomePage() {
               className="text-foreground underline underline-offset-4 hover:text-accent transition-colors"
             >
               TRIBE v2
-            </a>
-            , a multimodal brain encoding model from Meta Research.
+            </a>{" "}
+            and related encoding models to predict cortical responses without a scanner. Others
+            use empirical recordings like EEGs. Each experiment page states its methods.
           </p>
         </div>
 
@@ -53,17 +53,24 @@ export default function HomePage() {
           </h2>
           <div className="space-y-4 text-sm text-foreground/85 leading-relaxed max-w-2xl">
             <p>
-              TRIBE v2 predicts the fMRI response of the human cortex to arbitrary stimuli —
-              text, audio, and video — by mapping neural network representations onto 20,484
-              cortical vertices. It was trained on large-scale neuroimaging data and can
-              generate whole-brain activation patterns for any input without needing a real
-              brain scan.
+              Across studies, the pattern is the same: choose stimuli and a question, collect or
+              simulate neural data, then analyze with statistics or machine learning. The
+              difference is the data source — predicted cortical maps from an encoding model,
+              scalp EEG, or another modality — which is always spelled out on the experiment page.
             </p>
             <p>
-              Each experiment takes a set of stimuli (sentences, videos, etc.), passes them
-              through the model to generate predicted brain responses, then applies machine
-              learning classifiers or statistical analyses to test a specific neuroscience
-              hypothesis — all in silico.
+              For in-silico work,{" "}
+              <a
+                href={TRIBE_V2_PUBLICATION_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-foreground underline underline-offset-4 hover:text-accent transition-colors"
+              >
+                TRIBE v2
+              </a>{" "}
+              predicts fMRI-style cortical responses to text, audio, or video by mapping network
+              features to 20,484 surface vertices, so whole-brain patterns can be explored without
+              running a new scan.
             </p>
           </div>
         </section>

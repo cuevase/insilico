@@ -5,7 +5,8 @@ import { SITE_NAME } from "@/lib/site"
 
 export const metadata = {
   title: `Experiments — ${SITE_NAME}`,
-  description: "In-silico neuroscience experiments using TRIBE v2 brain encoding predictions.",
+  description:
+    "Neuroscience experiments: in-silico brain encoding, empirical recordings, and related methods.",
 }
 
 export default function ExperimentsPage() {
@@ -21,8 +22,9 @@ export default function ExperimentsPage() {
             Experiments
           </h1>
           <p className="text-lg text-foreground/85 leading-relaxed max-w-2xl">
-            A collection of in-silico neuroscience experiments. Each experiment uses TRIBE v2 to predict brain
-            responses and tests a specific hypothesis about how the brain processes language, physics, humor, and more.
+            Studies on language, cognition, and perception. Methods vary by project — including
+            computational encoding models and recordings such as EEG — and each card links to the
+            full write-up for that experiment.
           </p>
         </div>
 
@@ -54,10 +56,18 @@ export default function ExperimentsPage() {
 
         <div className="mt-16 border-t border-border pt-8 space-y-3">
           <p className="text-sm text-muted-foreground leading-relaxed max-w-xl">
-            All experiments are designed and run by <a href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b" target="_blank" rel="noopener noreferrer" className="text-foreground/85 hover:text-accent transition-colors underline underline-offset-4">Emiliano Cuevas</a>. They follow a shared template: load
-            stimuli, generate brain predictions via TRIBE v2, then apply statistical or machine learning
-            analyses. Results shown here exclude raw stimuli and heavy data — only summary metrics, figures,
-            and interpretations are displayed.
+            All experiments are designed and run by{" "}
+            <a
+              href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground/85 hover:text-accent transition-colors underline underline-offset-4"
+            >
+              Emiliano Cuevas
+            </a>
+            . In-silico projects follow a shared pipeline (stimuli → encoding model → analysis);
+            empirical studies follow their own acquisition and preprocessing steps. What you see
+            here is summary metrics, figures, and interpretation — not raw data.
           </p>
         </div>
       </main>
