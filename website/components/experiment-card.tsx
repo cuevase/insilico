@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { Pin } from "lucide-react"
 import type { Experiment } from "@/lib/experiments"
 
 const statusConfig: Record<string, { label: string; color: string; dot: string }> = {
@@ -13,7 +14,13 @@ const typeLabels: Record<string, string> = {
   encoding: "Encoding",
 }
 
-export default function ExperimentCard({ experiment }: { experiment: Experiment }) {
+export default function ExperimentCard({
+  experiment,
+  pinned = false,
+}: {
+  experiment: Experiment
+  pinned?: boolean
+}) {
   const status = statusConfig[experiment.status]
   const hasResults = !!experiment.results
   const primaryMetric = experiment.results?.metrics?.[0]
@@ -24,7 +31,16 @@ export default function ExperimentCard({ experiment }: { experiment: Experiment 
       className="group block rounded-md border border-border bg-card p-6 transition-colors hover:border-white/35"
     >
       <div className="flex items-start justify-between gap-4 mb-4">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {pinned && (
+            <span
+              className="inline-flex items-center gap-1 rounded border border-border bg-muted/30 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground"
+              title="Pinned"
+            >
+              <Pin className="h-3 w-3 shrink-0" aria-hidden />
+              Pinned
+            </span>
+          )}
           <span className={`inline-block h-2 w-2 rounded-full ${status.dot}`} />
           <span className={`text-xs font-medium ${status.color}`}>{status.label}</span>
         </div>

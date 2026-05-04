@@ -1,6 +1,6 @@
 import Navbar from "@/components/navbar"
 import ExperimentCard from "@/components/experiment-card"
-import { experiments } from "@/lib/experiments"
+import { experiments, getPinnedExperiments, withoutPinned } from "@/lib/experiments"
 import { SITE_NAME } from "@/lib/site"
 
 export const metadata = {
@@ -10,8 +10,11 @@ export const metadata = {
 }
 
 export default function ExperimentsPage() {
-  const running = experiments.filter((e) => e.status === "running" || e.status === "completed")
-  const planned = experiments.filter((e) => e.status === "planned")
+  const pinned = getPinnedExperiments()
+  const running = withoutPinned(
+    experiments.filter((e) => e.status === "running" || e.status === "completed")
+  )
+  const planned = withoutPinned(experiments.filter((e) => e.status === "planned"))
 
   return (
     <div className="min-h-screen bg-background">
@@ -27,6 +30,19 @@ export default function ExperimentsPage() {
             full write-up for that experiment.
           </p>
         </div>
+
+        {pinned.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-5">
+              Pinned experiments
+            </h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {pinned.map((exp) => (
+                <ExperimentCard key={exp.slug} experiment={exp} pinned />
+              ))}
+            </div>
+          </section>
+        )}
 
         {running.length > 0 && (
           <section className="mb-12">

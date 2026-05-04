@@ -81,6 +81,11 @@ export interface Experiment {
   video?: ExperimentVideo
   results?: ExperimentResults
   tags: string[]
+  /**
+   * Featured on the home page (and top of /experiments). Lower numbers appear first.
+   * Pinned experiments are omitted from the normal status lists to avoid duplicates.
+   */
+  pinOrder?: number
 }
 
 export const experiments: Experiment[] = [
@@ -405,6 +410,7 @@ export const experiments: Experiment[] = [
     question: "Can imagined hand and foot movements be decoded from consumer-grade EEG?",
     status: "completed",
     type: "classification",
+    pinOrder: 0,
     date: "2026-04-18",
     nEpochs: 290,
     tags: ["EEG", "BCI", "motor imagery", "OpenBCI", "pyRiemann", "BrainFlow"],
@@ -546,4 +552,15 @@ export function getExperiment(slug: string): Experiment | undefined {
 
 export function getCompletedOrRunning(): Experiment[] {
   return experiments.filter((e) => e.status === "completed" || e.status === "running")
+}
+
+export function getPinnedExperiments(): Experiment[] {
+  return experiments
+    .filter((e) => e.pinOrder !== undefined)
+    .sort((a, b) => (a.pinOrder ?? 0) - (b.pinOrder ?? 0))
+}
+
+/** Exclude featured experiments so they are not listed twice under status sections. */
+export function withoutPinned(exps: Experiment[]): Experiment[] {
+  return exps.filter((e) => e.pinOrder === undefined)
 }

@@ -2,10 +2,17 @@ import Link from "next/link"
 import Navbar from "@/components/navbar"
 import { SITE_NAME, TRIBE_V2_PUBLICATION_URL } from "@/lib/site"
 import ExperimentCard from "@/components/experiment-card"
-import { experiments } from "@/lib/experiments"
+import {
+  experiments,
+  getPinnedExperiments,
+  withoutPinned,
+} from "@/lib/experiments"
 
-const completed = experiments.filter((e) => e.status === "completed")
-const planned = experiments.filter((e) => e.status === "planned" || e.status === "running")
+const pinned = getPinnedExperiments()
+const completed = withoutPinned(experiments.filter((e) => e.status === "completed"))
+const planned = withoutPinned(
+  experiments.filter((e) => e.status === "planned" || e.status === "running")
+)
 
 export default function HomePage() {
   return (
@@ -46,34 +53,19 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* What is this */}
-        <section className="pb-14">
-          <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-5">
-            How it works
-          </h2>
-          <div className="space-y-4 text-sm text-foreground/85 leading-relaxed max-w-2xl">
-            <p>
-              Across studies, the pattern is the same: choose stimuli and a question, collect or
-              simulate neural data, then analyze with statistics or machine learning. The
-              difference is the data source — predicted cortical maps from an encoding model,
-              scalp EEG, or another modality — which is always spelled out on the experiment page.
-            </p>
-            <p>
-              For in-silico work,{" "}
-              <a
-                href={TRIBE_V2_PUBLICATION_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-foreground underline underline-offset-4 hover:text-accent transition-colors"
-              >
-                TRIBE v2
-              </a>{" "}
-              predicts fMRI-style cortical responses to text, audio, or video by mapping network
-              features to 20,484 surface vertices, so whole-brain patterns can be explored without
-              running a new scan.
-            </p>
-          </div>
-        </section>
+        {/* Pinned experiments */}
+        {pinned.length > 0 && (
+          <section className="pb-12">
+            <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-5">
+              Pinned experiments
+            </h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {pinned.map((exp) => (
+                <ExperimentCard key={exp.slug} experiment={exp} pinned />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Completed experiments */}
         {completed.length > 0 && (
