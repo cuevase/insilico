@@ -15,7 +15,7 @@ const courierPrime = Courier_Prime({
 export const metadata: Metadata = {
   title: `${SITE_NAME} — Neuroscience Experiments`,
   description:
-    'Neuroscience experiments spanning computational brain encoding, in-silico modeling, and empirical methods such as EEG. Built by Emiliano Cuevas.',
+    'A lab exploring brain and intelligence across scales — cortical encoding, EEG, and evolutionary simulation. Built by Emiliano Cuevas.',
 }
 
 export default function RootLayout({

@@ -26,8 +26,8 @@ export default function HomePage() {
             {SITE_NAME}
           </h1>
           <p className="text-lg text-foreground/85 leading-relaxed max-w-2xl mb-4">
-            A home for neuroscience experiments on language, cognition, and perception: using
-            both computational models and measured brain activity.
+            A lab that seeks to understand brain and intelligence across scales — from cortical
+            encoding and scalp EEG to evolutionary simulations of adaptive behavior.
           </p>
           <p className="text-base text-foreground/85 leading-relaxed max-w-2xl">
             Built by{" "}
@@ -39,7 +39,7 @@ export default function HomePage() {
             >
               Emiliano Cuevas
             </a>
-            . Some studies are in silico: they use{" "}
+            . Some work is in silico:{" "}
             <a
               href={TRIBE_V2_PUBLICATION_URL}
               target="_blank"
@@ -48,8 +48,16 @@ export default function HomePage() {
             >
               TRIBE v2
             </a>{" "}
-            and related encoding models to predict cortical responses without a scanner. Others
-            use empirical recordings like EEGs. Each experiment page states its methods.
+            and related models predict cortical responses without a scanner. Other studies use EEG
+            or simulations such as{" "}
+            <Link
+              href="/experiments/origins"
+              className="text-foreground underline underline-offset-4 hover:text-accent transition-colors"
+            >
+              Origins
+            </Link>
+            , which explores how selection shapes joint policies over sensing and action. Each
+            experiment page states its methods.
           </p>
         </div>
 

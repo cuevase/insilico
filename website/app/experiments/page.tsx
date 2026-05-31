@@ -6,7 +6,7 @@ import { SITE_NAME } from "@/lib/site"
 export const metadata = {
   title: `Experiments — ${SITE_NAME}`,
   description:
-    "Neuroscience experiments: in-silico brain encoding, empirical recordings, and related methods.",
+    "Experiments on brain encoding, EEG, language and cognition, and evolutionary simulation.",
 }
 
 export default function ExperimentsPage() {
@@ -25,9 +25,9 @@ export default function ExperimentsPage() {
             Experiments
           </h1>
           <p className="text-lg text-foreground/85 leading-relaxed max-w-2xl">
-            Studies on language, cognition, and perception. Methods vary by project — including
-            computational encoding models and recordings such as EEG — and each card links to the
-            full write-up for that experiment.
+            Studies on language, cognition, perception, and the origins of intelligence. Methods
+            span cortical encoding models, EEG, and evolutionary simulation — each card links to
+            the full write-up for that experiment.
           </p>
         </div>
 
@@ -81,9 +81,9 @@ export default function ExperimentsPage() {
             >
               Emiliano Cuevas
             </a>
-            . In-silico projects follow a shared pipeline (stimuli → encoding model → analysis);
-            empirical studies follow their own acquisition and preprocessing steps. What you see
-            here is summary metrics, figures, and interpretation — not raw data.
+            . Encoding-model studies follow stimuli → predicted cortical maps → analysis; EEG and
+            simulation projects follow their own pipelines. What you see here is summary metrics,
+            figures, and interpretation — not raw data.
           </p>
         </div>
       </main>

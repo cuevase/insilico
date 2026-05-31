@@ -1,5 +1,5 @@
 export type ExperimentStatus = "completed" | "running" | "planned"
-export type ExperimentType = "classification" | "regression" | "encoding"
+export type ExperimentType = "classification" | "regression" | "encoding" | "simulation"
 
 export interface MetricValue {
   label: string
@@ -462,6 +462,72 @@ export const experiments: Experiment[] = [
         { label: "Hardware", value: "Cyton", description: "8 ch; Daisy optional for 16 ch" },
         { label: "Artifacts", value: "NPZ + joblib", description: "Per-session raw/events; saved model" },
         { label: "Code", value: "GitHub", description: "pip install -e .; entry p300-speller" },
+      ],
+    },
+  },
+  {
+    slug: "origins",
+    name: "Origins — joint distribution evolution",
+    shortName: "Origins",
+    description:
+      "Minimal evolutionary simulation on a one-dimensional circular world: each organism maintains a full joint probability distribution over local neighborhood (X), internal energy (H), and action (O). Behavior is sampled from that joint; offspring inherit a mutated, renormalized copy. Food spawning, metabolic decay, and collision death provide selection — without hand-specified neural nets or an explicit fitness function beyond survival and reproduction.",
+    question:
+      "Does selection pressure reshape a full joint policy over sensing, internal state, and action?",
+    status: "completed",
+    type: "simulation",
+    date: "2026-04-30",
+    tags: [
+      "evolution",
+      "simulation",
+      "joint distribution",
+      "selection",
+      "origins of intelligence",
+    ],
+    repositoryUrl: "https://github.com/cuevase/origins",
+    results: {
+      summary:
+        "A long exploratory run (369,400 logged ticks of a 500,000-tick target, interrupted at ~74%) on a ring world of 1,000 cells supports the hypothesis that selection shapes the population-mean joint away from uniform: KL divergence rose from 0.003 at tick 0 to >0.5 by tick 500 and stayed elevated for 97.2% of the run (mean KL 0.416, final 0.420). Peak KL 1.103 coincided with a population bottleneck (min pop 8 at tick 148,100); the line recovered to 49 by run end (peak 99). Final joint entropy was 4.45 vs 6.79 for uniform on the 891-dimensional simplex; per-organism KL at the end averaged 2.34 with low variance across survivors. Mortality was dominated by collisions (99.95%) rather than starvation. Simple foraging heuristics only partially match conditional action slices — consistent with crowded-ring selection favoring movement patterns that reduce crowding. Full configuration, plots, and reproduction steps are in the repository README.",
+      metrics: [
+        {
+          label: "Final KL",
+          value: 0.42,
+          description: "Population-mean joint vs uniform (891-d simplex)",
+        },
+        {
+          label: "Max KL",
+          value: 1.103,
+          description: "Tick 148,100 — population bottleneck (min pop 8)",
+        },
+        {
+          label: "Mean KL",
+          value: 0.416,
+          description: "97.2% of run with KL > 0.3",
+        },
+        {
+          label: "Ticks logged",
+          value: "369,400",
+          description: "~74% of 500k target; run interrupted",
+        },
+        {
+          label: "Population",
+          value: "49 / 99 / 8",
+          description: "Final / peak / min over the run",
+        },
+        {
+          label: "Joint entropy",
+          value: 4.45,
+          description: "vs 6.79 uniform; per-org KL mean 2.34 at end",
+        },
+        {
+          label: "Births",
+          value: "639,137",
+          description: "638,849 collision deaths; 289 starvation (0.05%)",
+        },
+        {
+          label: "Mean H (final)",
+          value: "5.67",
+          description: "Median 6.0; metabolic state stable",
+        },
       ],
     },
   },

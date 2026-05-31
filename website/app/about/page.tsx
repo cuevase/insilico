@@ -12,7 +12,7 @@ export default function AboutPage() {
 
         <div className="space-y-8 text-base text-foreground/85 leading-relaxed">
           <p className="text-lg leading-relaxed">
-            {SITE_NAME} is a home for neuroscience experiments built by{' '}
+            {SITE_NAME} is a research lab built by{' '}
             <a
               href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b"
               target="_blank"
@@ -21,10 +21,10 @@ export default function AboutPage() {
             >
               Emiliano Cuevas
             </a>
-            . Work here spans computational approaches (predicting or encoding brain responses)
-            and empirical methods (for example EEG and other recordings). The goal is the same in
-            every study: pose a clear question, use appropriate data, and interpret results
-            carefully.
+            . The aim is to understand brain and intelligence at different levels and scales:
+            predicted cortical responses, measured EEG, language and perception, and evolutionary
+            simulations of adaptive behavior. Every study poses a clear question, uses appropriate
+            data or models, and interprets results carefully.
           </p>
 
           <div>
@@ -63,6 +63,28 @@ export default function AboutPage() {
 
           <div>
             <h2 className="font-serif text-lg font-medium text-foreground mb-3">
+              Evolution &amp; origins of intelligence
+            </h2>
+            <p>
+              Some work steps back from cortex and scalp signals to ask how adaptive behavior can
+              arise under selection alone.{' '}
+              <a
+                href="https://github.com/cuevase/origins"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-foreground underline underline-offset-4 hover:text-accent transition-colors"
+              >
+                Origins
+              </a>{' '}
+              is a minimal evolutionary simulation where organisms carry a full joint distribution
+              over local sensing, internal energy, and action — offspring inherit mutated joints,
+              and survival in a crowded ring world provides the only fitness pressure. These
+              studies complement encoding and EEG work by probing intelligence from the bottom up.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="font-serif text-lg font-medium text-foreground mb-3">
               What does &ldquo;in silico&rdquo; mean?
             </h2>
             <p>
@@ -78,11 +100,13 @@ export default function AboutPage() {
               How the experiments are organized
             </h2>
             <p>
-              In-silico studies often follow a fixed pattern: feed stimuli into an encoding model
-              to obtain predicted cortical maps (for TRIBE v2, 20,484 vertices per sample), then
-              train a classifier or run statistics to test whether representations differ across
-              conditions. Empirical studies follow whatever pipeline fits the hypothesis and the
-              recording setup. Each experiment page documents its own methods and limitations.
+              Encoding-model studies often follow a fixed pattern: feed stimuli into an encoding
+              model to obtain predicted cortical maps (for TRIBE v2, 20,484 vertices per sample),
+              then train a classifier or run statistics to test whether representations differ
+              across conditions. EEG studies follow acquisition and preprocessing suited to the
+              hypothesis. Simulation work evolves populations under explicit world dynamics and
+              logs distributional metrics over time. Each experiment page documents its own methods
+              and limitations.
             </p>
           </div>
 

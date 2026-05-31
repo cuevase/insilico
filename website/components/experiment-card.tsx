@@ -12,6 +12,7 @@ const typeLabels: Record<string, string> = {
   classification: "Classification",
   regression: "Regression",
   encoding: "Encoding",
+  simulation: "Simulation",
 }
 
 export default function ExperimentCard({

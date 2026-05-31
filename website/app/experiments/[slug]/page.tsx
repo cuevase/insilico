@@ -40,6 +40,7 @@ const typeLabels: Record<string, string> = {
   classification: "Classification",
   regression: "Regression",
   encoding: "Encoding",
+  simulation: "Simulation",
 }
 
 function youtubeEmbedId(url: string): string | null {
