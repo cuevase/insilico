@@ -475,6 +475,7 @@ export const experiments: Experiment[] = [
       "Does selection pressure reshape a full joint policy over sensing, internal state, and action?",
     status: "completed",
     type: "simulation",
+    pinOrder: 1,
     date: "2026-04-30",
     tags: [
       "evolution",
