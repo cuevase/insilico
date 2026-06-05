@@ -33,6 +33,10 @@ insilico/
 └── TRIBE_v2_dev_readme.md
 ```
 
+## AI use
+
+AI tools were used to create and accelerate the code for the experiments and the UI. All experiments were designed, manipulated, and ideated by me.
+
 ## License
 
 This project's code is released under the [MIT License](LICENSE). TRIBE v2 model weights and outputs are licensed under [CC-BY-NC-4.0](https://creativecommons.org/licenses/by-nc/4.0/) by Meta Research.
