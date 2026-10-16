@@ -1,5 +1,5 @@
 import Link from "next/link"
-import Navbar from "@/components/navbar"
+import BackHome from "@/components/back-home"
 import NetworkArt from "@/components/network-art"
 import { SITE_NAME } from "@/lib/site"
 
@@ -12,12 +12,17 @@ export const metadata = {
 export default function NodoPage() {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
       <main className="site-wrap">
-        <section className="grid items-center gap-10 py-24 md:grid-cols-[1.08fr_1fr] md:gap-14 md:py-36">
-          <h1 className="text-[clamp(3.5rem,8vw,6.4rem)] font-medium leading-[.98] tracking-[-.065em]">
-            Nodo<span className="text-accent">.</span>
-          </h1>
+        <div className="pt-12 md:pt-16"><BackHome /></div>
+        <section className="grid items-center gap-10 py-20 md:grid-cols-[1.08fr_1fr] md:gap-14 md:py-28">
+          <div>
+            <h1 className="text-[clamp(3.5rem,8vw,6.4rem)] font-medium leading-[.98] tracking-[-.065em]">
+              Nodo<span className="text-accent">.</span>
+            </h1>
+            <p className="mt-7 max-w-sm text-base leading-relaxed text-muted-foreground md:text-lg">
+              A subsection of my research focused on artificial agents and their impact on society.
+            </p>
+          </div>
           <div className="mx-auto w-full max-w-[510px] py-4 md:py-0"><NetworkArt /></div>
         </section>
 

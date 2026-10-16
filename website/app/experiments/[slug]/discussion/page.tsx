@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import Navbar from "@/components/navbar"
 import { experiments } from "@/lib/experiments"
 import { discussions, getDiscussion } from "@/lib/discussions"
 import { SITE_NAME } from "@/lib/site"
@@ -39,7 +38,6 @@ export default async function DiscussionPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
       <main className="site-wrap max-w-3xl py-12 md:py-18">
         <Link
           href={`/experiments/${slug}`}

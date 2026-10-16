@@ -1,4 +1,4 @@
-import Navbar from '@/components/navbar'
+import BackHome from '@/components/back-home'
 import { CONTACT_EMAIL, SITE_NAME } from '@/lib/site'
 
 export const metadata = {
@@ -10,8 +10,8 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
       <main className="site-wrap max-w-3xl py-16 md:py-24">
+        <div className="mb-10"><BackHome /></div>
         <h1 className="text-5xl font-medium tracking-[-.05em] text-foreground mb-10 text-balance md:text-6xl">
           Contact
         </h1>

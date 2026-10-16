@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
-import Navbar from "@/components/navbar"
 import MetricCard from "@/components/metric-card"
 import ConfusionMatrix from "@/components/confusion-matrix"
 import ClassificationTable from "@/components/classification-table"
@@ -90,7 +89,6 @@ export default async function ExperimentPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
       <main className="site-wrap max-w-4xl py-12 md:py-18">
         <Link
           href="/experiments"

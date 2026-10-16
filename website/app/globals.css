@@ -65,9 +65,17 @@
 .site-rule { border-top: 1px solid var(--border); }
 .network-art .network-node {
   fill: var(--accent);
-  transition: cx 1.65s cubic-bezier(.22, 1, .36, 1), cy 1.65s cubic-bezier(.22, 1, .36, 1);
+}
+.experiment-reveal {
+  transition: opacity .8s cubic-bezier(.22, 1, .36, 1), transform .8s cubic-bezier(.22, 1, .36, 1);
+}
+.experiment-reveal.reveal-pending {
+  opacity: 0;
+  transform: translateY(32px);
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .network-art .network-node { transition: none; }
+  .network-art .network-node { transition: none !important; }
+  .experiment-reveal { transition: none; }
+  .experiment-reveal.reveal-pending { opacity: 1; transform: none; }
 }

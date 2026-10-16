@@ -1,12 +1,12 @@
-import Navbar from '@/components/navbar'
+import BackHome from '@/components/back-home'
 import Link from 'next/link'
 import { SITE_NAME, TRIBE_V2_PUBLICATION_URL } from '@/lib/site'
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
       <main className="site-wrap max-w-3xl py-16 md:py-24">
+        <div className="mb-10"><BackHome /></div>
         <p className="section-label mb-4">The idea behind the work</p>
         <h1 className="text-5xl font-medium tracking-[-.05em] text-foreground mb-8 text-balance md:text-6xl">
           About {SITE_NAME}

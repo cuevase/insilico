@@ -1,5 +1,5 @@
 import Link from "next/link"
-import Navbar from "@/components/navbar"
+import BackHome from "@/components/back-home"
 import ExperimentCard from "@/components/experiment-card"
 import { experiments, getPinnedExperiments, withoutPinned } from "@/lib/experiments"
 import { SITE_NAME } from "@/lib/site"
@@ -19,8 +19,8 @@ const orderedExperiments = [
 export default function ExperimentsPage() {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
       <main className="site-wrap py-20 md:py-28">
+        <div className="mb-10"><BackHome /></div>
         <h1 className="mb-12 text-5xl font-medium tracking-[-.05em] md:text-6xl">Experiments</h1>
         <div>
           <Link href="/nodo" className="group flex min-h-20 items-center justify-between gap-6 py-5 transition-colors hover:text-accent">
