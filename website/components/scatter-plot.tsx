@@ -16,7 +16,7 @@ const GROUP_COLORS: Record<string, string> = {
   neutral: "#3498DB",
 }
 
-const DEFAULT_COLOR = "#ffc8be"
+const DEFAULT_COLOR = "#ec6a22"
 
 export default function ScatterPlot({
   data,
@@ -57,10 +57,10 @@ export default function ScatterPlot({
       <div className="relative border border-border rounded-md bg-background overflow-hidden" style={{ height }}>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full">
           {[0, 25, 50, 75, 100].map((v) => (
-            <line key={`h-${v}`} x1="0" x2="100" y1={v} y2={v} stroke="rgba(255,255,255,0.18)" strokeWidth="0.3" />
+            <line key={`h-${v}`} x1="0" x2="100" y1={v} y2={v} stroke="rgba(17,17,17,0.12)" strokeWidth="0.3" />
           ))}
           {[0, 25, 50, 75, 100].map((v) => (
-            <line key={`v-${v}`} x1={v} x2={v} y1="0" y2="100" stroke="rgba(255,255,255,0.18)" strokeWidth="0.3" />
+            <line key={`v-${v}`} x1={v} x2={v} y1="0" y2="100" stroke="rgba(17,17,17,0.12)" strokeWidth="0.3" />
           ))}
         </svg>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full">

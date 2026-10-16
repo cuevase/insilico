@@ -9,11 +9,11 @@ export default function ConfusionMatrix({ data }: { data: ConfusionMatrixData })
   function cellColor(value: number, isOnDiagonal: boolean): string {
     const intensity = maxVal > 0 ? value / maxVal : 0
     if (isOnDiagonal) {
-      const alpha = 0.14 + intensity * 0.42
-      return `rgba(255, 255, 255, ${alpha})`
+      const alpha = 0.08 + intensity * 0.28
+      return `rgba(236, 106, 34, ${alpha})`
     }
-    const alpha = 0.04 + intensity * 0.16
-    return `rgba(255, 255, 255, ${alpha})`
+    const alpha = 0.03 + intensity * 0.12
+    return `rgba(17, 17, 17, ${alpha})`
   }
 
   return (
@@ -35,7 +35,7 @@ export default function ConfusionMatrix({ data }: { data: ConfusionMatrixData })
                 >
                   <span
                     className="text-lg font-semibold tabular-nums"
-                    style={{ color: i === j ? "#ffc8be" : "rgba(250, 250, 250, 0.82)" }}
+                    style={{ color: "#111111" }}
                   >
                     {value}
                   </span>

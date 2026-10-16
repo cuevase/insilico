@@ -31,9 +31,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 const statusConfig: Record<string, { label: string; color: string; bg: string }> = {
-  completed: { label: "Completed", color: "text-emerald-300", bg: "bg-emerald-950/40" },
-  running: { label: "Running", color: "text-amber-300", bg: "bg-amber-950/40" },
-  planned: { label: "Planned", color: "text-muted-foreground", bg: "bg-white/10" },
+  completed: { label: "Completed", color: "text-accent", bg: "bg-orange-50" },
+  running: { label: "Running", color: "text-accent", bg: "bg-orange-50" },
+  planned: { label: "Planned", color: "text-muted-foreground", bg: "bg-muted" },
 }
 
 const typeLabels: Record<string, string> = {
@@ -91,7 +91,7 @@ export default async function ExperimentPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="mx-auto max-w-4xl px-6 py-12">
+      <main className="site-wrap max-w-4xl py-12 md:py-18">
         <Link
           href="/experiments"
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
@@ -113,7 +113,7 @@ export default async function ExperimentPage({ params }: PageProps) {
             </span>
             <span className="text-xs text-muted-foreground tabular-nums">{experiment.date}</span>
           </div>
-          <h1 className="font-serif text-3xl font-medium text-foreground mb-3 md:text-4xl">
+          <h1 className="text-4xl font-medium tracking-[-.045em] text-foreground mb-4 md:text-5xl">
             {experiment.name}
           </h1>
           <p className="text-base text-foreground/85 leading-relaxed max-w-2xl">

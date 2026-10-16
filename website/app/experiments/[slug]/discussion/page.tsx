@@ -27,9 +27,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 const supportColors: Record<string, { text: string; bg: string }> = {
-  Strong: { text: "text-emerald-300", bg: "bg-emerald-950/40" },
-  Moderate: { text: "text-amber-300", bg: "bg-amber-950/40" },
-  Weak: { text: "text-muted-foreground", bg: "bg-white/10" },
+  Strong: { text: "text-accent", bg: "bg-orange-50" },
+  Moderate: { text: "text-foreground", bg: "bg-muted" },
+  Weak: { text: "text-muted-foreground", bg: "bg-muted" },
 }
 
 export default async function DiscussionPage({ params }: PageProps) {
@@ -40,7 +40,7 @@ export default async function DiscussionPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="mx-auto max-w-3xl px-6 py-12">
+      <main className="site-wrap max-w-3xl py-12 md:py-18">
         <Link
           href={`/experiments/${slug}`}
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"

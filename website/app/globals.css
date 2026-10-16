@@ -1,49 +1,34 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
-
 :root {
-  /* Red brick surface + white type */
-  --brick: #9a504a;
-  --brick-deep: #703632;
-  --brick-card: #854540;
-  --bg-primary: #9a504a;
-  --bg-secondary: #854540;
-  --text-primary: #fafafa;
-  --text-secondary: rgba(255, 255, 255, 0.82);
-  --text-muted: rgba(255, 255, 255, 0.58);
-  --accent: #ffc8be;
-  --accent-hover: #ffe4de;
-  --border-light: rgba(255, 255, 255, 0.12);
-
-  /* Mapped to shadcn tokens */
-  --background: #9a504a;
-  --foreground: #fafafa;
-  --card: #854540;
-  --card-foreground: #fafafa;
-  --popover: #854540;
-  --popover-foreground: #fafafa;
-  --primary: #ffffff;
-  --primary-foreground: #5c2c28;
-  --secondary: rgba(255, 255, 255, 0.1);
-  --secondary-foreground: #fafafa;
-  --muted: rgba(255, 255, 255, 0.08);
-  --muted-foreground: rgba(255, 255, 255, 0.62);
-  --accent-color: #ffc8be;
-  --accent-foreground: #3d1c1a;
-  --destructive: oklch(0.65 0.2 25);
+  color-scheme: light;
+  --background: #ffffff;
+  --foreground: #111111;
+  --card: #ffffff;
+  --card-foreground: #111111;
+  --popover: #ffffff;
+  --popover-foreground: #111111;
+  --primary: #111111;
+  --primary-foreground: #ffffff;
+  --secondary: #f7f7f7;
+  --secondary-foreground: #111111;
+  --muted: #f7f7f7;
+  --muted-foreground: #686868;
+  --accent: #ec6a22;
+  --accent-foreground: #ffffff;
+  --destructive: #bb3636;
   --destructive-foreground: #ffffff;
-  --border: rgba(255, 255, 255, 0.22);
-  --input: rgba(255, 255, 255, 0.28);
-  --ring: #ffffff;
+  --border: #e9e9e9;
+  --input: #dfdfdf;
+  --ring: #ec6a22;
   --radius: 0.375rem;
 }
 
 @theme inline {
-  --font-sans: var(--font-courier-prime), 'Courier New', Courier, monospace;
-  --font-serif: var(--font-courier-prime), 'Courier New', Courier, monospace;
-  --font-mono: var(--font-courier-prime), 'Courier New', Courier, monospace;
+  --font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --font-serif: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -56,7 +41,7 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent-color);
+  --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
@@ -69,29 +54,17 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
-  }
+  * { @apply border-border; }
+  html { scroll-behavior: smooth; }
+  body { @apply bg-background text-foreground font-sans antialiased; }
+  a, button { @apply focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent; }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.5s ease forwards;
-}
-
-@keyframes loading-bar {
-  0%   { transform: translateX(-100%); }
-  50%  { transform: translateX(0%); }
-  100% { transform: translateX(100%); }
-}
-
-.animate-loading-bar {
-  animation: loading-bar 1.6s ease-in-out infinite;
+.site-wrap { width: min(100% - 48px, 1172px); margin-inline: auto; }
+.section-label { color: var(--accent); font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+.site-rule { border-top: 1px solid var(--border); }
+.network-art .network-node { fill: #f6c9a6; }
+.network-art .network-node-strong { fill: var(--accent); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }

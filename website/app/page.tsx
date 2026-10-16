@@ -1,130 +1,67 @@
 import Link from "next/link"
 import Navbar from "@/components/navbar"
-import { SITE_NAME, TRIBE_V2_PUBLICATION_URL } from "@/lib/site"
+import NetworkArt from "@/components/network-art"
 import ExperimentCard from "@/components/experiment-card"
-import {
-  experiments,
-  getPinnedExperiments,
-  withoutPinned,
-} from "@/lib/experiments"
+import { SITE_NAME } from "@/lib/site"
+import { experiments, getPinnedExperiments, withoutPinned } from "@/lib/experiments"
 
 const pinned = getPinnedExperiments()
 const completed = withoutPinned(experiments.filter((e) => e.status === "completed"))
-const planned = withoutPinned(
-  experiments.filter((e) => e.status === "planned" || e.status === "running")
-)
+const upcoming = withoutPinned(experiments.filter((e) => e.status !== "completed"))
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-
-      <main className="mx-auto max-w-3xl px-6">
-        {/* Hero */}
-        <div className="pt-24 pb-16">
-          <h1 className="font-serif text-5xl font-medium text-foreground leading-tight tracking-tight text-balance mb-6 md:text-6xl">
-            {SITE_NAME}
+      <main className="site-wrap">
+        <section className="grid items-center gap-10 py-24 md:grid-cols-[1.08fr_1fr] md:gap-14 md:py-36">
+          <h1 className="text-[clamp(3.2rem,7.5vw,6.4rem)] font-medium leading-[.98] tracking-[-.065em]">
+            Emiliano&apos;s<br />Lab<span className="text-accent">.</span>
           </h1>
-          <p className="text-lg text-foreground/85 leading-relaxed max-w-2xl mb-4">
-            A lab that seeks to understand brain and intelligence across scales — from cortical
-            encoding and scalp EEG to evolutionary simulations of adaptive behavior.
-          </p>
-          <p className="text-base text-foreground/85 leading-relaxed max-w-2xl">
-            Built by{" "}
-            <a
-              href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground font-medium underline underline-offset-4 hover:text-accent transition-colors"
-            >
-              Emiliano Cuevas
-            </a>
-            . Some work is in silico:{" "}
-            <a
-              href={TRIBE_V2_PUBLICATION_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground underline underline-offset-4 hover:text-accent transition-colors"
-            >
-              TRIBE v2
-            </a>{" "}
-            and related models predict cortical responses without a scanner. Other studies use EEG
-            or simulations such as{" "}
-            <Link
-              href="/experiments/origins"
-              className="text-foreground underline underline-offset-4 hover:text-accent transition-colors"
-            >
-              Origins
-            </Link>
-            , which explores how selection shapes joint policies over sensing and action. Each
-            experiment page states its methods.
-          </p>
-        </div>
+          <div className="mx-auto w-full max-w-[510px] py-4 md:py-0"><NetworkArt /></div>
+        </section>
 
-        {/* Pinned experiments */}
-        {pinned.length > 0 && (
-          <section className="pb-12">
-            <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-5">
-              Pinned experiments
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {pinned.map((exp) => (
-                <ExperimentCard key={exp.slug} experiment={exp} pinned />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Completed experiments */}
-        {completed.length > 0 && (
-          <section className="pb-12">
-            <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-5">
-              Completed experiments
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {completed.map((exp) => (
-                <ExperimentCard key={exp.slug} experiment={exp} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Upcoming experiments */}
-        {planned.length > 0 && (
-          <section className="pb-12">
-            <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-5">
-              Upcoming experiments
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {planned.map((exp) => (
-                <ExperimentCard key={exp.slug} experiment={exp} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Footer */}
-        <div className="border-t border-border pt-8 pb-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <p className="text-xs text-muted-foreground leading-relaxed max-w-sm">
-            All experiments are designed and run by <a href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b" target="_blank" rel="noopener noreferrer" className="text-foreground/85 hover:text-accent transition-colors underline underline-offset-4">Emiliano Cuevas</a>.
-            Not for clinical use.
-          </p>
-          <div className="flex items-center gap-5">
-            <Link
-              href="/experiments"
-              className="text-sm text-foreground/85 hover:text-accent transition-colors"
-            >
-              All experiments
-            </Link>
-            <Link
-              href="/contact"
-              className="text-sm text-foreground/85 hover:text-accent transition-colors"
-            >
-              Contact
-            </Link>
+        <section className="pb-20 md:pb-28" aria-labelledby="featured-title">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <h2 id="featured-title" className="text-3xl font-normal tracking-[-.035em] md:text-4xl">Featured experiments</h2>
+            <Link href="/experiments" className="border-b border-foreground pb-1 text-sm transition-colors hover:border-accent hover:text-accent">View all experiments ↗</Link>
           </div>
-        </div>
+          <div className="mt-8 border-t border-foreground">
+            <Link href="/nodo" className="group flex min-h-20 items-center justify-between gap-6 border-b border-border py-5 transition-colors hover:text-accent">
+              <div className="flex items-center gap-5">
+                <span className="h-2 w-2 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                <h3 className="text-base font-medium tracking-tight sm:text-lg">Nodo — agent societies</h3>
+              </div>
+              <span className="text-lg text-muted-foreground transition-colors group-hover:text-accent" aria-hidden="true">↗</span>
+            </Link>
+            {pinned.map((exp) => <ExperimentCard key={exp.slug} experiment={exp} />)}
+          </div>
+        </section>
+
+        {completed.length > 0 && (
+          <section className="pb-20 md:pb-28" aria-labelledby="completed-title">
+            <h2 id="completed-title" className="mb-7 text-2xl font-normal tracking-tight md:text-3xl">More completed work</h2>
+            <div className="border-t border-foreground">
+              {completed.map((exp) => <ExperimentCard key={exp.slug} experiment={exp} />)}
+            </div>
+          </section>
+        )}
+
+        {upcoming.length > 0 && (
+          <section className="pb-20 md:pb-28" aria-labelledby="upcoming-title">
+            <h2 id="upcoming-title" className="mb-7 text-2xl font-normal tracking-tight md:text-3xl">Upcoming</h2>
+            <div className="border-t border-foreground">
+              {upcoming.map((exp) => <ExperimentCard key={exp.slug} experiment={exp} />)}
+            </div>
+          </section>
+        )}
       </main>
+      <footer className="border-t border-border">
+        <div className="site-wrap flex items-center justify-between gap-4 py-8 text-sm">
+          <span className="text-muted-foreground">{SITE_NAME}</span>
+          <Link href="/contact" className="hover:text-accent">Contact ↗</Link>
+        </div>
+      </footer>
     </div>
   )
 }

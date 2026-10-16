@@ -1,12 +1,14 @@
 import Navbar from '@/components/navbar'
+import Link from 'next/link'
 import { SITE_NAME, TRIBE_V2_PUBLICATION_URL } from '@/lib/site'
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="mx-auto max-w-2xl px-6 py-24">
-        <h1 className="font-serif text-4xl font-medium text-foreground mb-4 text-balance">
+      <main className="site-wrap max-w-3xl py-16 md:py-24">
+        <p className="section-label mb-4">The idea behind the work</p>
+        <h1 className="text-5xl font-medium tracking-[-.05em] text-foreground mb-8 text-balance md:text-6xl">
           About {SITE_NAME}
         </h1>
 
@@ -21,10 +23,10 @@ export default function AboutPage() {
             >
               Emiliano Cuevas
             </a>
-            . The aim is to understand brain and intelligence at different levels and scales:
-            predicted cortical responses, measured EEG, language and perception, and evolutionary
-            simulations of adaptive behavior. Every study poses a clear question, uses appropriate
-            data or models, and interprets results carefully.
+            . It is a place for experiments in intelligence and behavior at different scales:
+            predicted cortical responses, measured EEG, evolutionary simulations, and societies
+            of artificial agents. Every study poses a clear question, uses appropriate data or
+            models, and interprets results carefully.
           </p>
 
           <div>
@@ -80,6 +82,24 @@ export default function AboutPage() {
               over local sensing, internal energy, and action — offspring inherit mutated joints,
               and survival in a crowded ring world provides the only fitness pressure. These
               studies complement encoding and EEG work by probing intelligence from the bottom up.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="font-serif text-lg font-medium text-foreground mb-3">
+              Agent societies
+            </h2>
+            <p>
+              <Link
+                href="/nodo"
+                className="text-foreground underline underline-offset-4 hover:text-accent transition-colors"
+              >
+                Nodo
+              </Link>{' '}
+              studies how language-model agents reason about one another and form alliances in
+              shared environments. Its voting experiment follows two groups of 20 agents through
+              public ballots, private deals, eliminations, and a final trust dilemma. This work
+              extends the lab&apos;s question from individual systems to collective behavior.
             </p>
           </div>
 

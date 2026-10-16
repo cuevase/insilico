@@ -1,3 +1,4 @@
+import Link from "next/link"
 import Navbar from "@/components/navbar"
 import ExperimentCard from "@/components/experiment-card"
 import { experiments, getPinnedExperiments, withoutPinned } from "@/lib/experiments"
@@ -6,85 +7,30 @@ import { SITE_NAME } from "@/lib/site"
 export const metadata = {
   title: `Experiments — ${SITE_NAME}`,
   description:
-    "Experiments on brain encoding, EEG, language and cognition, and evolutionary simulation.",
+    "Experiments in intelligence and behavior, from neuroscience and EEG to evolutionary simulation and artificial agent societies.",
 }
 
-export default function ExperimentsPage() {
-  const pinned = getPinnedExperiments()
-  const running = withoutPinned(
-    experiments.filter((e) => e.status === "running" || e.status === "completed")
-  )
-  const planned = withoutPinned(experiments.filter((e) => e.status === "planned"))
+const orderedExperiments = [
+  ...getPinnedExperiments(),
+  ...withoutPinned(experiments.filter((e) => e.status === "completed")),
+  ...withoutPinned(experiments.filter((e) => e.status !== "completed")),
+]
 
+export default function ExperimentsPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="mx-auto max-w-4xl px-6 py-16">
-        <div className="mb-14">
-          <h1 className="font-serif text-4xl font-medium text-foreground mb-4 md:text-5xl">
-            Experiments
-          </h1>
-          <p className="text-lg text-foreground/85 leading-relaxed max-w-2xl">
-            Studies on language, cognition, perception, and the origins of intelligence. Methods
-            span cortical encoding models, EEG, and evolutionary simulation — each card links to
-            the full write-up for that experiment.
-          </p>
-        </div>
-
-        {pinned.length > 0 && (
-          <section className="mb-12">
-            <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-5">
-              Pinned experiments
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {pinned.map((exp) => (
-                <ExperimentCard key={exp.slug} experiment={exp} pinned />
-              ))}
+      <main className="site-wrap py-20 md:py-28">
+        <h1 className="mb-12 text-5xl font-medium tracking-[-.05em] md:text-6xl">Experiments</h1>
+        <div className="border-t border-foreground">
+          <Link href="/nodo" className="group flex min-h-20 items-center justify-between gap-6 border-b border-border py-5 transition-colors hover:text-accent">
+            <div className="flex items-center gap-5">
+              <span className="h-2 w-2 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+              <h2 className="text-base font-medium tracking-tight sm:text-lg">Nodo — agent societies</h2>
             </div>
-          </section>
-        )}
-
-        {running.length > 0 && (
-          <section className="mb-12">
-            <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-5">
-              Active & Completed
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {running.map((exp) => (
-                <ExperimentCard key={exp.slug} experiment={exp} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {planned.length > 0 && (
-          <section>
-            <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-5">
-              Planned
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {planned.map((exp) => (
-                <ExperimentCard key={exp.slug} experiment={exp} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        <div className="mt-16 border-t border-border pt-8 space-y-3">
-          <p className="text-sm text-muted-foreground leading-relaxed max-w-xl">
-            All experiments are designed and run by{" "}
-            <a
-              href="https://linkedin.com/in/emiliano-cuevas-rodriguez-74538727b"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground/85 hover:text-accent transition-colors underline underline-offset-4"
-            >
-              Emiliano Cuevas
-            </a>
-            . Encoding-model studies follow stimuli → predicted cortical maps → analysis; EEG and
-            simulation projects follow their own pipelines. What you see here is summary metrics,
-            figures, and interpretation — not raw data.
-          </p>
+            <span className="text-lg text-muted-foreground transition-colors group-hover:text-accent" aria-hidden="true">↗</span>
+          </Link>
+          {orderedExperiments.map((exp) => <ExperimentCard key={exp.slug} experiment={exp} />)}
         </div>
       </main>
     </div>

@@ -1,34 +1,19 @@
 import type { Metadata } from 'next'
-import { Courier_Prime } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { SITE_NAME } from '@/lib/site'
 import './globals.css'
 
-const courierPrime = Courier_Prime({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  style: ['normal', 'italic'],
-  variable: '--font-courier-prime',
-  display: 'swap',
-})
-
 export const metadata: Metadata = {
-  title: `${SITE_NAME} — Neuroscience Experiments`,
+  title: `${SITE_NAME} — Experiments in Intelligence`,
   description:
-    'A lab exploring brain and intelligence across scales — cortical encoding, EEG, and evolutionary simulation. Built by Emiliano Cuevas.',
+    'An independent lab by Emiliano Cuevas exploring intelligence and behavior through neuroscience, EEG, simulations, and artificial agent societies.',
+  icons: { icon: '/icon.svg' },
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={courierPrime.variable}>
-      <body className="font-sans antialiased bg-background text-foreground">
-        {children}
-        <Analytics />
-      </body>
+    <html lang="en">
+      <body>{children}<Analytics /></body>
     </html>
   )
 }

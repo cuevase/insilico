@@ -2,7 +2,7 @@ import type { BrainRegionAnalysis } from "@/lib/experiments"
 
 function RegionBar({ percentage, color }: { percentage: number; color: string }) {
   return (
-    <div className="h-1.5 w-full rounded-full bg-white/15 overflow-hidden">
+    <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
       <div
         className="h-full rounded-full transition-all duration-500"
         style={{ width: `${Math.min(percentage * 5, 100)}%`, backgroundColor: color }}
