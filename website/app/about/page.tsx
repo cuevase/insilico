@@ -62,29 +62,6 @@ export default function AboutPage() {
               focus on design, signal processing, and inference for that modality.
             </p>
           </div>
-
-          <div>
-            <h2 className="font-serif text-lg font-medium text-foreground mb-3">
-              Evolution &amp; origins of intelligence
-            </h2>
-            <p>
-              Some work steps back from cortex and scalp signals to ask how adaptive behavior can
-              arise under selection alone.{' '}
-              <a
-                href="https://github.com/cuevase/origins"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-foreground underline underline-offset-4 hover:text-accent transition-colors"
-              >
-                Origins
-              </a>{' '}
-              is a minimal evolutionary simulation where organisms carry a full joint distribution
-              over local sensing, internal energy, and action — offspring inherit mutated joints,
-              and survival in a crowded ring world provides the only fitness pressure. These
-              studies complement encoding and EEG work by probing intelligence from the bottom up.
-            </p>
-          </div>
-
           <div>
             <h2 className="font-serif text-lg font-medium text-foreground mb-3">
               Agent societies
