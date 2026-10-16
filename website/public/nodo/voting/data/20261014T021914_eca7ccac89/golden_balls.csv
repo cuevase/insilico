@@ -1,0 +1,3 @@
+agent_id,model,choice,won
+agent_002,google/gemini-3.8-flash,share,True
+agent_013,google/gemini-3.8-flash,share,True

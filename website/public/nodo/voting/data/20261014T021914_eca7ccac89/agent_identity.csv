@@ -1,0 +1,21 @@
+agent_id,baseline_id,model,name,nationality
+agent_001,agent_001,google/gemini-3.8-flash,Emily Carter,American
+agent_002,agent_002,google/gemini-3.8-flash,Sofia Hernandez,Mexican
+agent_003,agent_003,openai/gpt-4.1-mini,Diego Ramirez,Mexican
+agent_004,agent_004,anthropic/claude-sonnet-5.5,Haruto Tanaka,Japanese
+agent_005,agent_005,anthropic/claude-sonnet-5.5,James Miller,American
+agent_006,agent_006,deepseek/deepseek-v4.1-flash,Valeria Garcia,Mexican
+agent_007,agent_007,deepseek/deepseek-v4.1-flash,Olivia Brooks,American
+agent_008,agent_008,anthropic/claude-sonnet-5.5,Mateo Lopez,Mexican
+agent_009,agent_009,google/gemini-3.8-flash,Yui Sato,Japanese
+agent_010,agent_010,google/gemini-3.8-flash,Ethan Wilson,American
+agent_011,agent_011,openai/gpt-4.1-mini,Ren Suzuki,Japanese
+agent_012,agent_012,anthropic/claude-sonnet-5.5,Aoi Takahashi,Japanese
+agent_013,agent_013,google/gemini-3.8-flash,Camila Torres,Mexican
+agent_014,agent_014,openai/gpt-4.1-mini,Ava Bennett,American
+agent_015,agent_015,deepseek/deepseek-v4.1-flash,Sota Watanabe,Japanese
+agent_016,agent_016,deepseek/deepseek-v4.1-flash,Santiago Reyes,Mexican
+agent_017,agent_017,deepseek/deepseek-v4.1-flash,Noah Parker,American
+agent_018,agent_018,openai/gpt-4.1-mini,Daniela Flores,Mexican
+agent_019,agent_019,openai/gpt-4.1-mini,Mei Nakamura,Japanese
+agent_020,agent_020,anthropic/claude-sonnet-5.5,Grace Mitchell,American
