@@ -12,7 +12,6 @@ export default function ContactPage() {
     <div className="min-h-screen bg-background">
       <Navbar />
       <main className="site-wrap max-w-3xl py-16 md:py-24">
-        <p className="section-label mb-4">Start a conversation</p>
         <h1 className="text-5xl font-medium tracking-[-.05em] text-foreground mb-10 text-balance md:text-6xl">
           Contact
         </h1>
