@@ -32,7 +32,7 @@ export default function NodoPage() {
             <div className="flex min-w-0 items-center gap-5">
               <span className="h-2 w-2 shrink-0 rounded-full bg-accent" aria-hidden="true" />
               <a href="/nodo/voting/report.html" className="text-base font-medium tracking-tight hover:text-accent sm:text-lg">
-                Voting societies: two endings ↗
+                Voting Agent Societies ↗
               </a>
             </div>
             <nav aria-label="Report language" className="flex shrink-0 gap-4 text-xs text-muted-foreground sm:text-sm">
