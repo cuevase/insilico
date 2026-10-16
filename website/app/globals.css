@@ -63,8 +63,11 @@
 .site-wrap { width: min(100% - 48px, 1172px); margin-inline: auto; }
 .section-label { color: var(--accent); font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
 .site-rule { border-top: 1px solid var(--border); }
-.network-art .network-node { fill: #f6c9a6; }
-.network-art .network-node-strong { fill: var(--accent); }
+.network-art .network-node {
+  fill: var(--accent);
+  transition: cx 1.65s cubic-bezier(.22, 1, .36, 1), cy 1.65s cubic-bezier(.22, 1, .36, 1);
+}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .network-art .network-node { transition: none; }
 }

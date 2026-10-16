@@ -23,7 +23,7 @@ export default function NodoPage() {
 
         <section className="pb-24 md:pb-36" aria-labelledby="nodo-index">
           <h2 id="nodo-index" className="mb-7 text-3xl font-normal tracking-[-.035em] md:text-4xl">Experiments</h2>
-          <div className="flex min-h-20 items-center justify-between gap-6 border-y border-foreground py-5">
+          <div className="flex min-h-20 items-center justify-between gap-6 py-5">
             <div className="flex min-w-0 items-center gap-5">
               <span className="h-2 w-2 shrink-0 rounded-full bg-accent" aria-hidden="true" />
               <a href="/nodo/voting/report.html" className="text-base font-medium tracking-tight hover:text-accent sm:text-lg">

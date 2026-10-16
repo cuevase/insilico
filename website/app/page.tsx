@@ -22,17 +22,15 @@ export default function HomePage() {
         </section>
 
         <section className="pb-20 md:pb-28" aria-labelledby="featured-title">
-          <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
             <h2 id="featured-title" className="text-3xl font-normal tracking-[-.035em] md:text-4xl">Featured experiments</h2>
-            <Link href="/experiments" className="border-b border-foreground pb-1 text-sm transition-colors hover:border-accent hover:text-accent">View all experiments ↗</Link>
           </div>
-          <div className="mt-8 border-t border-foreground">
-            <Link href="/nodo" className="group flex min-h-20 items-center justify-between gap-6 border-b border-border py-5 transition-colors hover:text-accent">
+          <div className="mt-8">
+            <Link href="/nodo" className="group flex min-h-20 items-center justify-between gap-6 py-5 transition-colors hover:text-accent">
               <div className="flex items-center gap-5">
                 <span className="h-2 w-2 shrink-0 rounded-full bg-accent" aria-hidden="true" />
                 <h3 className="text-base font-medium tracking-tight sm:text-lg">Nodo — agent societies</h3>
               </div>
-              <span className="text-lg text-muted-foreground transition-colors group-hover:text-accent" aria-hidden="true">↗</span>
             </Link>
             {pinned.map((exp) => <ExperimentCard key={exp.slug} experiment={exp} />)}
           </div>
@@ -41,7 +39,7 @@ export default function HomePage() {
         {completed.length > 0 && (
           <section className="pb-20 md:pb-28" aria-labelledby="completed-title">
             <h2 id="completed-title" className="mb-7 text-2xl font-normal tracking-tight md:text-3xl">More completed work</h2>
-            <div className="border-t border-foreground">
+            <div>
               {completed.map((exp) => <ExperimentCard key={exp.slug} experiment={exp} />)}
             </div>
           </section>
@@ -50,7 +48,7 @@ export default function HomePage() {
         {upcoming.length > 0 && (
           <section className="pb-20 md:pb-28" aria-labelledby="upcoming-title">
             <h2 id="upcoming-title" className="mb-7 text-2xl font-normal tracking-tight md:text-3xl">Upcoming</h2>
-            <div className="border-t border-foreground">
+            <div>
               {upcoming.map((exp) => <ExperimentCard key={exp.slug} experiment={exp} />)}
             </div>
           </section>
